@@ -1,0 +1,196 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Section -->
+<main class="home">
+  <section class="hero-section text-center">
+    <div class="container container--narrow">
+      <div class="hero-section__box">
+        <h2>TRACK YOUR <span>STACK</span></h2>
+        <h2>WITH EASE</h2>
+      </div>
+
+      <div class="hero-section__search">
+        <form class="form" action="#" method="get">
+          <div class="form__field">
+            <label for="formInput#search">Search Developers </label>
+            <input class="input input--text" id="formInput#search" type="text" name="text"
+              placeholder="Search Your Stack" />
+          </div>
+
+          <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+        </form>
+      </div>
+    </div>
+  </section>
+  <!-- Search Result: DevList -->
+  <section class="devlist">
+    <div class="container">
+      <div class="grid grid--three">
+        <div class="column card">
+          <div class="dev">
+            <a href="/profile.html" class="card__body">
+              <div class="dev__profile">
+                <img class="avatar avatar--md" src="{% static 'images/gold_avatar.jpg' %}" />
+                <div class="dev__meta">
+                  <h3>Live Gold Price</h3>
+                  <h5>Courtesy of Kitco</h5>
+                </div>
+              </div>
+              <p class="dev__info">
+                Maybe its up maybe its down but you know with the trusted information from 
+                Kitco its (MOSTLY) correct! Except for the few times its down or the tables 
+                have crashed or there is hackers attacking it... You know
+              </p>
+              <div class="dev__skills">
+                <span class="tag tag--pill tag--main">
+                  <a href="https://www.kitco.com/charts/gold"><small>Click here for current price!</small></a>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="column card">
+          <div class="dev">
+            <a href="/profile.html" class="card__body">
+              <div class="dev__profile">
+                <img class="avatar avatar--md" src="{% static 'images/silver_avatar.jpg' %}" alt="image" />
+                <div class="dev__meta">
+                  <h3>Live Silver Price</h3>
+                  <h5>Courtesy of Kitco</h5>
+                </div>
+              </div>
+              <p class="dev__info">
+                For years now it has been manipulated by the big players, will today
+                be the day that it goes to the moon? Or do the big dogs keep control?
+                Find out today if the manipulation is finally over, or is silver back at $0
+              </p>
+              <div class="dev__skills">
+                <span class="tag tag--pill tag--main">
+                  <a href="https://www.kitco.com/charts/silver"><small>Click here for current price!</small></a>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="column card">
+          <div class="dev">
+            <a href="/profile.html" class="card__body">
+              <div class="dev__profile">
+                <img class="avatar avatar--md" src="{% static 'images/platinum_avatar.jpg' %}" alt="image" />
+                <div class="dev__meta">
+                  <h3>Live Platinum Price</h3>
+                  <h5>Courtesy of Kitco</h5>
+                </div>
+              </div>
+              <p class="dev__info">
+                The often forgotten platinum, actually more ductile than gold silver or copper
+                making it the most ductile but less malleable.. Not the most common
+                thing to stack, but nevertheless its here to track!
+              </p>
+              <div class="dev__skills">
+                <span class="tag tag--pill tag--main">
+                  <small>Python</small>
+                </span>
+                <span class="tag tag--pill tag--main">
+                  <small>Django</small>
+                </span>
+                <span class="tag tag--pill tag--main">
+                  <small>Rest API</small>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="column card">
+          <div class="dev">
+            <a href="/profile.html" class="card__body">
+              <div class="dev__profile">
+                <img class="avatar avatar--md" src="https://avatars.githubusercontent.com/u/22437186" alt="image" />
+                <div class="dev__meta">
+                  <h3>Shahriar P. Shuvo</h3>
+                  <h5>FullStack Web Designer & Developer</h5>
+                </div>
+              </div>
+              <p class="dev__info">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, ducimus inventore! Sunt,
+                veniam veritatis? Veritatis placeat, deleniti iure tempore veniam perspiciatis, soluta cupiditate
+                animi, exercitationem molestias nam doloremque architecto odit.
+              </p>
+              <div class="dev__skills">
+                <span class="tag tag--pill tag--main">
+                  <small>JavaScript</small>
+                </span>
+                <span class="tag tag--pill tag--main">
+                  <small>React</small>
+                </span>
+                <span class="tag tag--pill tag--main">
+                  <small>SCSS</small>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="column card">
+          <div class="dev">
+            <a href="/profile.html" class="card__body">
+              <div class="dev__profile">
+                <img class="avatar avatar--md" src="https://avatars.githubusercontent.com/u/22437186" alt="image" />
+                <div class="dev__meta">
+                  <h3>Shahriar P. Shuvo</h3>
+                  <h5>FullStack Web Designer & Developer</h5>
+                </div>
+              </div>
+              <p class="dev__info">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, ducimus inventore! Sunt,
+                veniam veritatis? Veritatis placeat, deleniti iure tempore veniam perspiciatis, soluta cupiditate
+                animi, exercitationem molestias nam doloremque architecto odit.
+              </p>
+              <div class="dev__skills">
+                <span class="tag tag--pill tag--main">
+                  <small>JavaScript</small>
+                </span>
+                <span class="tag tag--pill tag--main">
+                  <small>React</small>
+                </span>
+                <span class="tag tag--pill tag--main">
+                  <small>SCSS</small>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="column card">
+          <div class="dev">
+            <a href="/profile.html" class="card__body">
+              <div class="dev__profile">
+                <img class="avatar avatar--md" src="https://avatars.githubusercontent.com/u/22437186" alt="image" />
+                <div class="dev__meta">
+                  <h3>Shahriar P. Shuvo</h3>
+                  <h5>FullStack Web Designer & Developer</h5>
+                </div>
+              </div>
+              <p class="dev__info">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, ducimus inventore! Sunt,
+                veniam veritatis? Veritatis placeat, deleniti iure tempore veniam perspiciatis, soluta cupiditate
+                animi, exercitationem molestias nam doloremque architecto odit.
+              </p>
+              <div class="dev__skills">
+                <span class="tag tag--pill tag--main">
+                  <small>JavaScript</small>
+                </span>
+                <span class="tag tag--pill tag--main">
+                  <small>React</small>
+                </span>
+                <span class="tag tag--pill tag--main">
+                  <small>SCSS</small>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
