@@ -45,3 +45,22 @@
 .card.card--dark .card__header {
   box-shadow: var(--generic-shadow);
 }
+
+/* Custom CSS for positioning the "click here" links */
+.devlist .card {
+  position: relative;
+}
+
+.devlist .card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.devlist .dev__skills {
+  position: absolute;
+  bottom: 10px; /* Adjust this value as needed */
+  left: 50%;
+  transform: translateX(-50%);
+}
