@@ -4,11 +4,18 @@ import uuid
 # Create your models here.
 
 class Gold(models.Model):
+    METAL_TYPES = (
+        ('gold', 'Gold'),
+        ('silver', 'Silver'),
+        ('platinum', 'Platinum'),
+    )
+
+    metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_name = models.CharField(max_length=100)
     AGW = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=6)
     quantity = models.IntegerField()
-    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
+    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=2)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2)
     purchased_from = models.CharField(max_length=100)
@@ -23,6 +30,13 @@ class Gold(models.Model):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
 
 class Silver(models.Model):
+    METAL_TYPES = (
+        ('gold', 'Gold'),
+        ('silver', 'Silver'),
+        ('platinum', 'Platinum'),
+    )
+
+    metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_name = models.CharField(max_length=100)
     ASW = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=6)
@@ -42,6 +56,13 @@ class Silver(models.Model):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
 
 class Platinum(models.Model):
+    METAL_TYPES = (
+        ('gold', 'Gold'),
+        ('silver', 'Silver'),
+        ('platinum', 'Platinum'),
+    )
+
+    metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_name = models.CharField(max_length=100)
     APtW = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=6)

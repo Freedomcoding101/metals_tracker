@@ -12,10 +12,10 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
-          <li class="header__menuItem"><a href="{% url 'goldpage' %}">My Gold</a></li>
-          <li class="header__menuItem"><a href="{% url 'silverpage' %}">My Silver</a></li>
-          <li class="header__menuItem"><a href="{% url 'platinumpage' %}">My Platinum</a></li>
-          <li class="header__menuItem"><a href="{% url 'updatePage' %}">Upgrade/Edit Stack</a></li>
+          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='gold' %}">My Gold</a></li>
+          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='silver' %}">My Silver</a></li>
+          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='platinum' %}">My Platinum</a></li>
+          <li class="header__menuItem"><a href="{% url 'updatePage' %}">Add to Stack</a></li>
           <li class="header__menuItem"><a href="#" class="btn btn--sub">Login/Sign Up</a></li>
         </ul>
       </nav>

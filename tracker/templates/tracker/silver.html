@@ -1,5 +1,57 @@
 {% extends 'main.html' %}
-
 {% block content %}
-<h1>Silver</h1>
-{% endblock %}
+{% load static %}
+<!-- Main Section -->
+<main class="projects">
+    <section class="hero-section text-center">
+      <div class="container container--narrow">
+        <div class="hero-section__box">
+          <h2>Search for <span>Projects</span></h2>
+        </div>
+
+        <div class="hero-section__search">
+          <form class="form" action="#" method="get">
+            <div class="form__field">
+              <label for="formInput#search">Search By Projects </label>
+              <input class="input input--text" id="formInput#search" type="text" name="text"
+                placeholder="Search by Project Title" />
+            </div>
+
+            <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- Start of grid -->
+    <section class="projectsList">
+      <div class="container">
+        <div class="grid grid--three">
+
+          {% for object in metal_objects %}
+          <div class="column">
+            <div class="card project">
+              <a href="#" class="project">
+                <img class="project__thumbnail" src="{% static 'images/gold_avatar.jpg' %}" alt="project thumbnail" />
+                <div class="card__body">
+                  <h3 class="project__title">{{object.item_name}}</h3>
+                  <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>
+                  <p><a class="project__author" href="#">Quantity {{object.quantity}}</a></p>
+                  <p class="project--rating">
+                    <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
+                  </p>
+                  <p class="project--rating">
+                    <a href="#"><span style="font-weight: bold;">Edit/Delete</span></a>
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+{% endblock content %}

@@ -24,26 +24,26 @@ class GoldForm(forms.ModelForm):
 
 class SilverForm(forms.ModelForm):
     class Meta:
-        model = Gold
+        model = Silver
         fields = "__all__"
 
 #  the code below changes the class of the field items to input
 #  so the css works.
     def __init__(self,*args, **kwargs):
-        super(GoldForm, self).__init__(*args, **kwargs)
+        super(SilverForm, self).__init__(*args, **kwargs)
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
 
 class PlatinumForm(forms.ModelForm):
     class Meta:
-        model = Gold
+        model = Platinum
         fields = "__all__"
 
 #  the code below changes the class of the field items to input
 #  so the css works.
     def __init__(self,*args, **kwargs):
-        super(GoldForm, self).__init__(*args, **kwargs)
+        super(PlatinumForm, self).__init__(*args, **kwargs)
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
