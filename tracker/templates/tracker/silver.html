@@ -40,7 +40,8 @@
                     <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
                   </p>
                   <p class="project--rating">
-                    <a href="{% url 'editPage' metal_type='silver' pk=object.pk %}"><span style="font-weight: bold;">Edit/Delete</span></a>
+                    <a href="{% url 'editPage' metal_type='silver' pk=object.pk %}"><span style="font-weight: bold;">Edit</span></a><br>
+                    <a href="{% url 'deletePage' metal_type='gold' pk=object.pk %}"><span style="font-weight: bold;">Delete</span></a>
                   </p>
                 </div>
               </a>
