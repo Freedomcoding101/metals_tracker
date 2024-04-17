@@ -10,14 +10,20 @@ class Gold(models.Model):
         ('platinum', 'Platinum'),
     )
 
+    BAR_ROUND_MISC = (
+        ('bar', 'Bar'),
+        ('round', 'Round'),
+        ('misc', 'Misc'),
+    )
+
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
+    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
-    AGW = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
-    purity = models.DecimalField(max_digits=15, decimal_places=6)
+    purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
-    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=2)
+    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
-    shipping_cost = models.DecimalField(max_digits=15, decimal_places=2)
+    shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -36,14 +42,20 @@ class Silver(models.Model):
         ('platinum', 'Platinum'),
     )
 
+    BAR_ROUND_MISC = (
+        ('bar', 'Bar'),
+        ('round', 'Round'),
+        ('misc', 'Misc'),
+    )
+
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
+    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
-    ASW = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
-    purity = models.DecimalField(max_digits=15, decimal_places=6)
+    purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
-    shipping_cost = models.DecimalField(max_digits=15, decimal_places=2)
+    shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -62,14 +74,20 @@ class Platinum(models.Model):
         ('platinum', 'Platinum'),
     )
 
+    BAR_ROUND_MISC = (
+        ('bar', 'Bar'),
+        ('round', 'Round'),
+        ('misc', 'Misc'),
+    )
+
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
+    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
-    APtW = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
-    purity = models.DecimalField(max_digits=15, decimal_places=6)
+    purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
-    shipping_cost = models.DecimalField(max_digits=15, decimal_places=2)
+    shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)

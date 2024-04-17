@@ -13,6 +13,9 @@ class GoldForm(forms.ModelForm):
     class Meta:
         model = Gold
         fields = "__all__"
+        labels = {
+            'item_name': 'Item Name',
+        }
 
 #  the code below changes the class of the field items to input
 #  so the css works.
@@ -26,6 +29,9 @@ class SilverForm(forms.ModelForm):
     class Meta:
         model = Silver
         fields = "__all__"
+        labels = {
+            'item_name': 'Item Name',
+        }
 
 #  the code below changes the class of the field items to input
 #  so the css works.
@@ -39,6 +45,9 @@ class PlatinumForm(forms.ModelForm):
     class Meta:
         model = Platinum
         fields = "__all__"
+        labels = {
+            'item_name': 'Item Name',
+        }
 
 #  the code below changes the class of the field items to input
 #  so the css works.
