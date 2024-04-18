@@ -31,7 +31,20 @@
           <div class="column">
             <div class="card project">
               <a href="#" class="project">
-                <img class="project__thumbnail" src="{% static 'images/gold_avatar.jpg' %}" alt="project thumbnail" />
+                <!-- Wrote Styles inline because CSS File not working?? -->
+                {% if object.featured_image.url != None %} 
+                <div class="project__thumbnail" style="width: 25rem; height: 25rem;
+                  background-image: url('{{ object.featured_image.url }}');
+                  background-size: cover; background-position: top center;
+                  border-radius: 50%; overflow: hidden; border: 2px solid #fff;">
+                </div>
+                {% else %}
+                <div class="project__thumbnail" style="width: 25rem; height: 25rem;
+                  background-image: url('{% static 'images/default.jpg' %}');
+                  background-size: cover; background-position: top center;
+                  border-radius: 50%; overflow: hidden; border: 2px solid #fff;">
+                </div>
+                {% endif %}
                 <div class="card__body">
                   <h3 class="project__title">{{object.item_name}}</h3>
                   <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>

@@ -32,11 +32,11 @@ def updatePage(request):
         metal_type = request.POST.get('metal_type')
         
         if metal_type.lower() == 'gold':
-            form = GoldForm(request.POST)
+            form = GoldForm(request.POST, request.FILES)
         elif metal_type.lower() == 'silver':
-            form = SilverForm(request.POST)
+            form = SilverForm(request.POST, request.FILES)
         elif metal_type.lower() == 'platinum':
-            form = PlatinumForm(request.POST)
+            form = PlatinumForm(request.POST, request.FILES)
         else:
             print('Unrecognized Metal Type')
 
@@ -70,7 +70,7 @@ def editPage(request, metal_type, pk):
 
     if request.method == 'POST':
         # If the form is submitted, validate and save it
-        form = form_class(request.POST, instance=item)
+        form = form_class(request.POST, request.FILES, instance=item)
         if form.is_valid():
             form.save()
             return redirect('metal_page', metal_type=metal_type)
