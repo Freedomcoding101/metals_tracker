@@ -2,4 +2,11 @@ Hmmm this is not saved for some reason.... CSS not working and linking up with t
 Maybe because of the uikit??
 
 Go back and make reviews... either inside of users or inside of metals...
-probably users.
+probably users....
+
+** made reviews insdie of users..... need to link everything inside of there and make 
+sure its all working to create a review on a user... Might have to build out some other components here..
+
+Going to pause building for a bit and do some more of the course..
+
+
