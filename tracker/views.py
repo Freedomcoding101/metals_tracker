@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Gold, Silver, Platinum
 from .forms import GoldForm, SilverForm, PlatinumForm
+from django.http import HttpResponseNotFound
 
 # Create your views here.
 
@@ -20,6 +21,9 @@ def metalPage(request, metal_type):
     elif metal_type == 'platinum':
         metal_objects = Platinum.objects.all()
         template_name = 'tracker/platinum.html'
+    else:
+        # If metal_type is unrecognized, return a 404 response
+        return HttpResponseNotFound("Metal type not found.")
 
     context = {'metal_objects': metal_objects}
     return render(request, template_name, context)
