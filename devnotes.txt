@@ -1,8 +1,26 @@
-Hmmm this is not saved for some reason.... CSS not working and linking up with the other.
-Maybe because of the uikit??
+To work on..
 
-** made reviews inside of users..... need to link everything inside of there and make 
-sure its all working to create a review on a user... Might have to build out some other components here..
+reviews
+
+
+user creation
+started working on user creation... currently working on register an account page
+no background....
+seems like css is off..
+needs a logo..
+
+
+
+signals
+
+
+
+login/authentication
+
+
+
+
+
 
 
 

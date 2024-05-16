@@ -12,11 +12,14 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
+          {% if request.user.is_authenticated %}
           <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='gold' %}">My Gold</a></li>
           <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='silver' %}">My Silver</a></li>
           <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='platinum' %}">My Platinum</a></li>
           <li class="header__menuItem"><a href="{% url 'updatePage' %}">Add to Stack</a></li>
-          <li class="header__menuItem"><a href="#" class="btn btn--sub">Login/Sign Up</a></li>
+          {% else %}
+          <li class="header__menuItem"><a href="{% url 'register-user' %}" class="btn btn--sub">Login/Sign Up</a></li>
+          {% endif %}
         </ul>
       </nav>
     </div>
