@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from users.models import Profile
 
 # Create your models here.
 
@@ -16,7 +17,7 @@ class Gold(models.Model):
         ('misc', 'Misc'),
     )
 
-    owner = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
@@ -50,7 +51,7 @@ class Silver(models.Model):
         ('misc', 'Misc'),
     )
 
-    owner = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
@@ -84,7 +85,7 @@ class Platinum(models.Model):
         ('misc', 'Misc'),
     )
 
-    owner = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
