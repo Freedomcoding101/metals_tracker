@@ -25,7 +25,7 @@ class Review(models.Model):
     VOTE_TYPE = (('up', 'Up Vote'),
                 ('down', 'Down Vote')
     )
-    owener=models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
+    owner=models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     body = models.TextField(null=True, blank=True)
     value = models.CharField(max_length=200, choices = VOTE_TYPE)
     created = models.DateTimeField(auto_now_add=True)
