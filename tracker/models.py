@@ -16,6 +16,7 @@ class Gold(models.Model):
         ('misc', 'Misc'),
     )
 
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
@@ -49,6 +50,7 @@ class Silver(models.Model):
         ('misc', 'Misc'),
     )
 
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
@@ -82,6 +84,7 @@ class Platinum(models.Model):
         ('misc', 'Misc'),
     )
 
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)

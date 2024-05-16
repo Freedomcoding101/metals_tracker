@@ -2,10 +2,19 @@
 
 {% block content %}
 
-<form action="" method="POST">
-    {% csrf_token %}
-    <p>Are you sure you wante to delete "{{item}}"?</p>
-    <a href = {% url 'metal_page' metal_type=item.metal_type %}>Go Back</a>
-    <input type="submit" value="Confirm" />
-</form>
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <a class="backButton" href="#" onclick="goBack()">&#9668;<i class="im im-angle-left"></i></a><p>Back</p>
+            <br>
+
+            <form class="form" action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p>Are you sure you wante to delete "{{item}}"?</p>
+                <br>
+                <button class="btn btn--sub" type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+</main>
 {% endblock %}

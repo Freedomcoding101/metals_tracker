@@ -7,6 +7,11 @@
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   overflow: hidden;
+  display: flex; /* Add flex display */
+  flex-direction: column; /* Align items vertically */
+  justify-content: center; /* Center content horizontally and vertically */
+  align-items: center;
+  text-align: center; /* Optional, if you want to center text */
 }
 
 .card__link {
