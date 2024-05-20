@@ -1,24 +1,9 @@
 To work on..
 
-reviews
+forgot password name/page/url/ information..
 
-
-user creation
-started working on user creation... currently working on register an account page
-no background....
-seems like css is off..
-needs a logo..
-
-
-
-signals
-
-
-
-login/authentication
-
-
-
+set up edit account to reirect to an account page maybe??
+or something better than the homepage?
 
 
 

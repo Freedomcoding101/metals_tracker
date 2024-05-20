@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Gold, Silver, Platinum
 from .forms import GoldForm, SilverForm, PlatinumForm
 from django.http import HttpResponseNotFound
@@ -8,7 +10,7 @@ from django.http import HttpResponseNotFound
 def homepage(request):
     return render(request, 'tracker/index.html')
 
-def metalPage(request, metal_type):
+def metalPage(request, metal_type, pk):
     metal_objects = None
     template_name = None
 

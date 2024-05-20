@@ -16,3 +16,19 @@ class CustomUserCreationForm(UserCreationForm):
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
+
+class CustomProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['name', 'email', 'username', 'bio', 'short_intro',
+        'profile_image', 'social_facebook']
+
+        labels = {'name': 'Name', 'email': 'Email', 'username': 'Username',
+                'bio': 'Bio', 'short_intro': 'Short Intro',
+                'social_facebook': 'Facebook Link'}
+
+    def __init__(self,*args, **kwargs):
+        super(CustomProfileForm, self).__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})

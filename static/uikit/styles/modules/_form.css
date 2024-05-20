@@ -180,3 +180,30 @@ textarea.input:active {
 .form__field--action > *:not(:last-child) {
   margin-right: 1rem;
 }
+
+/* MY CUSTOM CSS ADDONS */
+
+.form.auth__form {
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+#register_button {
+  display: block;
+  margin: 0 auto; /* This will horizontally center the element */
+}
+
+#register_login {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.form_header {
+  text-align: center; /* Center align the text */
+  margin-bottom: 20px; /* Add some bottom margin for spacing */
+}
+
+.form_header h1 {
+  margin: 0; /* Remove default margins for the <h1> tag */
+}

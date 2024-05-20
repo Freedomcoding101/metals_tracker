@@ -11,7 +11,7 @@
   flex-direction: column; /* Align items vertically */
   justify-content: center; /* Center content horizontally and vertically */
   align-items: center;
-  text-align: center; /* Optional, if you want to center text */
+  /* text-align: center; Optional, if you want to center text */
 }
 
 .card__link {
