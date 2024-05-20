@@ -17,11 +17,11 @@ class Gold(models.Model):
         ('misc', 'Misc'),
     )
 
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
-    featured_image = models.ImageField(default='default.jpg', null=True, blank=True)
+    featured_image = models.ImageField(default='images/gold_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
@@ -30,7 +30,7 @@ class Gold(models.Model):
     purchased_from = models.CharField(max_length=100)
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
     class Meta:
         verbose_name_plural = "Gold"
@@ -51,11 +51,11 @@ class Silver(models.Model):
         ('misc', 'Misc'),
     )
 
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
-    featured_image = models.ImageField(default='default.jpg', null=True, blank=True)
+    featured_image = models.ImageField(default='images/silver_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
@@ -64,7 +64,7 @@ class Silver(models.Model):
     purchased_from = models.CharField(max_length=100)
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
     class Meta:
         verbose_name_plural = "Silver"
@@ -85,11 +85,11 @@ class Platinum(models.Model):
         ('misc', 'Misc'),
     )
 
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
     item_name = models.CharField(max_length=100)
-    featured_image = models.ImageField(default='default.jpg', null=True, blank=True)
+    featured_image = models.ImageField(default='images/platinum_avatar', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
@@ -98,7 +98,7 @@ class Platinum(models.Model):
     purchased_from = models.CharField(max_length=100)
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
     class Meta:
         verbose_name_plural = "Platinum"

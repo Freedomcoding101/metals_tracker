@@ -16,5 +16,11 @@ def createUserProfile(sender, instance, created, **kwargs):
         name=user.first_name,
         )
 
+def deleteUser(sender, instance, **kwargs):
+    user = instance.user
+    print('deleted user')
+    user.delete()
 
+post_delete.connect(deleteUser, sender=Profile)
 post_save.connect(createUserProfile, sender=User)
+

@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="{% static 'uikit/styles/uikit.css' %}" />
   <!-- Dev Search UI -->
   <link rel="stylesheet" href="{% static 'styles/app.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/icons.css' %}">
   <title>Stack Tracker- Know what you hold!</title>
 </head>
 
@@ -34,10 +35,7 @@
   {% block content %}
 
   {% endblock %}
-  <script>
-    function goBack() {
-        window.history.back();
-    }
-    </script>
 </body>
+<script src="{% static 'uikit/app.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
 </html>

@@ -12,9 +12,12 @@ class MetalSelectForm(forms.Form):
 class GoldForm(forms.ModelForm):
     class Meta:
         model = Gold
-        fields = "__all__"
+        fields = ['metal_type', 'item_type', 'item_name', 'featured_image', 'purity',
+        'quantity', 'weight_troy_oz', 'cost_to_purchase', 'shipping_cost',
+        'purchased_from', 'sell_price']
+
         labels = {
-            'item_name': 'Item Name',
+            'weight_troy_oz': 'Weight Troy Oz',
         }
 
 #  the code below changes the class of the field items to input
@@ -28,7 +31,10 @@ class GoldForm(forms.ModelForm):
 class SilverForm(forms.ModelForm):
     class Meta:
         model = Silver
-        fields = "__all__"
+        fields = ['metal_type', 'item_type', 'item_name', 'featured_image', 'purity',
+        'quantity', 'weight_troy_oz', 'cost_to_purchase', 'shipping_cost',
+        'purchased_from', 'sell_price']
+        
         labels = {
             'item_name': 'Item Name',
         }
@@ -44,7 +50,10 @@ class SilverForm(forms.ModelForm):
 class PlatinumForm(forms.ModelForm):
     class Meta:
         model = Platinum
-        fields = "__all__"
+        fields = ['metal_type', 'item_type', 'item_name', 'featured_image', 'purity',
+        'quantity', 'weight_troy_oz', 'cost_to_purchase', 'shipping_cost',
+        'purchased_from', 'sell_price']
+
         labels = {
             'item_name': 'Item Name',
         }

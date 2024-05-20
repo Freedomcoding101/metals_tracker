@@ -10,18 +10,18 @@ from django.http import HttpResponseNotFound
 def homepage(request):
     return render(request, 'tracker/index.html')
 
-def metalPage(request, metal_type, pk):
+def metalPage(request, metal_type):
     metal_objects = None
     template_name = None
 
     if metal_type == 'gold':
-        metal_objects = Gold.objects.all()
+        metal_objects = Gold.objects.filter(owner=request.user.profile, metal_type=metal_type)
         template_name = 'tracker/gold.html'
     elif metal_type == 'silver':
-        metal_objects = Silver.objects.all()
+        metal_objects = Silver.objects.filter(owner=request.user.profile, metal_type=metal_type)
         template_name = 'tracker/silver.html'
     elif metal_type == 'platinum':
-        metal_objects = Platinum.objects.all()
+        metal_objects = Platinum.objects.filter(owner=request.user.profile, metal_type=metal_type)
         template_name = 'tracker/platinum.html'
     else:
         # If metal_type is unrecognized, return a 404 response
@@ -32,6 +32,7 @@ def metalPage(request, metal_type, pk):
 
 def updatePage(request):
     form = GoldForm()
+    profile = request.user.profile
 
     if request.method == 'POST':
         #Determine the metal type from the incoming data
@@ -47,7 +48,9 @@ def updatePage(request):
             print('Unrecognized Metal Type')
 
         if form.is_valid():
-            form.save()
+            newmetal= form.save(commit=False)
+            newmetal.owner = profile
+            newmetal.save()
             return redirect('homepage')
 
     context = {'form': form}

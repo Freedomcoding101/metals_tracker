@@ -5,6 +5,7 @@ forgot password name/page/url/ information..
 set up edit account to reirect to an account page maybe??
 or something better than the homepage?
 
+working on profile page.... come back to this tomorrow...
 
 
 

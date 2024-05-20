@@ -5,11 +5,24 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Profile
 from .forms import CustomUserCreationForm, CustomProfileForm
+from tracker.utils import get_total_oz
 
 # Create your views here.
 
-def profiles(request):
-    return render(request, 'users/profiles.html')
+def profile(request, pk):
+    profile = Profile.objects.get(id=pk)
+    user = request.user.profile
+    total_silver = get_total_oz(user, 'silver')
+    total_gold = get_total_oz(user, 'gold')
+    total_platinum = get_total_oz(user, 'platinum')
+
+    context = {
+        'total_silver': total_silver,
+        'total_gold': total_gold,
+        'total_platinum': total_platinum,
+        'profile': profile
+    }
+    return render(request, 'users/user-profile.html', context)
 
 def registerUser(request):
     page = 'register'
@@ -59,6 +72,7 @@ def loginUser(request):
     context = {'page': page}
     return render(request, 'users/login_register.html', context)
 
+@login_required(login_url='login')
 def logoutUser(request):
     logout(request)
     messages.info(request, 'User successfully logged out')
