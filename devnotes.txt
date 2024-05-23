@@ -6,7 +6,10 @@ set up edit account to reirect to an account page maybe??
 or something better than the homepage?
 
 working on profile page.... come back to this tomorrow...
+started working on live gold price... installed beautifulsoup.. not working at all for dynamic price.. wait to learn more about API and try that out.
 
+starting to work on search for gold/silver/platinum page..
+Finished those searches, now starting on the MAIN search page.. want it to be a bit different.
 
 
 

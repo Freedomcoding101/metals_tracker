@@ -6,18 +6,18 @@
     <section class="hero-section text-center">
       <div class="container container--narrow">
         <div class="hero-section__box">
-          <h2>Search your <span>Stack</span></h2>
+          <h2>Search your <span>Platinum</span></h2>
         </div>
 
         <div class="hero-section__search">
-          <form class="form" action="#" method="get">
+          <form class="form" action="{% url 'metal_page' metal_type=metal_type %}" method="get">
             <div class="form__field">
               <label for="formInput#search">Search By Projects </label>
-              <input class="input input--text" id="formInput#search" type="text" name="text"
+              <input class="input input--text" id="formInput#search" type="text" name="search_query"
                 placeholder="Search my bullion" />
             </div>
 
-            <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+            <input class="btn btn--sub btn--lg" type="submit" value="Search" placeholder="{{search_query}}"/>
           </form>
         </div>
       </div>
@@ -26,7 +26,7 @@
     <section class="projectsList">
       <div class="container">
         <div class="grid grid--three">
-
+          {% if search_query %}
           {% for object in metal_objects %}
           <div class="column">
             <div class="card project">
@@ -61,7 +61,42 @@
             </div>
           </div>
           {% endfor %}
-
+          {% else %}
+          {% for object in metal_objects %}
+          <div class="column">
+            <div class="card project">
+              <a href="#" class="project">
+                <!-- Wrote Styles inline because CSS File not working?? -->
+                {% if object.featured_image.url != None %} 
+                <div class="project__thumbnail" style="width: 25rem; height: 25rem;
+                  background-image: url('{{ object.featured_image.url }}');
+                  background-size: cover; background-position: top center;
+                  border-radius: 50%; overflow: hidden; border: 2px solid #fff;">
+                </div>
+                {% else %}
+                <div class="project__thumbnail" style="width: 25rem; height: 25rem;
+                  background-image: url('{% static 'images/default.jpg' %}');
+                  background-size: cover; background-position: top center;
+                  border-radius: 50%; overflow: hidden; border: 2px solid #fff;">
+                </div>
+                {% endif %}
+                <div class="card__body">
+                  <h3 class="project__title">{{object.item_name}}</h3>
+                  <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>
+                  <p><a class="project__author" href="#">Quantity {{object.quantity}}</a></p>
+                  <p class="project--rating">
+                    <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
+                  </p>
+                  <p class="project--rating">
+                    <a href="{% url 'editPage' metal_type='platinum' pk=object.pk %}"><span style="font-weight: bold;">Edit</span></a><br>
+                    <a href="{% url 'deletePage' metal_type='platinum' pk=object.pk %}"><span style="font-weight: bold;">Delete</span></a>
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
         </div>
       </div>
     </section>

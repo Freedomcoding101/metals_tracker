@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Gold, Silver, Platinum
+from.utils import searchMetals
+from.models import Gold, Silver, Platinum
 from .forms import GoldForm, SilverForm, PlatinumForm
 from django.http import HttpResponseNotFound
 
@@ -10,24 +11,48 @@ from django.http import HttpResponseNotFound
 def homepage(request):
     return render(request, 'tracker/index.html')
 
+def searchMetal(request):
+    results, search_query = searchMetals(request)
+    gold_items = results['gold_items']
+    silver_items = results['silver_items']
+    platinum_items = results['platinum_items']
+    metal_objects = list(gold_items) + list(silver_items) + list(platinum_items)
+
+    context = {'metal_objects': metal_objects, 'search_query': search_query}
+    return render(request, 'tracker/searchreturn.html', context)
+
+@login_required
 def metalPage(request, metal_type):
     metal_objects = None
     template_name = None
+    results, search_query = searchMetals(request)
 
     if metal_type == 'gold':
-        metal_objects = Gold.objects.filter(owner=request.user.profile, metal_type=metal_type)
+        if search_query:
+            metal_objects = results['gold_items']
+        else:
+            metal_objects = Gold.objects.filter(owner=request.user.profile)
         template_name = 'tracker/gold.html'
     elif metal_type == 'silver':
-        metal_objects = Silver.objects.filter(owner=request.user.profile, metal_type=metal_type)
+        if search_query:
+            metal_objects = results['silver_items']
+        else:
+            metal_objects = Silver.objects.filter(owner=request.user.profile)
         template_name = 'tracker/silver.html'
     elif metal_type == 'platinum':
-        metal_objects = Platinum.objects.filter(owner=request.user.profile, metal_type=metal_type)
+        if search_query:
+            metal_objects = results['platinum_items']
+        else:
+            metal_objects = Platinum.objects.filter(owner=request.user.profile)
         template_name = 'tracker/platinum.html'
     else:
-        # If metal_type is unrecognized, return a 404 response
         return HttpResponseNotFound("Metal type not found.")
 
-    context = {'metal_objects': metal_objects}
+    context = {
+        'metal_type': metal_type,
+        'metal_objects': metal_objects,
+        'search_query': search_query
+    }
     return render(request, template_name, context)
 
 def updatePage(request):

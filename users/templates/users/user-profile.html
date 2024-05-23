@@ -45,17 +45,63 @@
         </div>
         <div class="column column--2of3">
           <div class="devInfo">
-            <h3 class="devInfo__title">About Me</h3>
-            <p class="devInfo__about">
-                {{profile.bio}}
-            </p>
+            <h3 class="devInfo__title">Dashboard</h3>
+            <div class="card card--dark project">
+              <a href="#" class="project">
+                <!-- <img class="project__thumbnail" src="{% static 'images/canada_flag_avatar.png' %}" alt="project thumbnail" /> -->
+                <div class="card__body">
+                  <h3 class="project__title">Gold</h3>
+                  <p><a class="project__author" href="#">You have {{total_gold}} OZ{{ total_gold|pluralize }} Gold</a></p>
+                  <p class="project--rating">
+                    <span style="font-weight: bold;">Current Price: ${{gold_price}} /OZ</span>
+                  </p>
+                  <div class="project__tags">
+                    <span class="tag tag--pill tag--main">
+                      <small>Current Market Value (Melt) ${{gmv}}</small>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </div> <div class="card card--dark project">
+              <a href="#" class="project">
+                <!-- <img class="project__thumbnail" src="{% static 'images/canada_flag_avatar.png' %}" alt="project thumbnail" /> -->
+                <div class="card__body">
+                  <h3 class="project__title">Silver</h3>
+                  <p><a class="project__author" href="#">You have {{total_silver}} OZ{{ total_silver|pluralize }} Silver</a></p>
+                  <p class="project--rating">
+                    <span style="font-weight: bold;">Current Price: ${{silver_price}} /OZ</span>
+                  </p>
+                  <div class="project__tags">
+                    <span class="tag tag--pill tag--main">
+                      <small>Current Market Value (Melt) ${{smv}}</small>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </div> <div class="card card--dark project">
+              <a href="#" class="project">
+                <!-- <img class="project__thumbnail" src="{% static 'images/canada_flag_avatar.png' %}" alt="project thumbnail" /> -->
+                <div class="card__body">
+                  <h3 class="project__title">Platinum</h3>
+                  <p><a class="project__author" href="#">You have {{total_platinum}} OZ{{ total_platinum|pluralize }} Platinum</a></p>
+                  <p class="project--rating">
+                    <span style="font-weight: bold;">Current Price: ${{platinum_price}} /OZ</span>
+                  </p>
+                  <div class="project__tags">
+                    <span class="tag tag--pill tag--main">
+                      <small>Current Market Value (Melt) ${{pmv}}</small>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </div>
           </div>
           <div class="devInfo">
             <h3 class="devInfo__title">Total Holdings</h3>
             <div class="devInfo__skills">
-              <p>You have {{total_gold}} OZ{{ total_gold|pluralize }} Gold</p>
-              <p>You have {{total_silver}} OZ{{ total_silver|pluralize }} Silver</p>
-              <p>You have {{total_platinum}} OZ{{ total_platinum|pluralize }} Platinum</p>
+              
+              
+              
               <!-- {% for skill in profile.skill_set.all %}
               <div class="devSkill">
                 <h4 class="devSkill__title">{{skill.name}}</h4>
@@ -67,30 +113,6 @@
             </div> -->
           </div>
           <br>
-          <div class="devInfo">
-            <h3 class="devInfo__title">Random Header</h3>
-            <div class="grid grid--two">
-              <div class="column">
-                <div class="card project">
-                  <a href="#" class="project">
-                    <!-- <img class="project__thumbnail" src="{% static 'images/canada_flag_avatar.png' %}" alt="project thumbnail" /> -->
-                    <div class="card__body">
-                      <h3 class="project__title">555</h3>
-                      <p><a class="project__author" href="#">555</a></p>
-                      <p class="project--rating">
-                        <span style="font-weight: bold;">5555</span> Postitive
-                      </p>
-                      <div class="project__tags">
-                        <span class="tag tag--pill tag--main">
-                          <small>666</small>
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
