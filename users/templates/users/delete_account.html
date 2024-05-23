@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <br>
+            <h1>DELETE ACCOUNT</h1>
+            <form class="form" action="{% url 'delete-account' %}" method="POST">
+                {% csrf_token %}
+                <div class="form__field">
+                    <label for="formInput#text">Are you sure you want to delete the account for "{{ account }}"? This will be PERMANENT and all information currently saved to this profile will be deleted from the database. <br> (Type "delete" in the box below to continue)</label>
+                    <div><input type="text" id="confirmationInput"></div>  
+                    <a class="btn btn--sub btn--lg my-md" href="{% url 'profile' account.id %}">Go Back</a>
+                    <input class="btn btn--sub btn--lg my-md" type="submit" value="Confirm" id="confirmButton" style="display: none;" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'js/confirm_delete.js' %}"></script>
+</main> 
+{% endblock %}

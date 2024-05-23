@@ -13,8 +13,8 @@
               <h2 class="dev__name">{{profile.name}}</h2>
               <p class="dev__title">{{profile.short_intro}}</p>
               <br>
-              <button id="info_button" class="btn btn--main btn--sm">Update Info</button><br>
-              <button id="delete_button" class="btn btn--main btn--sm">Delete Account</button>
+              <a href="{% url 'edit-account' %}"><button id="info_button" class="btn btn--main btn--sm">Update Info</button></a><br>
+              <a href="{% url 'delete-account' %}"><button id="delete_button" class="btn btn--main btn--sm">Delete Account</button></a>
               <ul class="dev__social">
                 {% if profile.social_github %}
                 <li>
@@ -96,24 +96,6 @@
               </a>
             </div>
           </div>
-          <div class="devInfo">
-            <h3 class="devInfo__title">Total Holdings</h3>
-            <div class="devInfo__skills">
-              
-              
-              
-              <!-- {% for skill in profile.skill_set.all %}
-              <div class="devSkill">
-                <h4 class="devSkill__title">{{skill.name}}</h4>
-                <p class="devSkill__info">
-                {{skill.name}}
-                </p>
-              </div>
-              {% endfor %}
-            </div> -->
-          </div>
-          <br>
-        </div>
       </div>
     </div>
   </main>

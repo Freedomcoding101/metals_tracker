@@ -107,3 +107,14 @@ def editAccount(request):
 
     context = {'form': form, 'profile': profile}
     return render (request, 'users/profile_form.html', context)
+
+@login_required(login_url='login-user')
+def deleteAccount(request):
+    account = request.user.profile
+
+    if request.method == 'POST':
+        account.delete()
+        return(redirect('homepage'))
+
+    context = {'account': account}
+    return render(request, 'users/delete_account.html', context)

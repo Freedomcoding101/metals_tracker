@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <br>
+            <h1>DELETE ACCOUNT</h1>
+            <form class="form" action="" method="POST">
+                {% csrf_token %}
+                <div class="form__field">
+                    <label for="formInput#text">Are you sure you want to delete the account for "{{ account }}"? This will be PERMANENT and all information currently saved to this profile will be deleted from the database. <br> (Type "delete" in the box below to continue)</label>
+                    <div><input type="text" id="confirmationInput"></div>  
+                    <a class="btn btn--sub btn--lg my-md" href="{% url 'profile' account.id %}">Go Back</a>
+                    <input class="btn btn--sub btn--lg my-md" type="submit" value="Confirm" id="confirmButton" style="display: none;" />
+                </div>
+            </form>
+        </div>
+    </div>
+</main> 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const confirmationInput = document.getElementById("confirmationInput");
+        const confirmButton = document.getElementById("confirmButton");
+
+        confirmationInput.addEventListener("input", function() {
+            if (confirmationInput.value.trim().toLowerCase() === "delete") {
+                confirmButton.style.display = "inline-block";
+            } else {
+                confirmButton.style.display = "none";
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+

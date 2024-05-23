@@ -9,11 +9,12 @@
         <h2>TRACK YOUR <span>STACK</span></h2>
         <h2>WITH EASE</h2>
       </div>
-
+      
+      {% if request.user.is_authenticated %}
       <div class="hero-section__search">
         <form class="form" action="{% url 'searchMetal' %}" method="get">
           <div class="form__field">
-            <label for="formInput#search">Search Developers </label>
+            <label for="formInput#search">Search Stack </label>
             <input class="input input--text" id="formInput#search" type="text" name="search_query"
               placeholder="Search Your Stack" />
           </div>
@@ -21,6 +22,7 @@
           <input class="btn btn--sub btn--lg" type="submit" value="Search" />
         </form>
       </div>
+      {% endif %}
     </div>
   </section>
   <!-- Search Result: DevList -->

@@ -20,4 +20,3 @@ if(searchForm){
     })
     }
 }
-
