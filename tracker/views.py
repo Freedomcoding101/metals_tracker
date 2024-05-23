@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from.utils import searchMetals
+from.utils import searchMetals, paginateMetals
 from.models import Gold, Silver, Platinum
 from .forms import GoldForm, SilverForm, PlatinumForm
 from django.http import HttpResponseNotFound
@@ -11,17 +11,19 @@ from django.http import HttpResponseNotFound
 def homepage(request):
     return render(request, 'tracker/index.html')
 
+@login_required(login_url='login-user')
 def searchMetal(request):
     results, search_query = searchMetals(request)
     gold_items = results['gold_items']
     silver_items = results['silver_items']
     platinum_items = results['platinum_items']
     metal_objects = list(gold_items) + list(silver_items) + list(platinum_items)
+    custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
 
-    context = {'metal_objects': metal_objects, 'search_query': search_query}
+    context = {'metal_objects': metal_objects, 'search_query': search_query, 'custom_range': custom_range}
     return render(request, 'tracker/searchreturn.html', context)
 
-@login_required
+@login_required(login_url='login-user')
 def metalPage(request, metal_type):
     metal_objects = None
     template_name = None
@@ -48,7 +50,10 @@ def metalPage(request, metal_type):
     else:
         return HttpResponseNotFound("Metal type not found.")
 
+    custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
+
     context = {
+        'custom_range': custom_range,
         'metal_type': metal_type,
         'metal_objects': metal_objects,
         'search_query': search_query

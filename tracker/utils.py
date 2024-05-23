@@ -3,11 +3,9 @@ warnings.filterwarnings('ignore', category=FutureWarning, module='yahoo_fin.stoc
 
 from .models import Gold, Silver, Platinum
 from django.db.models import Sum, Q
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import requests
 from yahoo_fin import stock_info as si
-
-
-
 
 # DASHBOARD FUNCTIONS
 
@@ -99,3 +97,32 @@ def searchMetals(request):
     'silver_items': silver_items,
     'platinum_items': platinum_items
     }, search_query
+
+
+    # PAGINATION
+
+def paginateMetals(request, metal_objects, results):
+    page = request.GET.get('page')
+    paginator = Paginator(metal_objects, results)
+    try:
+        metal_objects = paginator.page(page)
+
+    except PageNotAnInteger:
+        page = 1
+        metal_objects = paginator.page(page)
+
+    except EmptyPage:
+        page = paginator.num_pages
+        metal_objects = paginator.page(page)
+
+
+    leftIndex = (int(page) - 4)
+    if leftIndex < 1:
+        leftIndex = 1
+        
+    rightIndex = (int(page) + 5)
+    if rightIndex > paginator.num_pages:
+        rightIndex = paginator.num_pages + 1
+
+    custom_range = range(leftIndex, rightIndex)
+    return custom_range, metal_objects
