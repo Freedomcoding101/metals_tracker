@@ -1,0 +1,86 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+  <main class="settingsPage profile my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <div class="card text-center">
+            <div class="card__body dev">
+              {% if metal_object.featured_image %}
+                <img class="avatar avatar--xl dev__avatar" src="{{ metal_object.featured_image.url }}" />
+              {% else %}
+                <img class="avatar avatar--xl dev__avatar" src="{% static 'images/default.jpg' %}" />
+              {% endif %}
+              <h2 class="dev__name">{{metal_object.item_name}}</h2>
+              <p class="dev__title">{{metal_object.metal_type|title }}</p>
+              <p class="dev__title">{{metal_object.weight_troy_oz}} OZ</p>
+              <p class="dev__title">Year: {{metal_object.item_year}}</p>
+              <p class="dev__title">Purity :{{metal_object.purity}}</p>
+              <br>
+              <br>
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'editPage' metal_type=metal_object.metal_type pk=metal_object.pk %}"><i class="im im-edit"></i> Edit</a>
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'editPage' metal_type=metal_object.metal_type pk=metal_object.pk %}"><i class="im im-edit"></i> Delete</a>
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'editPage' metal_type=metal_object.metal_type pk=metal_object.pk %}"><i class="im im-edit"></i> Sell</a>
+            </div>
+          </div>
+        </div>
+        <div class="column column--2of3">
+          <div class="metal_single">
+            <div class="metal_settings">
+              <span class="underline"><h3 class="metal__title">Information</h3></span>
+              <!-- <a class="tag tag--pill tag--sub settings__btn tag--lg" id="metal_tag1" href="#"><i class="im im-plus"></i> Edit</a> -->
+            </div>
+            <br>
+            <p class="dev__title">{{ metal_object.item_about }}</p>
+          </div>
+
+          <div class="metal_single" id="metal_single2">
+            <div class="metal_settings">
+              <span class="underline"><h3 class="metal__title">Buy/Sell Information</h3></span>
+              <!-- <a class="tag tag--pill tag--sub settings__btn tag--lg" id="metal_tag2" href="#"><i class="im im-plus"></i>Sell</a> -->
+            </div>
+            <br>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Purchase Price:</span>
+              <span class="purchase-price-value">${{ metal_object.cost_to_purchase }}</span>
+            </div>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Current Melt Value:</span>
+              <span class="purchase-price-value">${{ melt_price }}</span>
+            </div>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Shipping Price:</span>
+              <span class="purchase-price-value">${{ metal_object.shipping_cost }}</span>
+            </div>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Cost Per Ounce:</span>
+              <span class="purchase-price-value">${{ cost_per_oz }}</span>
+            </div>
+            <br>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Purchased From:</span>
+              <span class="purchase-price-value">{{ metal_object.purchased_from }}</span>
+            </div>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Sold to:</span>
+              <span class="purchase-price-value">{{ metal_object.sold_to }}</span>
+            </div>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Sell Price:</span>
+              <span class="purchase-price-value">${{ metal_object.sell_price }}</span>
+            </div>
+            <br>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Profit/Loss:</span>
+              <span class="purchase-price-value">${{ profit_output }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

@@ -12,12 +12,13 @@ class MetalSelectForm(forms.Form):
 class GoldForm(forms.ModelForm):
     class Meta:
         model = Gold
-        fields = ['metal_type', 'item_type', 'item_name', 'featured_image', 'purity',
+        fields = ['metal_type', 'item_type', 'item_name', 'item_year', 'item_about', 'featured_image', 'purity',
         'quantity', 'weight_troy_oz', 'cost_to_purchase', 'shipping_cost',
-        'purchased_from', 'sell_price']
+        'purchased_from', 'sold_to', 'sell_price']
 
         labels = {
             'weight_troy_oz': 'Weight Troy Oz',
+            'item_about': 'About',
         }
 
 #  the code below changes the class of the field items to input
@@ -31,12 +32,13 @@ class GoldForm(forms.ModelForm):
 class SilverForm(forms.ModelForm):
     class Meta:
         model = Silver
-        fields = ['metal_type', 'item_type', 'item_name', 'featured_image', 'purity',
+        fields = ['metal_type', 'item_type', 'item_name', 'item_year', 'item_about', 'featured_image', 'purity',
         'quantity', 'weight_troy_oz', 'cost_to_purchase', 'shipping_cost',
-        'purchased_from', 'sell_price']
+        'purchased_from', 'sold_to', 'sell_price']
         
         labels = {
             'item_name': 'Item Name',
+            'item_about': 'About',
         }
 
 #  the code below changes the class of the field items to input
@@ -50,12 +52,13 @@ class SilverForm(forms.ModelForm):
 class PlatinumForm(forms.ModelForm):
     class Meta:
         model = Platinum
-        fields = ['metal_type', 'item_type', 'item_name', 'featured_image', 'purity',
+        fields = ['metal_type', 'item_type', 'item_name', 'item_year', 'item_about', 'featured_image', 'purity',
         'quantity', 'weight_troy_oz', 'cost_to_purchase', 'shipping_cost',
-        'purchased_from', 'sell_price']
+        'purchased_from', 'sold_to', 'sell_price']
 
         labels = {
             'item_name': 'Item Name',
+            'item_about': 'About',
         }
 
 #  the code below changes the class of the field items to input

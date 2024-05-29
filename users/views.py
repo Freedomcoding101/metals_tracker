@@ -9,21 +9,49 @@ from tracker.utils import get_total_oz, get_live_gold, get_live_silver, get_live
 
 # Create your views here.
 
+@login_required(login_url='login-user')
 def profile(request, pk):
     profile = Profile.objects.get(id=pk)
     user = request.user.profile
     total_silver = get_total_oz(user, 'silver')
     total_gold = get_total_oz(user, 'gold')
     total_platinum = get_total_oz(user, 'platinum')
-    gold_price = get_live_gold()
-    silver_price = get_live_silver()
-    platinum_price = get_live_platinum()
-    gmv = multiply(total_gold, gold_price)
-    smv = multiply(total_silver, silver_price)
-    pmv = multiply(total_platinum, platinum_price)
+    
+    try:
+        gold_price = get_live_gold()
+        silver_price = get_live_silver()
+        platinum_price = get_live_platinum()
+    except:
+        gold_price = 'N/A'
+        silver_price = 'N/A'
+        platinum_price = 'N/A'
+    try:
+        # GOLD MARKET VALUE
+        gmv = multiply(total_gold, gold_price)
+        # SILVER MARKET VALUE
+        smv = multiply(total_silver, silver_price)
+        # PLATINUM MARKET VALUE
+        pmv = multiply(total_platinum, platinum_price)
+        # GOLD TO SILVER RATIO
+        gsr = round((float(gold_price) / float(silver_price)), 2)
+        # PLATINUM TO SILVER RATIO
+        psr = round((float(platinum_price) / float(silver_price)), 2)
+        # PLATINUM TO GOLD RATIO
+        pgr = round((float(gold_price) / float(platinum_price)), 2)
+
+    except:
+        pgr = 'N/A'
+        psr = 'N/A'
+        gmv = 'N/A'
+        smv = 'N/A'
+        pmv = 'N/A'
+        gsr = 'N/A'
 
 
     context = {
+        'pgr': pgr,
+        'psr': psr,
+        'gsr': gsr,
         'gmv': gmv,
         'smv': smv,
         'pmv': pmv,
@@ -40,6 +68,8 @@ def profile(request, pk):
 def registerUser(request):
     page = 'register'
     form = CustomUserCreationForm()
+
+    messages.info(request, 'PLEASE REMEMBER TO USE A PSEUDONAME AND A EMAIL ACCOUNT NOT LINKED TO YOUR NAME')
 
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
@@ -88,7 +118,7 @@ def loginUser(request):
 @login_required(login_url='login-user')
 def logoutUser(request):
     logout(request)
-    messages.info(request, 'User successfully logged out')
+    messages.success(request, 'User successfully logged out')
     return redirect('homepage')
 
 @login_required(login_url='login-user')

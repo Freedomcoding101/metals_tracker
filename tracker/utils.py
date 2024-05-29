@@ -61,7 +61,11 @@ def multiply(a, b):
     result_with_two_decimals = "{:.2f}".format(result)
     return result_with_two_decimals
 
-
+def profit_loss(purchase_price, sell_price, shipping_cost):
+    profit_loss = (sell_price) - (purchase_price + shipping_cost)
+    print("Here is the profit/loss")
+    print(profit_loss)
+    return profit_loss
 
     # SEARCH FUNCTIONS
 
@@ -75,21 +79,24 @@ def searchMetals(request):
         Q(item_name__icontains=search_query) |
         Q(metal_type__icontains=search_query) |
         Q(item_type__icontains=search_query) |
-        Q(owner__name__icontains=search_query)
+        Q(owner__name__icontains=search_query)|
+        Q(item_year__icontains=search_query)
     )
 
     silver_items = Silver.objects.distinct().filter(
         Q(item_name__icontains=search_query) |
         Q(metal_type__icontains=search_query) |
         Q(item_type__icontains=search_query) |
-        Q(owner__name__icontains=search_query)
+        Q(owner__name__icontains=search_query)|
+        Q(item_year__icontains=search_query)
     )
 
     platinum_items = Platinum.objects.distinct().filter(
         Q(item_name__icontains=search_query) |
         Q(metal_type__icontains=search_query) |
         Q(item_type__icontains=search_query) |
-        Q(owner__name__icontains=search_query)
+        Q(owner__name__icontains=search_query)|
+        Q(item_year__icontains=search_query)
     )
 
     return {

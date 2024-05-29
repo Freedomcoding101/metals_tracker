@@ -1,0 +1,43 @@
+{% load static %}
+
+<footer class="footer">
+    <div class="container container--narrow">
+      <div class="footer__logo">
+        <a href="{% url 'homepage' %}">
+          <img src="{% static 'images/long_logo_1.png' %}" alt="alt" />
+        </a>
+      </div>
+      <nav class="footer__nav">
+        <ul class="footer__menu">
+          <li class="footer__menuItem"><a href="{% url 'homepage' %}">Home</a></li>
+          <li class="footer__menuItem"><a href="{% url 'about' %}">About Us</a></li>
+          <li class="footer__menuItem"><a href="{% url 'contact' %}">Contact</a></li>
+          <li class="footer__menuItem"><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+          <li class="footer__menuItem"><a href="{% url 'terms_of_service' %}">Terms of Service</a></li>
+        </ul>
+      </nav>
+      <div class="footer__contact">
+        <p>1234 Street Name, City, State, 12345</p>
+        <p>Email: info@example.com</p>
+        <p>Phone: (123) 456-7890</p>
+      </div>
+      <div class="footer__social">
+        <a href="https://www.facebook.com" class="footer__socialLink" target="_blank" rel="noopener noreferrer">
+          <img src="{% static 'images/socials/facebook_icon.svg' %}" alt="Facebook" />
+        </a>
+        <a href="https://www.twitter.com" class="footer__socialLink" target="_blank" rel="noopener noreferrer">
+          <img src="{% static 'images/socials/twitter_icon.svg' %}" alt="Twitter" />
+        </a>
+        <a href="https://www.instagram.com" class="footer__socialLink" target="_blank" rel="noopener noreferrer">
+          <img src="{% static 'images/socials/instagram_icon.svg' %}" alt="Instagram" />
+        </a>
+        <a href="https://www.linkedin.com" class="footer__socialLink" target="_blank" rel="noopener noreferrer">
+          <img src="{% static 'images/socials/linkedin_icon.svg' %}" alt="LinkedIn" />
+        </a>
+      </div>
+    </div>
+  </footer>
+  
+  <style>
+ 
+  </style>

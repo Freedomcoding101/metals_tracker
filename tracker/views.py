@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from.utils import searchMetals, paginateMetals
+from.utils import searchMetals, paginateMetals, profit_loss, get_live_gold, get_live_silver, get_live_platinum
 from.models import Gold, Silver, Platinum
 from .forms import GoldForm, SilverForm, PlatinumForm
 from django.http import HttpResponseNotFound
@@ -60,6 +60,45 @@ def metalPage(request, metal_type):
     }
     return render(request, template_name, context)
 
+@login_required(login_url='login-user')
+def singleMetal(request, metal_type, pk):
+    metal_model = None
+
+    if metal_type == 'gold':
+        metal_model = Gold
+        metal_object = metal_model.objects.get(pk=pk)
+        
+    elif metal_type == 'silver':
+        metal_model = Silver
+        metal_object = metal_model.objects.get(pk=pk)
+    elif metal_type == 'platinum':
+        metal_model = Platinum
+        metal_object = metal_model.objects.get(pk=pk)
+
+    # GRAB THE PROFIT/LOSS IF THERE IS THE CORRECT INFORMATION AVAILABLE, OTHERWISE SET TO N/A
+    try:
+        profit_output = profit_loss(metal_object.cost_to_purchase, metal_object.sell_price, metal_object.shipping_cost)
+    except:
+        profit_output = 'N/A'
+
+    # SET SELL PRICE AND SOLD TO TO N/A IF THERE IS NONE PRESENT
+    if metal_object.sell_price == None:
+        metal_object.sell_price = 'N/A'
+    if metal_object.sold_to == None:
+        metal_object.sold_to = ''
+
+    # GRAB THE CURRENT GOLD PRICE AND OUTPUT THE MELT VALUE TO TEMPLATE
+    try:
+        melt_string = f"get_live_{metal_object.metal_type}()"
+        melt_price = round((float(eval(melt_string)) * float(metal_object.weight_troy_oz)), 2)
+    except:
+        melt_price = 'N/A'
+
+    cost_per_oz = round(((metal_object.cost_to_purchase + metal_object.shipping_cost) / metal_object.weight_troy_oz), 2)
+
+    context = {'metal_object': metal_object,'cost_per_oz': cost_per_oz, 'profit_output': profit_output, 'melt_price': melt_price}
+    return render(request, 'tracker/single_metal_page.html', context)
+
 def updatePage(request):
     form = GoldForm()
     profile = request.user.profile
@@ -112,7 +151,7 @@ def editPage(request, metal_type, pk):
         form = form_class(request.POST, request.FILES, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('metal_page', metal_type=metal_type)
+            return redirect('singleMetal', metal_type=metal_type, pk=item.pk)
     else:
         # For GET requests, render the form with the item data
         form = form_class(instance=item)

@@ -75,3 +75,44 @@
 #info_button {
   margin-bottom: 20px; /* Adjust the value as needed */
 }
+
+/* DASHBOARD CUSTOM CSS */
+
+.dashcard {
+  border-radius: 1rem;
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-light);
+  width: auto;
+  height: auto;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  display: flex; /* Add flex display */
+  flex-direction: column; /* Align items vertically */
+  justify-content: center; /* Center content horizontally and vertically */
+  
+  /* text-align: center; Optional, if you want to center text */
+}
+
+#goldcard {
+  background-color: rgba(255, 215, 0, 0.5);
+  /* opacity: 0.6; */
+}
+
+#silvercard {
+  background-color: rgba(192, 192, 192, 0.8);
+}
+
+#platinumcard {
+  background-color: rgba(229, 228, 226, 0.8);
+}
+
+#infocard {
+  background-color: var(--color-light);
+  margin-top: 1.0em;
+}
+
+.project--margins {
+  margin-bottom: 0.2em;
+  margin-top: .5em;
+}

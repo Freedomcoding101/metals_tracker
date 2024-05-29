@@ -207,3 +207,9 @@ textarea.input:active {
 .form_header h1 {
   margin: 0; /* Remove default margins for the <h1> tag */
 }
+
+#profile__forminput {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -37,60 +37,76 @@
                 </li>
                 {% endif %}
               </ul>
-              {% if request.user.profile.id != profile.id %}
-              <a href="#" class="btn btn--sub btn--lg">Send Message </a>
-              {% endif %}
             </div>
           </div>
         </div>
         <div class="column column--2of3">
           <div class="devInfo">
-            <h3 class="devInfo__title">Dashboard</h3>
-            <div class="card card--dark project">
+            <!-- <h3 class="devInfo__title">Dashboard</h3> -->
+            <div class="dashcard card--dark project" id="goldcard">
               <a href="#" class="project">
                 <!-- <img class="project__thumbnail" src="{% static 'images/canada_flag_avatar.png' %}" alt="project thumbnail" /> -->
                 <div class="card__body">
                   <h3 class="project__title">Gold</h3>
                   <p><a class="project__author" href="#">You have {{total_gold}} OZ{{ total_gold|pluralize }} Gold</a></p>
-                  <p class="project--rating">
+                  <p class="project--margins">
                     <span style="font-weight: bold;">Current Price: ${{gold_price}} /OZ</span>
                   </p>
-                  <div class="project__tags">
+                  <p>
+                    <span style="font-weight: bold;">Current Market Value (Melt) ${{gmv}}</span>
+                  </p>
+                  <!-- <div class="project__tags">
                     <span class="tag tag--pill tag--main">
                       <small>Current Market Value (Melt) ${{gmv}}</small>
                     </span>
-                  </div>
+                  </div> -->
                 </div>
               </a>
-            </div> <div class="card card--dark project">
+            </div>
+            <div class="dashcard card--dark project" id="silvercard">
               <a href="#" class="project">
                 <!-- <img class="project__thumbnail" src="{% static 'images/canada_flag_avatar.png' %}" alt="project thumbnail" /> -->
                 <div class="card__body">
                   <h3 class="project__title">Silver</h3>
                   <p><a class="project__author" href="#">You have {{total_silver}} OZ{{ total_silver|pluralize }} Silver</a></p>
-                  <p class="project--rating">
+                  <p class="project--margins">
                     <span style="font-weight: bold;">Current Price: ${{silver_price}} /OZ</span>
                   </p>
-                  <div class="project__tags">
-                    <span class="tag tag--pill tag--main">
-                      <small>Current Market Value (Melt) ${{smv}}</small>
-                    </span>
-                  </div>
+                  <p>
+                    <span style="font-weight: bold;">Current Market Value (Melt) ${{smv}}</span>
+                  </p>
                 </div>
               </a>
-            </div> <div class="card card--dark project">
+            </div> 
+            <div class="dashcard card--dark project" id="platinumcard">
               <a href="#" class="project">
                 <!-- <img class="project__thumbnail" src="{% static 'images/canada_flag_avatar.png' %}" alt="project thumbnail" /> -->
                 <div class="card__body">
                   <h3 class="project__title">Platinum</h3>
                   <p><a class="project__author" href="#">You have {{total_platinum}} OZ{{ total_platinum|pluralize }} Platinum</a></p>
-                  <p class="project--rating">
+                  <p class="project--margins">
                     <span style="font-weight: bold;">Current Price: ${{platinum_price}} /OZ</span>
                   </p>
+                  <p>
+                    <span style="font-weight: bold;">Current Market Value (Melt) ${{pmv}}</span>
+                  </p>
+                </div>
+              </a>
+            </div>
+            <div class="dashcard card--dark project" id="infocard">
+              <a href="#" class="project">
+                <div class="card__body">
+                  <h3 class="project__title">Ratios</h3>
+                  <p class="project--margins">
+                    <span style="font-weight: bold;">Silver to Gold (No Premiums): {{gsr}} : 1</span>
+                  </p>
+                  <p class="project--margins">
+                    <span style="font-weight: bold;">Silver to Platinum (No Premiums): {{psr}} : 1</span>
+                  </p>
+                  <p class="project--margins">
+                    <span style="font-weight: bold;">Platnium to Gold (No Premiums): {{pgr}} : 1</span>
+                  </p>
                   <div class="project__tags">
-                    <span class="tag tag--pill tag--main">
-                      <small>Current Market Value (Melt) ${{pmv}}</small>
-                    </span>
                   </div>
                 </div>
               </a>
@@ -98,6 +114,7 @@
           </div>
       </div>
     </div>
+
   </main>
 
 {% endblock %}

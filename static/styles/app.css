@@ -41,6 +41,10 @@ img {
   align-items: center;
 }
 
+.header__logo {
+  margin-right: 2em;
+}
+
 .header__logo > img {
   height: 3.8rem;
 }
@@ -75,11 +79,83 @@ img {
   object-fit: cover;
 }
 
+/*=======================
+  Footer Section
+========================*/
+
+.footer {
+  background-color:var(--color-sub); /* Adjust according to your theme color */
+  color: #fff; /* Adjust according to your theme color */
+  padding: 20px 0;
+  margin-top: 3em;
+}
+
+.footer__logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.footer__logo img {
+  max-width: 150px;
+}
+
+.footer__nav {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.footer__menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.footer__menuItem {
+  margin: 0 10px;
+}
+
+.footer__menuItem a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer__menuItem a:hover {
+  color: #ccc; /* Adjust according to your theme color */
+}
+
+.footer__contact {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.footer__social {
+  text-align: center;
+}
+
+.footer__socialLink {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.footer__socialLink img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.footer__socialLink:hover img {
+  transform: scale(1.1);
+}
+
 @media screen and (max-width: 800px) {
   .header__logo {
     position: relative;
     z-index: 999;
   }
+
   .toggle-menu {
     position: relative;
   }
@@ -847,6 +923,10 @@ img {
   margin-top: 2rem;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 /* Custom CSS for positioning the "click here" links */
 .devlist .card {
   position: relative;
@@ -864,4 +944,72 @@ img {
   bottom: 10px; /* Adjust this value as needed */
   left: 50%;
   transform: translateX(-50%);
+}
+
+/* MY CUSTOM CSS SINGLE_METAL.HTML PAGE*/
+.metal_settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.metal_single {
+  background-color: var(--color-white);
+  border: 2px solid var(--color-light); /* Distinct blue border */
+  border-radius: 10px; /* Rounded edges */
+  width: 90%; /* Takes up 90% of its container width */
+  min-height: 300px; /* Minimum height */
+  padding: 10px; /* Add some padding inside */
+  box-sizing: border-box; /* Include padding and border in the width */
+  overflow: hidden; /* Hide overflow content */
+  word-wrap: break-word; /* Break long words */
+  display: flex;
+  flex-direction: column;
+}
+
+#metal_single2 {
+  margin-top: 50px;
+}
+
+.metal__title {
+  font-size: 2.4rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-sub);
+  margin: auto !important;
+}
+
+.purchase-price-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.purchase-price-label {
+  flex: 1;
+  margin-right: 10px; /* Adjust as needed */
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.purchase-price-value {
+  flex: 1;
+  text-align: right;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* CUSTOM UNDERLINE SPAN */
+
+.underline {
+  text-decoration: underline;
+}
+
+.bold {
+  font-weight: var(--font-bold);
 }

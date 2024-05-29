@@ -14,7 +14,7 @@
             <div class="form__field">
               <label for="formInput#search">Search By Projects </label>
               <input class="input input--text" id="formInput#search" type="text" name="search_query"
-                placeholder="Search my bullion" />
+                placeholder="Search my Platinum" />
             </div>
 
             <input class="btn btn--sub btn--lg" type="submit" value="Search" placeholder="{{search_query}}"/>
@@ -30,7 +30,7 @@
           {% for object in metal_objects %}
           <div class="column">
             <div class="card project">
-              <a href="#" class="project">
+              <a href="{% url 'singleMetal' metal_type='platinum' pk=object.pk %}" class="project">
                 <!-- Wrote Styles inline because CSS File not working?? -->
                 {% if object.featured_image.url != None %} 
                 <div class="project__thumbnail" style="width: 25rem; height: 25rem;
@@ -46,9 +46,10 @@
                 </div>
                 {% endif %}
                 <div class="card__body">
+                  <h3 class="project__title">{{object.item_year}}</h3>
                   <h3 class="project__title">{{object.item_name}}</h3>
                   <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>
-                  <p><a class="project__author" href="#">Quantity {{object.quantity}}</a></p>
+                  <p><a class="project__author" href="{% url 'singleMetal' metal_type='platinum' pk=object.pk %}">Quantity {{object.quantity}}</a></p>
                   <p class="project--rating">
                     <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
                   </p>
@@ -65,7 +66,7 @@
           {% for object in metal_objects %}
           <div class="column">
             <div class="card project">
-              <a href="#" class="project">
+              <a href="{% url 'singleMetal' metal_type='platinum' pk=object.pk %}" class="project">
                 <!-- Wrote Styles inline because CSS File not working?? -->
                 {% if object.featured_image.url != None %} 
                 <div class="project__thumbnail" style="width: 25rem; height: 25rem;
@@ -81,9 +82,10 @@
                 </div>
                 {% endif %}
                 <div class="card__body">
+                  <h3 class="project__title">{{object.item_year}}</h3>  
                   <h3 class="project__title">{{object.item_name}}</h3>
                   <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>
-                  <p><a class="project__author" href="#">Quantity {{object.quantity}}</a></p>
+                  <p><a class="project__author" href="{% url 'singleMetal' metal_type='platinum' pk=object.pk %}">Quantity {{object.quantity}}</a></p>
                   <p class="project--rating">
                     <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
                   </p>
