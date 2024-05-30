@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Profile
 from .forms import CustomUserCreationForm, CustomProfileForm
-from tracker.utils import get_total_oz, get_live_gold, get_live_silver, get_live_platinum, multiply
+from tracker.utils import get_total_oz, get_live_gold, get_live_silver, get_live_platinum, multiply, get_total_cost_to_purchase
+from decimal import Decimal, ROUND_HALF_UP
 
 # Create your views here.
 
@@ -13,10 +14,20 @@ from tracker.utils import get_total_oz, get_live_gold, get_live_silver, get_live
 def profile(request, pk):
     profile = Profile.objects.get(id=pk)
     user = request.user.profile
-    total_silver = get_total_oz(user, 'silver')
-    total_gold = get_total_oz(user, 'gold')
-    total_platinum = get_total_oz(user, 'platinum')
-    
+    total_silver = round(Decimal(get_total_oz(user, 'silver')), 2)
+    total_gold = round(Decimal(get_total_oz(user, 'gold')), 2)
+    total_platinum = round(Decimal(get_total_oz(user, 'platinum')), 2)
+    total_gold_cost, total_silver_cost, total_platinum_cost =  get_total_cost_to_purchase(profile)
+    # Calculate DCA using Decimal and rounding to 2 decimal places
+    gdca = (total_gold_cost / total_gold).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    sdca = (total_silver_cost / total_silver).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    pdca = (total_platinum_cost / total_platinum).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+    # Convert Decimal to string for display purposes
+    gdca_str = f"{gdca:.2f}"
+    sdca_str = f"{sdca:.2f}"
+    pdca_str = f"{pdca:.2f}"
+
     try:
         gold_price = get_live_gold()
         silver_price = get_live_silver()
@@ -49,12 +60,18 @@ def profile(request, pk):
 
 
     context = {
+        'gdca': gdca_str,
+        'sdca': sdca_str,
+        'pdca': pdca_str,
         'pgr': pgr,
         'psr': psr,
         'gsr': gsr,
         'gmv': gmv,
         'smv': smv,
         'pmv': pmv,
+        'total_gold_cost': total_gold_cost,
+        'total_silver_cost': total_silver_cost,
+        'total_platinum_cost': total_platinum_cost,
         'gold_price': gold_price,
         'silver_price': silver_price,
         'platinum_price': platinum_price,
