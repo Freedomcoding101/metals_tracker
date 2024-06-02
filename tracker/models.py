@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 from users.models import Profile
-
+from decimal import Decimal
 # Create your models here.
 
 class Gold(models.Model):
@@ -20,13 +20,14 @@ class Gold(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
-    item_year =models.PositiveIntegerField(max_length=30, null=True, blank=True, default=None)
+    item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")
     featured_image = models.ImageField(default='images/gold_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
+    weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
@@ -40,6 +41,13 @@ class Gold(models.Model):
 
     def __str__(self):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+
+    def save(self, *args, **kwargs):
+        if self.weight_grams is not None:
+            self.weight_troy_oz = self.weight_grams / Decimal(31.1035)
+        elif self.weight_troy_oz is not None:
+            self.weight_grams = self.weight_troy_oz * Decimal(31.1035)
+        super().save(*args, **kwargs)
 
 class Silver(models.Model):
     METAL_TYPES = (
@@ -57,13 +65,14 @@ class Silver(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
-    item_year =models.PositiveIntegerField(max_length=30, null=True, blank=True, default=None)
+    item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")
     featured_image = models.ImageField(default='images/silver_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
+    weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
@@ -77,6 +86,13 @@ class Silver(models.Model):
 
     def __str__(self):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+
+    def save(self, *args, **kwargs):
+        if self.weight_grams is not None:
+            self.weight_troy_oz = self.weight_grams / Decimal(31.1035)
+        elif self.weight_troy_oz is not None:
+            self.weight_grams = self.weight_troy_oz * Decimal(31.1035)
+        super().save(*args, **kwargs)
 
 class Platinum(models.Model):
     METAL_TYPES = (
@@ -94,13 +110,14 @@ class Platinum(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
-    item_year =models.PositiveIntegerField(max_length=30, null=True, blank=True, default=None)
+    item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")
     featured_image = models.ImageField(default='images/platinum_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
+    weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
@@ -114,3 +131,10 @@ class Platinum(models.Model):
 
     def __str__(self):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+
+    def save(self, *args, **kwargs):
+        if self.weight_grams is not None:
+            self.weight_troy_oz = self.weight_grams / Decimal(31.1035)
+        elif self.weight_troy_oz is not None:
+            self.weight_grams = self.weight_troy_oz * Decimal(31.1035)  
+        super().save(*args, **kwargs)

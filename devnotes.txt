@@ -28,6 +28,3 @@ For the platinum color #E5E4E2:
 RGBA: rgba(229, 228, 226, 0.8)
 
 ************************
-Working on margins for Dollar Cost Average...
-
-not scaling properly and CSS is fucky
