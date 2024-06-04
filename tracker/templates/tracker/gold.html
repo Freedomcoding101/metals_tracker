@@ -83,8 +83,14 @@
                 {% endif %}
                 <div class="card__body">
                   <h3 class="project__title">{{object.item_year}}</h3>
+                  {% if spot_price > object.cost_per_unit %}
+                  (green) {{spot_price}} spot {{object.cost_to_purchase}} cost
+                  {% else %}
+                  (red) {{spot_price}} spot {{object.cost_per_unit}} cost
+                  {% endif %}
                   <h3 class="project__title">{{object.item_name}}</h3>
                   <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>
+                  <h3 class="project__title">{{object.cost_to_purchase}} Cost/OZ</h3>
                   <p><a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Quantity {{object.quantity}}</a></p>
                   <p class="project--rating">
                     <span style="font-weight: bold;">Purity-{{object.purity}}%</span>

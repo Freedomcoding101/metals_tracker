@@ -5,6 +5,7 @@ from.utils import searchMetals, paginateMetals, profit_loss, get_live_gold, get_
 from.models import Gold, Silver, Platinum
 from .forms import GoldForm, SilverForm, PlatinumForm
 from django.http import HttpResponseNotFound
+from decimal import Decimal
 
 # Create your views here.
 
@@ -30,18 +31,21 @@ def metalPage(request, metal_type):
     results, search_query = searchMetals(request)
 
     if metal_type == 'gold':
+        spot_price = Decimal(get_live_gold())
         if search_query:
             metal_objects = results['gold_items']
         else:
             metal_objects = Gold.objects.filter(owner=request.user.profile)
         template_name = 'tracker/gold.html'
     elif metal_type == 'silver':
+        spot_price = Decimal(get_live_silver())
         if search_query:
             metal_objects = results['silver_items']
         else:
             metal_objects = Silver.objects.filter(owner=request.user.profile)
         template_name = 'tracker/silver.html'
     elif metal_type == 'platinum':
+        spot_price = Decimal(get_live_platinum())
         if search_query:
             metal_objects = results['platinum_items']
         else:
@@ -52,7 +56,12 @@ def metalPage(request, metal_type):
 
     custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
 
+    for object in metal_objects:
+        print(object.cost_per_unit)
+        print(spot_price)
+
     context = {
+        'spot_price': spot_price,
         'custom_range': custom_range,
         'metal_type': metal_type,
         'metal_objects': metal_objects,
@@ -144,17 +153,32 @@ def editPage(request, metal_type, pk):
         return HttpResponseServerError("Invalid metal type provided.")
 
     item = metal_model.objects.get(pk=pk)
-    form = form_class(instance=item)
+    initial_weight_unit = None
+    initial_weight = None
+    
+    if item.initial_weight_unit:
+        print("THERE IS!")
+        initial_weight_unit = item.initial_weight_unit
+        print(initial_weight_unit)
+        
+        if initial_weight_unit == 'GRAMS':
+            initial_weight = item.weight_grams
+            print(f"{initial_weight} grams")
+
+        elif initial_weight_unit == "TROY_OUNCES":
+            initial_weight = item.weight_troy_oz
+            print(f"{initial_weight} oz")
 
     if request.method == 'POST':
         # If the form is submitted, validate and save it
         form = form_class(request.POST, request.FILES, instance=item)
+        print(form)
         if form.is_valid():
             form.save()
             return redirect('singleMetal', metal_type=metal_type, pk=item.pk)
     else:
         # For GET requests, render the form with the item data
-        form = form_class(instance=item)
+        form = form_class(instance=item, initial={'weight_unit': initial_weight_unit, 'weight': initial_weight})
 
     context = {'form': form}
     return render(request, 'tracker/metals_form.html', context)

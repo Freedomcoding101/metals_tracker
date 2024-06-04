@@ -17,6 +17,11 @@ class Gold(models.Model):
         ('misc', 'Misc'),
     )
 
+    UNIT_CHOICES = [
+        ('GRAMS', 'Grams'),
+        ('TROY_OUNCES', 'Troy Ounces'),
+    ]
+
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
@@ -29,11 +34,15 @@ class Gold(models.Model):
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
     weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
+    spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
+    premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default="")
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
     class Meta:
@@ -43,10 +52,16 @@ class Gold(models.Model):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
 
     def save(self, *args, **kwargs):
+        if self.cost_to_purchase and self.quantity:
+            self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+            
+        if self.spot_at_purchase is not None:
+            self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+
         if self.weight_grams is not None:
-            self.weight_troy_oz = self.weight_grams / Decimal(31.1035)
+            self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
         elif self.weight_troy_oz is not None:
-            self.weight_grams = self.weight_troy_oz * Decimal(31.1035)
+            self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
         super().save(*args, **kwargs)
 
 class Silver(models.Model):
@@ -62,6 +77,11 @@ class Silver(models.Model):
         ('misc', 'Misc'),
     )
 
+    UNIT_CHOICES = [
+        ('GRAMS', 'Grams'),
+        ('TROY_OUNCES', 'Troy Ounces'),
+    ]
+
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
@@ -74,11 +94,15 @@ class Silver(models.Model):
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
     weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
+    spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
+    premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
     class Meta:
@@ -88,10 +112,16 @@ class Silver(models.Model):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
 
     def save(self, *args, **kwargs):
+        if self.cost_to_purchase and self.quantity:
+            self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+
+        if self.spot_at_purchase is not None:
+            self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+
         if self.weight_grams is not None:
-            self.weight_troy_oz = self.weight_grams / Decimal(31.1035)
+            self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
         elif self.weight_troy_oz is not None:
-            self.weight_grams = self.weight_troy_oz * Decimal(31.1035)
+            self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
         super().save(*args, **kwargs)
 
 class Platinum(models.Model):
@@ -107,6 +137,11 @@ class Platinum(models.Model):
         ('misc', 'Misc'),
     )
 
+    UNIT_CHOICES = [
+        ('GRAMS', 'Grams'),
+        ('TROY_OUNCES', 'Troy Ounces'),
+    ]
+
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
@@ -119,11 +154,15 @@ class Platinum(models.Model):
     weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
     weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
+    spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
+    premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
     class Meta:
@@ -133,8 +172,14 @@ class Platinum(models.Model):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
 
     def save(self, *args, **kwargs):
+        if self.cost_to_purchase and self.quantity:
+            self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+
+        if self.spot_at_purchase is not None:
+            self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+
         if self.weight_grams is not None:
-            self.weight_troy_oz = self.weight_grams / Decimal(31.1035)
+            self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
         elif self.weight_troy_oz is not None:
-            self.weight_grams = self.weight_troy_oz * Decimal(31.1035)  
+            self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)  
         super().save(*args, **kwargs)
