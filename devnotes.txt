@@ -20,6 +20,6 @@ Need to have error or redirect page if there is nothing in your database for gol
 Need to delete all items in the database and make migrations to add decimal places to weight... **** Remember to save before*****
 
 **********************************
-
+Checking to see if git is working or not.....
 
 **********************************
