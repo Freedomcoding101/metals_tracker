@@ -1,5 +1,7 @@
 {% extends 'main.html' %}
 {% load static %}
+{% load multiply %}
+{% load custom_filters %}
 
 {% block content %}
 
@@ -14,11 +16,22 @@
               {% else %}
                 <img class="avatar avatar--xl dev__avatar" src="{% static 'images/default.jpg' %}" />
               {% endif %}
-              <h2 class="dev__name">{{metal_object.item_name}}</h2>
-              <p class="dev__title">{{metal_object.metal_type|title }}</p>
-              <p class="dev__title">{{metal_object.weight_troy_oz}} OZ</p>
-              <p class="dev__title">Year: {{metal_object.item_year}}</p>
-              <p class="dev__title">Purity :{{metal_object.purity}}</p>
+              <p class="metal__year bold">{{metal_object.item_year}}</p>
+              <h2 class="metal__title">{{metal_object.item_name}}</h2>
+              {% if metal_object.initial_weight_unit == 'TROY_OUNCES' %}
+              <h3 class="project__title">{{object_weight|floatformat:2}} OZ</h3>
+              {% else %}
+              <h3 class="project__title">{{object_weight|multiply:31.1035|floatformat:2}} Gram{{object_weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
+              {% endif %}
+              {% if profit_loss > 0 %}
+                  <h3 class="project__title profit_plus">Profit ${{profit_loss|floatformat:2}}</h3>
+                  {% elif profit_loss == 0 %}
+                  <h3 class="project__title profit_neutral">{{profit_loss|floatformat:2}}</h3>
+                  {% else %}
+                  <h3 class="project__title profit_minus">Loss ${{profit_loss|absolute|floatformat:2}}</h3>
+                  {% endif %}
+              <p class="dev__title">Quantity: {{metal_object.quantity}}</p>
+              <span style="font-weight: bold;">Purity-{{metal_object.purity}}%</span>
               <br>
               <br>
               <a class="tag tag--pill tag--main settings__btn" href="{% url 'editPage' metal_type=metal_object.metal_type pk=metal_object.pk %}"><i class="im im-edit"></i> Edit</a>
@@ -56,7 +69,7 @@
               <span class="purchase-price-value">${{ metal_object.shipping_cost }}</span>
             </div>
             <div class="dev__title purchase-price-container">
-              <span class="purchase-price-label">Cost Per Ounce:</span>
+              <span class="purchase-price-label">Cost Per Ounce (Shipping Included):</span>
               <span class="purchase-price-value">${{ cost_per_oz }}</span>
             </div>
             <br>

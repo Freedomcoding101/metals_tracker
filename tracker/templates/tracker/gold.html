@@ -1,6 +1,8 @@
 {% extends 'main.html' %}
 {% block content %}
 {% load static %}
+{% load multiply %}
+{% load custom_filters %}
 <!-- Main Section -->
 <main class="projects">
     <section class="hero-section text-center">
@@ -48,7 +50,21 @@
                 <div class="card__body">
                   <h3 class="project__title">{{object.item_year}}</h3>
                   <h3 class="project__title">{{object.item_name}}</h3>
-                  <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>
+                  {% if object.initial_weight_unit == 'TROY_OUNCES' %}
+                  <h3 class="project__title">{{object.weight|floatformat:2}} OZ</h3>
+                  {% else %}
+                  <h3 class="project__title">{{object.weight|multiply:31.1035|floatformat:2}} Gram{{object.weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
+                  {% endif %}
+                  {% if object.profit > 0 %}
+                  <h3 class="profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
+
+                  {% elif object.profit == 0 %}
+                  <h3 class="profit_neutral">{{object.profit|floatformat:2}}</h3>
+
+                  {% else %}
+                  <h3 class="profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
+
+                  {% endif %}
                   <p><a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Quantity {{object.quantity}}</a></p>
                   <p class="project--rating">
                     <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
@@ -83,17 +99,23 @@
                 {% endif %}
                 <div class="card__body">
                   <h3 class="project__title">{{object.item_year}}</h3>
-                  {% if spot_price > object.cost_per_unit %}
-                  (green) {{spot_price}} spot {{object.cost_to_purchase}} cost
-                  {% else %}
-                  (red) {{spot_price}} spot {{object.cost_per_unit}} cost
-                  {% endif %}
                   <h3 class="project__title">{{object.item_name}}</h3>
-                  <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>
-                  <h3 class="project__title">{{object.cost_to_purchase}} Cost/OZ</h3>
-                  <p><a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Quantity {{object.quantity}}</a></p>
-                  <p class="project--rating">
-                    <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
+                  {% if object.initial_weight_unit == 'TROY_OUNCES' %}
+                  <h3 class="project__title">{{object.weight|floatformat:2}} OZ</h3>
+                  {% else %}
+                  <h3 class="project__title">{{object.weight|multiply:31.1035|floatformat:2}} Gram{{object.weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
+                  {% endif %}
+                  {% if object.profit > 0 %}
+                  <h3 class="project__title profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
+
+                  {% elif object.profit == 0 %}
+                  <h3 class="project__title profit_neutral">{{object.profit|floatformat:2}}</h3>
+
+                  {% else %}
+                  <h3 class="project__title profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
+
+                  {% endif %}
+                  <p><a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Quantity {{object.quantity}}</a></p>                    <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
                   </p>
                   <p class="project--rating">
                     <a href="{% url 'editPage' metal_type='gold' pk=object.pk %}"><span style="font-weight: bold;">Edit</span></a><br>

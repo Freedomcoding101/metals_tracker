@@ -57,10 +57,14 @@ def metalPage(request, metal_type):
     custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
 
     for object in metal_objects:
-        print(object.cost_per_unit)
-        print(spot_price)
+        object.profit = object.calculate_profit(spot_price)
+
+    for object in metal_objects:
+        object.weight = object.weight_troy_oz / object.quantity
 
     context = {
+        'object.weight': object.weight,
+        'object.profit': object.profit,
         'spot_price': spot_price,
         'custom_range': custom_range,
         'metal_type': metal_type,
@@ -74,13 +78,16 @@ def singleMetal(request, metal_type, pk):
     metal_model = None
 
     if metal_type == 'gold':
+        spot_price = get_live_gold()
         metal_model = Gold
         metal_object = metal_model.objects.get(pk=pk)
         
     elif metal_type == 'silver':
+        spot_price = get_live_silver()
         metal_model = Silver
         metal_object = metal_model.objects.get(pk=pk)
     elif metal_type == 'platinum':
+        spot_price = get_live_platinum()
         metal_model = Platinum
         metal_object = metal_model.objects.get(pk=pk)
 
@@ -99,13 +106,21 @@ def singleMetal(request, metal_type, pk):
     # GRAB THE CURRENT GOLD PRICE AND OUTPUT THE MELT VALUE TO TEMPLATE
     try:
         melt_string = f"get_live_{metal_object.metal_type}()"
-        melt_price = round((float(eval(melt_string)) * float(metal_object.weight_troy_oz)), 2)
+        melt_price = round((Decimal(eval(melt_string)) * Decimal(metal_object.weight_troy_oz)), 2)
     except:
         melt_price = 'N/A'
 
     cost_per_oz = round(((metal_object.cost_to_purchase + metal_object.shipping_cost) / metal_object.weight_troy_oz), 2)
+    object_weight = metal_object.weight_troy_oz / metal_object.quantity
+    profit_loss = metal_object.calculate_profit(spot_price)
 
-    context = {'metal_object': metal_object,'cost_per_oz': cost_per_oz, 'profit_output': profit_output, 'melt_price': melt_price}
+    context = { 'profit_loss': profit_loss,
+                'object_weight': object_weight,
+                'metal_object': metal_object,
+                'cost_per_oz': cost_per_oz,
+                'profit_output': profit_output,
+                'melt_price': melt_price}
+
     return render(request, 'tracker/single_metal_page.html', context)
 
 def updatePage(request):

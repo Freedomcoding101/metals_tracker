@@ -31,8 +31,8 @@ class Gold(models.Model):
     featured_image = models.ImageField(default='images/gold_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
-    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
-    weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
+    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=8)
+    weight_grams = models.DecimalField(max_digits=10, decimal_places=8, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -50,6 +50,10 @@ class Gold(models.Model):
 
     def __str__(self):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+
+    def calculate_profit(self, spot_price):
+        melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
+        return melt_value - self.cost_to_purchase
 
     def save(self, *args, **kwargs):
         if self.cost_to_purchase and self.quantity:
@@ -91,8 +95,8 @@ class Silver(models.Model):
     featured_image = models.ImageField(default='images/silver_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
-    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
-    weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
+    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=8)
+    weight_grams = models.DecimalField(max_digits=10, decimal_places=8, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -110,6 +114,10 @@ class Silver(models.Model):
 
     def __str__(self):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+
+    def calculate_profit(self, spot_price):
+        melt_value = self.weight_troy_oz * spot_price
+        return melt_value - self.cost_to_purchase
 
     def save(self, *args, **kwargs):
         if self.cost_to_purchase and self.quantity:
@@ -151,8 +159,8 @@ class Platinum(models.Model):
     featured_image = models.ImageField(default='images/platinum_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
-    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=4)
-    weight_grams = models.DecimalField(max_digits=10, decimal_places=4, default=0.00)
+    weight_troy_oz = models.DecimalField(max_digits=10, decimal_places=8)
+    weight_grams = models.DecimalField(max_digits=10, decimal_places=8, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -170,6 +178,10 @@ class Platinum(models.Model):
 
     def __str__(self):
         return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+
+    def calculate_profit(self, spot_price):
+        melt_value = self.weight_troy_oz * spot_price
+        return melt_value - self.cost_to_purchase
 
     def save(self, *args, **kwargs):
         if self.cost_to_purchase and self.quantity:
