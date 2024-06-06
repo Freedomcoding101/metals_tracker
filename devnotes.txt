@@ -17,9 +17,12 @@ need to have quantity for sell... maybe you have 12 but you only sell 3....
 Need to have error or redirect page if there is nothing in your database for gold/silver/platinum
 
 **********************************
-Need to delete all items in the database and make migrations to add decimal places to weight... **** Remember to save before*****
+
 
 **********************************
-Checking to see if git is working or not.....
+
 
 **********************************
+
+**********************************
+Fix search Results page (not showing profits and everything and also clicking the item doesnt take you to the single page..)

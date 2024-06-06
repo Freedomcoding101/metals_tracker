@@ -22,9 +22,15 @@ class Gold(models.Model):
         ('TROY_OUNCES', 'Troy Ounces'),
     ]
 
+    COA_PRESENT = [
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ]
+
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
-    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
+    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='round')
+    coa_present = models.CharField(max_length=100, choices=COA_PRESENT, default='no')
     item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")
@@ -86,9 +92,15 @@ class Silver(models.Model):
         ('TROY_OUNCES', 'Troy Ounces'),
     ]
 
+    COA_PRESENT = [
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ]
+
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
-    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
+    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='round')
+    coa_present = models.CharField(max_length=100, choices=COA_PRESENT, default='no')
     item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")
@@ -150,9 +162,15 @@ class Platinum(models.Model):
         ('TROY_OUNCES', 'Troy Ounces'),
     ]
 
+    COA_PRESENT = [
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ]
+
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None, null=True, blank=True, unique=False)
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
-    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='')
+    item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='round')
+    coa_present = models.CharField(max_length=100, choices=COA_PRESENT, default='no')
     item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")

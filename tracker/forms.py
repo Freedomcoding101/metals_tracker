@@ -17,15 +17,22 @@ class GoldForm(forms.ModelForm):
     class Meta:
         model = Gold
         fields = [
-            'metal_type', 'weight_unit', 'item_type', 'item_name', 'item_year',
+            'metal_type', 'weight_unit', 'coa_present',  'item_type', 'item_name', 'item_year',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
             'purchased_from', 'featured_image', 'item_about', 'sold_to', 'sell_price'
         ]
 
         labels = {
+            'sell_price': 'Sell Price',
+            'sold_to': 'Sold To',
+            'featured_image': 'Featured Image',
+            'cost_to_purchase': 'Cost to Purchase',
+            'metal_type': 'Metal Type',
             'item_name': 'Item Name',
+            'item_year': 'Item Year',
+            'coa_present': 'COA Present',
             'item_about': 'About',
-            'spot_at_purchase': 'Spot Price at purchase',
+            'spot_at_purchase': 'Spot Price at Purchase',
         }
 
     def __init__(self, *args, **kwargs):
@@ -76,15 +83,22 @@ class SilverForm(forms.ModelForm):
     class Meta:
         model = Silver
         fields = [
-            'metal_type', 'weight_unit', 'item_type', 'item_name', 'item_year',
+            'metal_type', 'weight_unit', 'coa_present', 'item_type', 'item_name', 'item_year',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
             'purchased_from', 'featured_image', 'item_about', 'sold_to', 'sell_price'
         ]
 
         labels = {
+            'sell_price': 'Sell Price',
+            'sold_to': 'Sold To',
+            'featured_image': 'Featured Image',
+            'cost_to_purchase': 'Cost to Purchase',
+            'metal_type': 'Metal Type',
             'item_name': 'Item Name',
+            'item_year': 'Item Year',
+            'coa_present': 'COA Present',
             'item_about': 'About',
-            'spot_at_purchase': 'Spot Price at purchase',
+            'spot_at_purchase': 'Spot Price at Purchase',
         }
 
     def __init__(self, *args, **kwargs):
@@ -136,15 +150,22 @@ class PlatinumForm(forms.ModelForm):
     class Meta:
         model = Platinum
         fields = [
-            'metal_type', 'weight_unit', 'item_type', 'item_name', 'item_year',
+            'metal_type', 'weight_unit', 'coa_present', 'item_type', 'item_name', 'item_year',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
             'purchased_from', 'featured_image', 'item_about', 'sold_to', 'sell_price'
         ]
 
         labels = {
+            'sell_price': 'Sell Price',
+            'sold_to': 'Sold To',
+            'featured_image': 'Featured Image',
+            'cost_to_purchase': 'Cost to Purchase',
+            'metal_type': 'Metal Type',
             'item_name': 'Item Name',
+            'item_year': 'Item Year',
+            'coa_present': 'COA Present',
             'item_about': 'About',
-            'spot_at_purchase': 'Spot Price at purchase',
+            'spot_at_purchase': 'Spot Price at Purchase',
         }
 
     def __init__(self, *args, **kwargs):
