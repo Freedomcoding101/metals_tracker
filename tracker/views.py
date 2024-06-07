@@ -95,7 +95,6 @@ def metalPage(request, metal_type):
 
         for object in metal_objects:
             object.profit = object.calculate_profit(spot_price)
-            print(f"This is the VIEWS profit printing{object.profit}")
 
         for object in metal_objects:
             object.weight = Decimal(object.weight_troy_oz) / Decimal(object.quantity)
@@ -223,9 +222,7 @@ def editPage(request, metal_type, pk):
     initial_weight = None
     
     if item.initial_weight_unit:
-        print("THERE IS!")
         initial_weight_unit = item.initial_weight_unit
-        print(initial_weight_unit)
         
         if initial_weight_unit == 'GRAMS':
             initial_weight = item.weight_grams
@@ -233,15 +230,15 @@ def editPage(request, metal_type, pk):
 
         elif initial_weight_unit == "TROY_OUNCES":
             initial_weight = item.weight_troy_oz
-            print(f"{initial_weight} oz")
 
     if request.method == 'POST':
         # If the form is submitted, validate and save it
         form = form_class(request.POST, request.FILES, instance=item)
-        print(form)
         if form.is_valid():
             form.save()
             return redirect('singleMetal', metal_type=metal_type, pk=item.pk)
+        else:
+            print(form.errors)
     else:
         # For GET requests, render the form with the item data
         form = form_class(instance=item, initial={'weight_unit': initial_weight_unit, 'weight': initial_weight})

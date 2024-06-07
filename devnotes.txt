@@ -14,14 +14,10 @@ Line 37 to 49 in the searchreturn.html need to have the styles actually put into
 need to have quantity for sell... maybe you have 12 but you only sell 3.... 
 
 **********************************
-Something is causing GOLD to crash when you go to enter it in the database... but not silver or platinum.. Fuckey
-
-Okay its NOT gold its when you add more than one of something... well 15 to be exact but lets try two and see from there later on!
-
-total weight on a 15 ounce item is showing 0E-8 for some reason.. I added the item with the Django admin...
+add placeholders to form.... need to specifically say for weight that it is the TOTAL weight not weight per item..
  
 **********************************
-Edit function is not working either... not saving...
+change decimals back to four who the fuck needs more than four decimals?? no one thats who
 
 **********************************
 

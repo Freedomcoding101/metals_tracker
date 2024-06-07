@@ -11,7 +11,7 @@ class MetalSelectForm(forms.Form):
     ]
 
 class GoldForm(forms.ModelForm):
-    weight = forms.DecimalField(max_digits=10, decimal_places=4, required=False, label='Total Weight (Select Units Above)')
+    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=False, label='Total Weight (Select Units Above)')
     weight_unit = forms.ChoiceField(choices=[('TROY_OUNCES', 'Troy Ounces'), ('GRAMS', 'Grams')], label='Weight Unit')
 
     class Meta:
@@ -77,7 +77,7 @@ class GoldForm(forms.ModelForm):
 
 
 class SilverForm(forms.ModelForm):
-    weight = forms.DecimalField(max_digits=10, decimal_places=4, required=False, label='Total Weight (Select Units Above)')
+    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=False, label='Total Weight (Select Units Above)')
     weight_unit = forms.ChoiceField(choices=[('TROY_OUNCES', 'Troy Ounces'), ('GRAMS', 'Grams')], label='Weight Unit')
 
     class Meta:
@@ -144,7 +144,7 @@ class SilverForm(forms.ModelForm):
 
 
 class PlatinumForm(forms.ModelForm):
-    weight = forms.DecimalField(max_digits=10, decimal_places=4, required=False, label='Total Weight (Select Units Above)')
+    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=False, label='Total Weight (Select Units Above)')
     weight_unit = forms.ChoiceField(choices=[('TROY_OUNCES', 'Troy Ounces'), ('GRAMS', 'Grams')], label='Weight Unit')
 
     class Meta:
