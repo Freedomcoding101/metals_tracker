@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from.utils import searchMetals, paginateMetals, profit_loss, get_live_gold, get_live_silver, get_live_platinum
 from.models import Gold, Silver, Platinum
-from .forms import GoldForm, SilverForm, PlatinumForm
+from .forms import GoldForm, SilverForm, PlatinumForm, create_sell_form
 from django.http import HttpResponseNotFound
 from decimal import Decimal
 
@@ -21,7 +22,42 @@ def searchMetal(request):
     metal_objects = list(gold_items) + list(silver_items) + list(platinum_items)
     custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
 
-    context = {'metal_objects': metal_objects, 'search_query': search_query, 'custom_range': custom_range}
+
+    if metal_objects:
+        spot_price = None
+        for object in metal_objects:
+            if object.metal_type == 'gold':
+                spot_price = get_live_gold()
+            elif object.metal_type == 'silver':
+                spot_price = get_live_silver()
+            elif object.metal_type == 'platinum':
+                spot_price = get_live_platinum()
+            else:
+                return HttpResponse("Somehow you managed to mess up something that shouldnt ever happen, congrats!")
+
+        object.profit = object.calculate_profit(spot_price)
+
+        for object in metal_objects:
+            object.weight = object.weight_troy_oz / object.quantity
+
+        context = {'metal_objects': metal_objects,
+                'search_query': search_query,
+                'custom_range': custom_range,
+                'object.profit': object.profit,
+                'object.weight': object.weight,
+                'spot_price': spot_price
+                }
+
+    # If there is any errors it will set the context to this to prevent errors when the next page loads
+    else:
+        context = {'metal_objects': [],
+                'search_query': search_query,
+                'custom_range': [],
+                'object.profit': 0,
+                'object.weight': 0,
+                'spot_price':  0
+    }
+
     return render(request, 'tracker/searchreturn.html', context)
 
 @login_required(login_url='login-user')
@@ -29,48 +65,65 @@ def metalPage(request, metal_type):
     metal_objects = None
     template_name = None
     results, search_query = searchMetals(request)
-
+    
     if metal_type == 'gold':
         spot_price = Decimal(get_live_gold())
+        print(spot_price)
         if search_query:
-            metal_objects = results['gold_items']
+            metal_objects = results.get('gold_items')
         else:
             metal_objects = Gold.objects.filter(owner=request.user.profile)
         template_name = 'tracker/gold.html'
     elif metal_type == 'silver':
         spot_price = Decimal(get_live_silver())
+        print(spot_price)
         if search_query:
-            metal_objects = results['silver_items']
+            metal_objects = results.get('silver_items')
         else:
             metal_objects = Silver.objects.filter(owner=request.user.profile)
         template_name = 'tracker/silver.html'
     elif metal_type == 'platinum':
         spot_price = Decimal(get_live_platinum())
+        print(spot_price)
         if search_query:
-            metal_objects = results['platinum_items']
+            metal_objects = results.get('platinum_items')
         else:
             metal_objects = Platinum.objects.filter(owner=request.user.profile)
         template_name = 'tracker/platinum.html'
     else:
-        return HttpResponseNotFound("Metal type not found.")
+        raise Http404
 
-    custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
+    if metal_objects:
+        custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
 
-    for object in metal_objects:
-        object.profit = object.calculate_profit(spot_price)
+        for object in metal_objects:
+            object.profit = object.calculate_profit(spot_price)
 
-    for object in metal_objects:
-        object.weight = object.weight_troy_oz / object.quantity
+        for object in metal_objects:
+            object.weight = object.weight_troy_oz / object.quantity
 
-    context = {
-        'object.weight': object.weight,
-        'object.profit': object.profit,
-        'spot_price': spot_price,
-        'custom_range': custom_range,
-        'metal_type': metal_type,
-        'metal_objects': metal_objects,
-        'search_query': search_query
-    }
+        context = {
+            'object.weight': object.weight,
+            'object.profit': object.profit,
+            'spot_price': spot_price,
+            'custom_range': custom_range,
+            'metal_type': metal_type,
+            'metal_objects': metal_objects,
+            'search_query': search_query
+        }
+
+        # If there is any errors it will set the context to this to prevent errors when the next page loads
+    else:
+        context = {
+            'object.weight': 0,
+            'object.profit': 0,
+            'spot_price': 0,
+            'custom_range': [],
+            'metal_type': metal_type,
+            'metal_objects': [],
+            'search_query': search_query
+        }
+
     return render(request, template_name, context)
 
 @login_required(login_url='login-user')
@@ -197,6 +250,28 @@ def editPage(request, metal_type, pk):
 
     context = {'form': form}
     return render(request, 'tracker/metals_form.html', context)
+
+def sellPage(request, metal_type, pk):
+    metal_model = None
+
+    if metal_type == 'gold':
+        metal_model = Gold
+    elif metal_type == 'silver':
+        metal_model = Silver
+    elif metal_type == 'platinum':
+        metal_model = Platinum
+    else:
+        # Handle the error gracefully
+        return HttpResponseServerError("Invalid metal type provided.")
+
+    item = metal_model.objects.get(pk=pk)
+    SellForm = create_sell_form(metal_model)
+    form = SellForm(instance=item, data=request.POST)
+
+    context ={'item': item,
+            'form': form,
+    }
+    return render(request, 'tracker/sell_form.html', context)
 
 def deletePage(request, metal_type, pk):
     metal_model = None

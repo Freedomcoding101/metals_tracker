@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from .models import Profile
 from .forms import CustomUserCreationForm, CustomProfileForm
 from tracker.utils import get_total_oz, get_live_gold, get_live_silver, get_live_platinum, multiply, get_total_cost_to_purchase
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 
 # Create your views here.
 
@@ -19,14 +19,24 @@ def profile(request, pk):
     total_platinum = round(Decimal(get_total_oz(user, 'platinum')), 2)
     total_gold_cost, total_silver_cost, total_platinum_cost =  get_total_cost_to_purchase(profile)
     # Calculate DCA using Decimal and rounding to 2 decimal places
-    gdca = (total_gold_cost / total_gold).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-    sdca = (total_silver_cost / total_silver).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-    pdca = (total_platinum_cost / total_platinum).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-
-    # Convert Decimal to string for display purposes
-    gdca_str = f"{gdca:.2f}"
-    sdca_str = f"{sdca:.2f}"
-    pdca_str = f"{pdca:.2f}"
+    try:
+        gdca = (total_gold_cost / total_gold).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+        gdca_str = f"{gdca:.2f}"
+    except InvalidOperation:
+        gdca = 'N/A'
+        gdca_str = 'N/A'
+    try:
+        sdca = (total_silver_cost / total_silver).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+        sdca_str = f"{gdca:.2f}"
+    except InvalidOperation:
+        sdca = 'N/A'
+        sdca_str = 'N/A'
+    try:
+        pdca = (total_platinum_cost / total_platinum).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+        pdca_str = f"{pdca:.2f}"
+    except InvalidOperation:
+        pdca = 'N/A'
+        pdca_str = 'N/A'
 
     try:
         gold_price = get_live_gold()
@@ -36,6 +46,7 @@ def profile(request, pk):
         gold_price = 'N/A'
         silver_price = 'N/A'
         platinum_price = 'N/A'
+
     try:
         # GOLD MARKET VALUE
         gmv = multiply(total_gold, gold_price)

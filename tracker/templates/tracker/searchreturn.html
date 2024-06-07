@@ -1,6 +1,9 @@
 {% extends 'main.html' %}
 {% block content %}
 {% load static %}
+{% load multiply %}
+{% load custom_filters %}
+
 <!-- Main Section -->
 <main class="projects">
     <section class="hero-section text-center">
@@ -29,7 +32,7 @@
           {% for object in metal_objects %}
           <div class="column">
             <div class="card project">
-              <a href="#" class="project">
+              <a href="{% url 'singleMetal' metal_type=object.metal_type pk=object.pk %}" class="project">
                 <!-- Wrote Styles inline because CSS File not working?? -->
                 {% if object.featured_image.url != None %} 
                 <div class="project__thumbnail" style="width: 25rem; height: 25rem;
@@ -47,8 +50,22 @@
                 <div class="card__body">
                   <h3 class="project__title">{{object.item_year}}</h3>
                   <h3 class="project__title">{{object.item_name}}</h3>
-                  <h3 class="project__title">{{object.weight_troy_oz}} OZ</h3>
-                  <p><a class="project__author" href="#">Quantity {{object.quantity}}</a></p>
+                  {% if object.initial_weight_unit == 'TROY_OUNCES' %}
+                  <h3 class="project__title">{{object.weight|floatformat:2}} OZ</h3>
+                  {% else %}
+                  <h3 class="project__title">{{object.weight|multiply:31.1035|floatformat:2}} Gram{{object.weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
+                  {% endif %}
+                  {% if object.profit > 0 %}
+                  <h3 class="profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
+
+                  {% elif object.profit == 0 %}
+                  <h3 class="profit_neutral">{{object.profit|floatformat:2}}</h3>
+
+                  {% else %}
+                  <h3 class="profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
+
+                  {% endif %}
+                  <p><a class="project__author" href="{% url 'singleMetal' metal_type=object.metal_type pk=object.pk %}">Quantity {{object.quantity}}</a></p>
                   <p class="project--rating">
                     <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
                   </p>

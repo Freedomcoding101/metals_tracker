@@ -208,3 +208,20 @@ class PlatinumForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+def create_sell_form(metal_model):
+    class SellForm(forms.ModelForm):
+        class Meta:
+            model = metal_model
+            fields = ['sold_to', 'sell_price']
+
+            labels = {'sold_to': 'Sold To',
+                    'sell_price': 'Sell Price',
+            }
+
+        def __init__(self, *args, **kwargs):
+            super(SellForm, self).__init__(*args, **kwargs)
+            for name, field in self.fields.items():
+                field.widget.attrs.update({'class': 'input'})
+
+    return SellForm

@@ -46,6 +46,7 @@ class Gold(models.Model):
     purchased_from = models.CharField(max_length=100)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default="")
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
@@ -55,11 +56,15 @@ class Gold(models.Model):
         verbose_name_plural = "Gold"
 
     def __str__(self):
-        return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+        return f"Item {self.item_name}"
 
     def calculate_profit(self, spot_price):
         melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
         return melt_value - self.cost_to_purchase
+
+    def update_sold(self, *args, **kwargs):
+        if self.sold_to and self.sell_price and not self.date_sold:
+            self.date_sold = timezone.now().date
 
     def save(self, *args, **kwargs):
         if self.cost_to_purchase and self.quantity:
@@ -116,6 +121,7 @@ class Silver(models.Model):
     purchased_from = models.CharField(max_length=100)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
@@ -125,11 +131,15 @@ class Silver(models.Model):
         verbose_name_plural = "Silver"
 
     def __str__(self):
-        return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+        return f"Item {self.item_name}"
 
     def calculate_profit(self, spot_price):
-        melt_value = self.weight_troy_oz * spot_price
+        melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
         return melt_value - self.cost_to_purchase
+
+    def update_sold(self, *args, **kwargs):
+        if self.sold_to and self.sell_price and not self.date_sold:
+            self.date_sold = timezone.now().date
 
     def save(self, *args, **kwargs):
         if self.cost_to_purchase and self.quantity:
@@ -186,6 +196,7 @@ class Platinum(models.Model):
     purchased_from = models.CharField(max_length=100)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
@@ -195,11 +206,15 @@ class Platinum(models.Model):
         verbose_name_plural = "Platinum"
 
     def __str__(self):
-        return f"{self.item_name} - {self.purity} - {self.weight_troy_oz}oz "
+        return f"Item {self.item_name}"
 
     def calculate_profit(self, spot_price):
-        melt_value = self.weight_troy_oz * spot_price
+        melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
         return melt_value - self.cost_to_purchase
+
+    def update_sold(self, *args, **kwargs):
+        if self.sold_to and self.sell_price and not self.date_sold:
+            self.date_sold = timezone.now().date
 
     def save(self, *args, **kwargs):
         if self.cost_to_purchase and self.quantity:

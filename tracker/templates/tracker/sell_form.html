@@ -1,7 +1,6 @@
 {% extends 'main.html' %}
 
 {% block content %}
-
 <main class="formPage my-xl">
     <div class="content-box">
         <div class="formWrapper">
@@ -10,9 +9,14 @@
 
             <form class="form" action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p>Are you sure you wante to delete "{{item}}"?</p>
-                <br>
-                <button class="btn btn--sub" type="submit">Delete</button>
+                {% for field in form %}
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{field.label}}: </label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <button class="btn btn--sub" type="submit">Save</button>
             </form>
         </div>
     </div>
