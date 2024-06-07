@@ -14,19 +14,20 @@ Line 37 to 49 in the searchreturn.html need to have the styles actually put into
 need to have quantity for sell... maybe you have 12 but you only sell 3.... 
 
 **********************************
-Figure out a better way to handle the error on Dashboard with the Dollar Cost Average.. Currently writing N/A if one of the items isnt available... Need to have it all seperate..
+Something is causing GOLD to crash when you go to enter it in the database... but not silver or platinum.. Fuckey
+
+Okay its NOT gold its when you add more than one of something... well 15 to be exact but lets try two and see from there later on!
+
+total weight on a 15 ounce item is showing 0E-8 for some reason.. I added the item with the Django admin...
  
 **********************************
+Edit function is not working either... not saving...
+
+**********************************
 
 
 **********************************
 
-
 **********************************
 
-**********************************
-delete is naming it with the __str__ from the model... either adjust this or change how this is being named....
 
-
-
-form = SellForm(model=MyModel, data=request.POST) This is how you use the sellform...

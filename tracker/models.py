@@ -56,11 +56,14 @@ class Gold(models.Model):
         verbose_name_plural = "Gold"
 
     def __str__(self):
-        return f"Item {self.item_name}"
+        return self.item_name
 
     def calculate_profit(self, spot_price):
         melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
-        return melt_value - self.cost_to_purchase
+        print(f"The melt value is {melt_value}")
+        profit= melt_value - Decimal(self.cost_to_purchase)
+        print(f"The profit is {profit}")
+        return profit
 
     def update_sold(self, *args, **kwargs):
         if self.sold_to and self.sell_price and not self.date_sold:
@@ -131,27 +134,43 @@ class Silver(models.Model):
         verbose_name_plural = "Silver"
 
     def __str__(self):
-        return f"Item {self.item_name}"
+        return self.item_name
 
     def calculate_profit(self, spot_price):
-        melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
+        try:
+            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
+        except:
+            print('There has been an error calculating profit')
+        
         return melt_value - self.cost_to_purchase
 
     def update_sold(self, *args, **kwargs):
-        if self.sold_to and self.sell_price and not self.date_sold:
-            self.date_sold = timezone.now().date
+        try:
+            if self.sold_to and self.sell_price and not self.date_sold:
+                self.date_sold = timezone.now().date
+        except:
+            print('There has been an error updating the sold')
 
     def save(self, *args, **kwargs):
-        if self.cost_to_purchase and self.quantity:
-            self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+        try:
+            if self.cost_to_purchase and self.quantity:
+                self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+        except:
+            print('There has been an error calculating cost_per_unit')
 
-        if self.spot_at_purchase is not None:
-            self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+        try:
+            if self.spot_at_purchase is not None:
+                self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+        except:
+            print('There has been an error calculating premium')
 
-        if self.weight_grams is not None:
-            self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
-        elif self.weight_troy_oz is not None:
-            self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
+        try:
+            if self.weight_grams is not None:
+                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
+            elif self.weight_troy_oz is not None:
+                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
+        except:
+            print('There has been an error calculating the troy_oz or the grams')
         super().save(*args, **kwargs)
 
 class Platinum(models.Model):
@@ -206,7 +225,7 @@ class Platinum(models.Model):
         verbose_name_plural = "Platinum"
 
     def __str__(self):
-        return f"Item {self.item_name}"
+        return self.item_name
 
     def calculate_profit(self, spot_price):
         melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)

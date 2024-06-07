@@ -68,7 +68,6 @@ def metalPage(request, metal_type):
     
     if metal_type == 'gold':
         spot_price = Decimal(get_live_gold())
-        print(spot_price)
         if search_query:
             metal_objects = results.get('gold_items')
         else:
@@ -76,7 +75,6 @@ def metalPage(request, metal_type):
         template_name = 'tracker/gold.html'
     elif metal_type == 'silver':
         spot_price = Decimal(get_live_silver())
-        print(spot_price)
         if search_query:
             metal_objects = results.get('silver_items')
         else:
@@ -84,7 +82,6 @@ def metalPage(request, metal_type):
         template_name = 'tracker/silver.html'
     elif metal_type == 'platinum':
         spot_price = Decimal(get_live_platinum())
-        print(spot_price)
         if search_query:
             metal_objects = results.get('platinum_items')
         else:
@@ -98,9 +95,10 @@ def metalPage(request, metal_type):
 
         for object in metal_objects:
             object.profit = object.calculate_profit(spot_price)
+            print(f"This is the VIEWS profit printing{object.profit}")
 
         for object in metal_objects:
-            object.weight = object.weight_troy_oz / object.quantity
+            object.weight = Decimal(object.weight_troy_oz) / Decimal(object.quantity)
 
         context = {
             'object.weight': object.weight,
@@ -123,6 +121,7 @@ def metalPage(request, metal_type):
             'metal_objects': [],
             'search_query': search_query
         }
+        print('There are some massive errors going on here!')
 
     return render(request, template_name, context)
 
@@ -181,7 +180,6 @@ def updatePage(request):
     profile = request.user.profile
 
     if request.method == 'POST':
-        #Determine the metal type from the incoming data
         metal_type = request.POST.get('metal_type')
         
         if metal_type.lower() == 'gold':
