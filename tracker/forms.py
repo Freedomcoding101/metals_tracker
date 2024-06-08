@@ -11,7 +11,7 @@ class MetalSelectForm(forms.Form):
     ]
 
 class GoldForm(forms.ModelForm):
-    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=False, label='Total Weight (Select Units Above)')
+    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=True, label='Total Weight (Select Units Above)')
     weight_unit = forms.ChoiceField(choices=[('TROY_OUNCES', 'Troy Ounces'), ('GRAMS', 'Grams')], label='Weight Unit')
 
     class Meta:
@@ -19,7 +19,7 @@ class GoldForm(forms.ModelForm):
         fields = [
             'metal_type', 'weight_unit', 'coa_present',  'item_type', 'item_name', 'item_year',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
-            'purchased_from', 'featured_image', 'item_about', 'sold_to', 'sell_price'
+            'purchased_from', 'featured_image', 'item_about'
         ]
 
         labels = {
@@ -63,9 +63,11 @@ class GoldForm(forms.ModelForm):
 
         if cleaned_data.get('weight'):
             if cleaned_data['weight_unit'] == 'GRAMS':
+                instance.weight_per_unit = Decimal(cleaned_data['weight']) / Decimal(cleaned_data['quantity'])
                 instance.weight_grams = Decimal(cleaned_data['weight'])
                 instance.weight_troy_oz = Decimal(cleaned_data['weight']) / Decimal(31.1035)
             elif cleaned_data['weight_unit'] == 'TROY_OUNCES':
+                instance.weight_per_unit = Decimal(cleaned_data['weight']) / Decimal(cleaned_data['quantity'])
                 instance.weight_troy_oz = Decimal(cleaned_data['weight'])
                 instance.weight_grams = Decimal(cleaned_data['weight']) * Decimal(31.1035)
 
@@ -77,7 +79,7 @@ class GoldForm(forms.ModelForm):
 
 
 class SilverForm(forms.ModelForm):
-    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=False, label='Total Weight (Select Units Above)')
+    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=True, label='Total Weight (Select Units Above)')
     weight_unit = forms.ChoiceField(choices=[('TROY_OUNCES', 'Troy Ounces'), ('GRAMS', 'Grams')], label='Weight Unit')
 
     class Meta:
@@ -85,7 +87,7 @@ class SilverForm(forms.ModelForm):
         fields = [
             'metal_type', 'weight_unit', 'coa_present', 'item_type', 'item_name', 'item_year',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
-            'purchased_from', 'featured_image', 'item_about', 'sold_to', 'sell_price'
+            'purchased_from', 'featured_image', 'item_about'
         ]
 
         labels = {
@@ -132,11 +134,13 @@ class SilverForm(forms.ModelForm):
 
         if cleaned_data.get('weight'):
             if cleaned_data['weight_unit'] == 'GRAMS':
-                instance.weight_grams = cleaned_data['weight']
-                instance.weight_troy_oz = cleaned_data['weight'] / Decimal(31.1035)
+                instance.weight_per_unit = Decimal(cleaned_data['weight']) / Decimal(cleaned_data['quantity'])
+                instance.weight_grams = Decimal(cleaned_data['weight'])
+                instance.weight_troy_oz = Decimal(cleaned_data['weight']) / Decimal(31.1035)
             elif cleaned_data['weight_unit'] == 'TROY_OUNCES':
-                instance.weight_troy_oz = cleaned_data['weight']
-                instance.weight_grams = cleaned_data['weight'] * Decimal(31.1035)
+                instance.weight_per_unit = Decimal(cleaned_data['weight']) / Decimal(cleaned_data['quantity'])
+                instance.weight_troy_oz = Decimal(cleaned_data['weight'])
+                instance.weight_grams = Decimal(cleaned_data['weight']) * Decimal(31.1035)
         
         if commit:
             instance.save()
@@ -144,7 +148,7 @@ class SilverForm(forms.ModelForm):
 
 
 class PlatinumForm(forms.ModelForm):
-    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=False, label='Total Weight (Select Units Above)')
+    weight = forms.DecimalField(max_digits=30, decimal_places=8, required=True, label='Total Weight (Select Units Above)')
     weight_unit = forms.ChoiceField(choices=[('TROY_OUNCES', 'Troy Ounces'), ('GRAMS', 'Grams')], label='Weight Unit')
 
     class Meta:
@@ -152,7 +156,7 @@ class PlatinumForm(forms.ModelForm):
         fields = [
             'metal_type', 'weight_unit', 'coa_present', 'item_type', 'item_name', 'item_year',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
-            'purchased_from', 'featured_image', 'item_about', 'sold_to', 'sell_price'
+            'purchased_from', 'featured_image', 'item_about'
         ]
 
         labels = {
@@ -199,11 +203,13 @@ class PlatinumForm(forms.ModelForm):
 
         if cleaned_data.get('weight'):
             if cleaned_data['weight_unit'] == 'GRAMS':
-                instance.weight_grams = cleaned_data['weight']
-                instance.weight_troy_oz = cleaned_data['weight'] / Decimal(31.1035)
+                instance.weight_per_unit = Decimal(cleaned_data['weight']) / Decimal(cleaned_data['quantity'])
+                instance.weight_grams = Decimal(cleaned_data['weight'])
+                instance.weight_troy_oz = Decimal(cleaned_data['weight']) / Decimal(31.1035)
             elif cleaned_data['weight_unit'] == 'TROY_OUNCES':
-                instance.weight_troy_oz = cleaned_data['weight']
-                instance.weight_grams = cleaned_data['weight'] * Decimal(31.1035)
+                instance.weight_per_unit = Decimal(cleaned_data['weight']) / Decimal(cleaned_data['quantity'])
+                instance.weight_troy_oz = Decimal(cleaned_data['weight'])
+                instance.weight_grams = Decimal(cleaned_data['weight']) * Decimal(31.1035)
         
         if commit:
             instance.save()
@@ -213,15 +219,26 @@ def create_sell_form(metal_model):
     class SellForm(forms.ModelForm):
         class Meta:
             model = metal_model
-            fields = ['sold_to', 'sell_price']
+            fields = ['sold_to', 'sell_price', 'quantity']
 
             labels = {'sold_to': 'Sold To',
                     'sell_price': 'Sell Price',
+                    'quantity': 'Quantity Sold',
             }
 
         def __init__(self, *args, **kwargs):
             super(SellForm, self).__init__(*args, **kwargs)
             for name, field in self.fields.items():
                 field.widget.attrs.update({'class': 'input'})
+
+        def save(self, commit=True):
+            instance = super().save(commit=False)
+            cleaned_data = self.cleaned_data
+            quantity = cleaned_data.get('quantity')
+            instance.quantity -= quantity
+            if commit:
+                instance.save()
+
+            return instance
 
     return SellForm

@@ -17,12 +17,13 @@ need to have quantity for sell... maybe you have 12 but you only sell 3....
 add placeholders to form.... need to specifically say for weight that it is the TOTAL weight not weight per item..
  
 **********************************
-change decimals back to four who the fuck needs more than four decimals?? no one thats who
-
-**********************************
 
 
 **********************************
+If someone updates the weight the weight_grams and weight_troy ounce needs to recalculate (it wont be none so it will skip it..)
+
+**********************************
+
 
 **********************************
 

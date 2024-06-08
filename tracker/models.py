@@ -37,8 +37,8 @@ class Gold(models.Model):
     featured_image = models.ImageField(default='images/gold_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
-    weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=8)
-    weight_grams = models.DecimalField(max_digits=30, decimal_places=8, default=0.00)
+    weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=4)
+    weight_grams = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -49,6 +49,7 @@ class Gold(models.Model):
     date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
@@ -70,9 +71,19 @@ class Gold(models.Model):
         try:
             if self.sold_to and self.sell_price and not self.date_sold:
                 self.date_sold = timezone.now().date
+
         except:
             print('There has been an error updating date_sold')
 
+    # def set_initial_weight_unit(self, *args, **kwargs):
+    #     try:
+    #         if self.initial_weight_unit == 'TROY_OUNCES':
+    #             self.weight_per_unit = Decimal(weight_troy_oz) / Decimal(self.quantity)
+    #         elif self.initial_weight_unit == 'GRAMS':
+    #             self.weight_per_unit = Decimal(weight_grams) / Decimal(self.quantity)
+    #     except:
+    #         print('There has been an error calculating weight_per_unit')
+    
     def save(self, *args, **kwargs):
         try:
             if self.cost_to_purchase and self.quantity:
@@ -128,8 +139,8 @@ class Silver(models.Model):
     featured_image = models.ImageField(default='images/silver_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
-    weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=8)
-    weight_grams = models.DecimalField(max_digits=30, decimal_places=8, default=0.00)
+    weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=4)
+    weight_grams = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -140,6 +151,7 @@ class Silver(models.Model):
     date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
@@ -219,8 +231,8 @@ class Platinum(models.Model):
     featured_image = models.ImageField(default='images/platinum_avatar.jpg', null=True, blank=True)
     purity = models.DecimalField(max_digits=15, decimal_places=4, null=True, blank=True)
     quantity = models.IntegerField()
-    weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=8)
-    weight_grams = models.DecimalField(max_digits=30, decimal_places=8, default=0.00)
+    weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=4)
+    weight_grams = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -231,6 +243,7 @@ class Platinum(models.Model):
     date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 

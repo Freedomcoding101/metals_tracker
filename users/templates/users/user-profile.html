@@ -48,7 +48,11 @@
                 <div class="metalcard__body">
                   <div class="metal_container">
                     <h3 class="project__title" id="gold_title">Gold</h3>
+                    {% if gdca == 'N/A' %}
+                    <span style="font-weight: bold;">Dollar Cost Average/OZ : {{gdca}}</span>
+                    {% else %}
                     <span style="font-weight: bold;">Dollar Cost Average/OZ : ${{gdca}}</span>
+                    {% endif %}
                   </div>
                     <span style="font-weight: bold;">You have {{total_gold}}OZ{{ total_gold|pluralize }} Gold</span>
                     <span style="font-weight: bold;">Current Spot Price: ${{gold_price}} /OZ</span>
@@ -65,7 +69,11 @@
                 <div class="metalcard__body">
                   <div class="metal_container">
                     <h3 class="project__title" id="gold_title">Silver</h3>
+                    {% if sdca == 'N/A' %}
+                    <span style="font-weight: bold;">Dollar Cost Average/OZ : {{sdca}}</span>
+                    {% else %}
                     <span style="font-weight: bold;">Dollar Cost Average/OZ : ${{sdca}}</span>
+                    {% endif %}
                   </div>
                     <span style="font-weight: bold;">You have {{total_silver}}OZ{{ total_silver|pluralize }} Silver</span>
                     <span style="font-weight: bold;">Current Spot Price: ${{silver_price}} /OZ</span>
@@ -82,7 +90,11 @@
                 <div class="metalcard__body">
                   <div class="metal_container">
                     <h3 class="project__title" id="gold_title">Platinum</h3>
+                    {% if pdca == 'N/A' %}
+                    <span style="font-weight: bold;">Dollar Cost Average/OZ : {{pdca}}</span>
+                    {% else %}
                     <span style="font-weight: bold;">Dollar Cost Average/OZ : ${{pdca}}</span>
+                    {% endif %}
                   </div>
                     <span style="font-weight: bold;">You have {{total_platinum}}OZ{{ total_platinum|pluralize }} Platinum</span>
                     <span style="font-weight: bold;">Current Spot Price: ${{platinum_price}} /OZ</span>

@@ -263,6 +263,12 @@ def sellPage(request, metal_type, pk):
     SellForm = create_sell_form(metal_model)
     form = SellForm(instance=item, data=request.POST)
 
+    if request.method == "POST":
+        form = form(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item.update_weight()
+            form.save()
+
     context ={'item': item,
             'form': form,
     }
