@@ -217,13 +217,15 @@ class PlatinumForm(forms.ModelForm):
 
 def create_sell_form(metal_model):
     class SellForm(forms.ModelForm):
+        sell_quantity = forms.DecimalField(max_digits=30, decimal_places=4)
+        
         class Meta:
             model = metal_model
-            fields = ['sold_to', 'sell_price', 'quantity']
+            fields = ['sold_to', 'sell_price']
 
             labels = {'sold_to': 'Sold To',
                     'sell_price': 'Sell Price',
-                    'quantity': 'Quantity Sold',
+                    'sell_quantity': 'Quantity Sold',
             }
 
         def __init__(self, *args, **kwargs):
@@ -234,8 +236,19 @@ def create_sell_form(metal_model):
         def save(self, commit=True):
             instance = super().save(commit=False)
             cleaned_data = self.cleaned_data
-            quantity = cleaned_data.get('quantity')
-            instance.quantity -= quantity
+            sell_quantity = cleaned_data.get('sell_quantity')
+            print(f"The sell quantity is in cleaned_data is {sell_quantity}")
+            print(f"The instance.quantity is {instance.quantity}")
+            instance.quantity = instance.quantity - sell_quantity
+            print('after')
+            print(f"The quantity is {sell_quantity}")
+            print(f"The instance.quantity is {instance.quantity}")
+            if instance.initial_weight_unit == 'TROY_OUNCES':
+                instance.weight_troy_oz = Decimal(instance.weight_per_unit) * Decimal(instance.quantity)
+                instance.weight_grams = Decimal(instance.weight_troy_oz) * Decimal(31.1035)
+            elif instance.initial_weight_unit == 'GRAMS':
+                instance.weight_grams = Decimal(instance.weight_per_unit) * Decimal(instance.quantity)
+                instance.weight_troy_oz = Decimal(instance.weight_grams) / Decimal(31.1035)
             if commit:
                 instance.save()
 

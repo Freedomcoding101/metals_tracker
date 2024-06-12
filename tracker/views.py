@@ -226,7 +226,7 @@ def editPage(request, metal_type, pk):
         
         if initial_weight_unit == 'GRAMS':
             initial_weight = item.weight_grams
-            print(f"{initial_weight} grams")
+
 
         elif initial_weight_unit == "TROY_OUNCES":
             initial_weight = item.weight_troy_oz
@@ -261,13 +261,24 @@ def sellPage(request, metal_type, pk):
 
     item = metal_model.objects.get(pk=pk)
     SellForm = create_sell_form(metal_model)
-    form = SellForm(instance=item, data=request.POST)
+    form = SellForm(instance=item)
+    print('previous to post')
+    for field in form:
+            print(field)
 
     if request.method == "POST":
-        form = form(request.POST, request.FILES, instance=item)
+        form = SellForm(request.POST, instance=item)
+        print('after post before valid form')
+        for field in form:
+            print(field)
         if form.is_valid():
-            item.update_weight()
             form.save()
+            print('The form saved!!')
+            print('Below is the instance quantity... See what it does.')
+            return redirect('homepage')
+        else:
+            print(form.errors)
+            print('errors occureed durniv valiiiiidation')
 
     context ={'item': item,
             'form': form,

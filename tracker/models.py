@@ -86,10 +86,11 @@ class Gold(models.Model):
     
     def save(self, *args, **kwargs):
         try:
-            if self.cost_to_purchase and self.quantity:
+            if self.cost_to_purchase and self.quantity is not 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
+            self.cost_per_unit = 'N/A'
 
         try:
             if self.spot_at_purchase is not None:
@@ -178,10 +179,11 @@ class Silver(models.Model):
 
     def save(self, *args, **kwargs):
         try:
-            if self.cost_to_purchase and self.quantity:
+            if self.cost_to_purchase and self.quantity is not 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
+            self.cost_per_unit = 'N/A'
 
         try:
             if self.spot_at_purchase is not None:
@@ -270,10 +272,11 @@ class Platinum(models.Model):
 
     def save(self, *args, **kwargs):
         try:
-            if self.cost_to_purchase and self.quantity:
+            if self.cost_to_purchase and self.quantity is not 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
+            self.cost_per_unit = 'N/A'
 
         try:
             if self.spot_at_purchase is not None:

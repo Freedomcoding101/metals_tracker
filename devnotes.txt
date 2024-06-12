@@ -12,18 +12,23 @@ Line 37 to 49 in the searchreturn.html need to have the styles actually put into
 
 **********************************
 need to have quantity for sell... maybe you have 12 but you only sell 3.... 
+quantity is in form... should be updating properly when the form is filled out.. Going to continue working on this..
+Not sure if it is properly updating... causing errors.. also check the csrf token... and add try/except blocks to see what the issue is..
+Seems something is returning as ZERO afterwards.
+
+currently weight, weight_grams, weight_troy_oz are all going to ZERO after this form submits lol
 
 **********************************
 add placeholders to form.... need to specifically say for weight that it is the TOTAL weight not weight per item..
  
 **********************************
-
+Simplify gold page and single gold page with the weight_per_unit now instead of the fancy formula if you wish..
 
 **********************************
 If someone updates the weight the weight_grams and weight_troy ounce needs to recalculate (it wont be none so it will skip it..)
 
 **********************************
-
+Silver is giving the DCA of Gold ahahahhahaah Fuck
 
 **********************************
 
