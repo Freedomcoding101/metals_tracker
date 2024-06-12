@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 import uuid
 from users.models import Profile
 from decimal import Decimal
@@ -44,14 +46,13 @@ class Gold(models.Model):
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
-    sold_to = models.CharField(max_length=100, null=True, blank=True, default="")
-    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    sell_price = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
+    sold_to = models.CharField(max_length=40, null=True, blank=True, default='')
 
     class Meta:
         verbose_name_plural = "Gold"
@@ -61,29 +62,15 @@ class Gold(models.Model):
 
     def calculate_profit(self, spot_price):
         try:
-            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
+            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
+            profit = melt_value - self.cost_to_purchase
         except:
             print('There has been an error calculating profit')
         
+        return profit
+        
         return melt_value - self.cost_to_purchase
 
-    def update_sold(self, *args, **kwargs):
-        try:
-            if self.sold_to and self.sell_price and not self.date_sold:
-                self.date_sold = timezone.now().date
-
-        except:
-            print('There has been an error updating date_sold')
-
-    # def set_initial_weight_unit(self, *args, **kwargs):
-    #     try:
-    #         if self.initial_weight_unit == 'TROY_OUNCES':
-    #             self.weight_per_unit = Decimal(weight_troy_oz) / Decimal(self.quantity)
-    #         elif self.initial_weight_unit == 'GRAMS':
-    #             self.weight_per_unit = Decimal(weight_grams) / Decimal(self.quantity)
-    #     except:
-    #         print('There has been an error calculating weight_per_unit')
-    
     def save(self, *args, **kwargs):
         try:
             if self.cost_to_purchase and self.quantity is not 0:
@@ -147,14 +134,13 @@ class Silver(models.Model):
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
-    sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
-    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    sell_price = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
+    sold_to = models.CharField(max_length=40, null=True, blank=True, default='')
 
     class Meta:
         verbose_name_plural = "Silver"
@@ -164,18 +150,12 @@ class Silver(models.Model):
 
     def calculate_profit(self, spot_price):
         try:
-            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
+            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
+            profit = melt_value - self.cost_to_purchase
         except:
             print('There has been an error calculating profit')
         
-        return melt_value - self.cost_to_purchase
-
-    def update_sold(self, *args, **kwargs):
-        try:
-            if self.sold_to and self.sell_price and not self.date_sold:
-                self.date_sold = timezone.now().date
-        except:
-            print('There has been an error updating date_sold')
+        return profit
 
     def save(self, *args, **kwargs):
         try:
@@ -240,14 +220,13 @@ class Platinum(models.Model):
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
-    sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
-    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    date_sold = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    sell_price = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
+    sold_to = models.CharField(max_length=40, null=True, blank=True, default='')
 
     class Meta:
         verbose_name_plural = "Platinum"
@@ -257,18 +236,12 @@ class Platinum(models.Model):
 
     def calculate_profit(self, spot_price):
         try:
-            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price)
+            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
+            profit = melt_value - self.cost_to_purchase
         except:
             print('There has been an error calculating profit')
         
-        return melt_value - self.cost_to_purchase
-
-    def update_sold(self, *args, **kwargs):
-        try:
-            if self.sold_to and self.sell_price and not self.date_sold:
-                self.date_sold = timezone.now().date
-        except:
-            print('There has been an error updating date_sold')
+        return profit
 
     def save(self, *args, **kwargs):
         try:
@@ -292,3 +265,18 @@ class Platinum(models.Model):
         except:
             print('There has been an error calculating the troy_oz or the grams')
         super().save(*args, **kwargs)
+
+class Sale(models.Model):
+    id = models.AutoField(primary_key=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    sell_quantity = models.DecimalField(max_digits=30, decimal_places = 2)
+    sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
+    date_sold = models.DateField(auto_now_add=True)
+    #Generic Relation
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.UUIDField(default=uuid.uuid4, editable=False)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return f"Sale {self.object_id} for {self.content_object}"

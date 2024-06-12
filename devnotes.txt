@@ -31,5 +31,14 @@ If someone updates the weight the weight_grams and weight_troy ounce needs to re
 Silver is giving the DCA of Gold ahahahhahaah Fuck
 
 **********************************
+Profit/Loss needs to be refactored.... Fuck
+
+******************************************\
+Set Delete so that if you accidentally double click the button it ignores the second click...
 
 
+
+
+Having some issues with the database... accidentally deleted the tracker_sales table from the database thinking it would help
+django doesnt realize it happened and is giving me an error now... need to mess around with migrations first thing in the 
+morning and see if i cant figure this out..

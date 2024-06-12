@@ -3,10 +3,11 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from.utils import searchMetals, paginateMetals, profit_loss, get_live_gold, get_live_silver, get_live_platinum
-from.models import Gold, Silver, Platinum
+from.models import Gold, Silver, Platinum, Sale
 from .forms import GoldForm, SilverForm, PlatinumForm, create_sell_form
 from django.http import HttpResponseNotFound
 from decimal import Decimal
+from django.contrib.contenttypes.models import ContentType
 
 # Create your views here.
 
@@ -148,7 +149,7 @@ def singleMetal(request, metal_type, pk):
     except:
         profit_output = 'N/A'
 
-    # SET SELL PRICE AND SOLD TO TO N/A IF THERE IS NONE PRESENT
+    # SET SELL PRICE AND SOLD TO TO N/A IF THERE IS NONE PRESENTfile
     if metal_object.sell_price == None:
         metal_object.sell_price = 'N/A'
     if metal_object.sold_to == None:
@@ -260,21 +261,19 @@ def sellPage(request, metal_type, pk):
         return HttpResponseServerError("Invalid metal type provided.")
 
     item = metal_model.objects.get(pk=pk)
-    SellForm = create_sell_form(metal_model)
-    form = SellForm(instance=item)
-    print('previous to post')
-    for field in form:
-            print(field)
+    user = request.user.profile
+    SellForm = create_sell_form()
+    form = SellForm()
 
     if request.method == "POST":
-        form = SellForm(request.POST, instance=item)
-        print('after post before valid form')
-        for field in form:
-            print(field)
+        form = SellForm(request.POST)
         if form.is_valid():
-            form.save()
+            sale = form.save(commit=False)
+            sale.owner = user
+            sale.content_type = ContentType.objects.get_for_model(type(item))
+            sale.object_id = item.id
+            sale.save()
             print('The form saved!!')
-            print('Below is the instance quantity... See what it does.')
             return redirect('homepage')
         else:
             print(form.errors)
