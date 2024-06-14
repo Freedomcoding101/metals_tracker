@@ -81,7 +81,7 @@ class Gold(models.Model):
         except:
             print('There has been an error calculating the troy_oz or the grams')
 
-    def cost_per_unit(self):
+    def calculate_cost_per_unit(self):
         try:
             if self.cost_to_purchase and self.quantity is not 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
@@ -162,6 +162,9 @@ class Silver(models.Model):
             print('There has been an error calculating profit')
         
         return profit
+        
+        return melt_value - self.cost_to_purchase
+        
 
     def update_weight(self):
         try:
@@ -172,20 +175,23 @@ class Silver(models.Model):
         except:
             print('There has been an error calculating the troy_oz or the grams')
 
-    def save(self, *args, **kwargs):
+    def calculate_cost_per_unit(self):
         try:
             if self.cost_to_purchase and self.quantity is not 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
-            self.cost_per_unit = 'N/A'
+            return 0.00
 
+    def calculate_premium(self):
         try:
             if self.spot_at_purchase is not None:
                 self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
         except:
             print('There has been an error calculating premium')
 
+    def save(self, *args, **kwargs):
+        
         super().save(*args, **kwargs)
 
 class Platinum(models.Model):
@@ -250,6 +256,9 @@ class Platinum(models.Model):
             print('There has been an error calculating profit')
         
         return profit
+        
+        return melt_value - self.cost_to_purchase
+        
 
     def update_weight(self):
         try:
@@ -260,20 +269,23 @@ class Platinum(models.Model):
         except:
             print('There has been an error calculating the troy_oz or the grams')
 
-    def save(self, *args, **kwargs):
+    def calculate_cost_per_unit(self):
         try:
             if self.cost_to_purchase and self.quantity is not 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
-            self.cost_per_unit = 'N/A'
+            return 0.00
 
+    def calculate_premium(self):
         try:
             if self.spot_at_purchase is not None:
                 self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
         except:
             print('There has been an error calculating premium')
 
+    def save(self, *args, **kwargs):
+        
         super().save(*args, **kwargs)
 
 class Sale(models.Model):

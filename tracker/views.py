@@ -195,7 +195,7 @@ def updatePage(request):
             newmetal= form.save(commit=False)
             newmetal.owner = profile
             newmetal.update_weight()
-            newmetal.cost_per_unit()
+            newmetal.calculate_cost_per_unit()
             newmetal.calculate_premium()
             newmetal.save()
             return redirect('homepage')
