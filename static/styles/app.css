@@ -1093,3 +1093,11 @@ img {
   font-weight: 700;
 }
 
+/* Searchreturn.html Custom CSS Also for Gold.html, Silver.html, and Platinum.html */
+
+.metal__thumbnail {
+  width: 25rem;
+  height: 25rem;
+  background-size: cover; background-position: top center;
+  border-radius: 50%; overflow: hidden; border: 2px solid #fff;
+}

@@ -32,7 +32,7 @@ class GoldForm(forms.ModelForm):
             'item_year': 'Item Year',
             'coa_present': 'COA Present',
             'item_about': 'About',
-            'spot_at_purchase': 'Spot Price at Purchase',
+            'spot_at_purchase': 'Spot Price at Purchase (Per Ounce)',
         }
 
     def __init__(self, *args, **kwargs):
@@ -100,7 +100,7 @@ class SilverForm(forms.ModelForm):
             'item_year': 'Item Year',
             'coa_present': 'COA Present',
             'item_about': 'About',
-            'spot_at_purchase': 'Spot Price at Purchase',
+            'spot_at_purchase': 'Spot Price at Purchase (Per Ounce)',
         }
 
     def __init__(self, *args, **kwargs):
@@ -169,7 +169,7 @@ class PlatinumForm(forms.ModelForm):
             'item_year': 'Item Year',
             'coa_present': 'COA Present',
             'item_about': 'About',
-            'spot_at_purchase': 'Spot Price at Purchase',
+            'spot_at_purchase': 'Spot Price at Purchase (Per Ounce)',
         }
 
     def __init__(self, *args, **kwargs):

@@ -147,7 +147,7 @@ def singleMetal(request, metal_type, pk):
     try:
         profit_output = profit_loss(metal_object.cost_to_purchase, metal_object.sell_price, metal_object.shipping_cost)
     except:
-        profit_output = 'N/A'
+        profit_output = 0.00
 
     # SET SELL PRICE AND SOLD TO TO N/A IF THERE IS NONE PRESENTfile
     if metal_object.sell_price == None:
@@ -194,6 +194,7 @@ def updatePage(request):
         if form.is_valid():
             newmetal= form.save(commit=False)
             newmetal.owner = profile
+            newmetal.update_weight()
             newmetal.save()
             return redirect('homepage')
 
@@ -277,7 +278,7 @@ def sellPage(request, metal_type, pk):
             return redirect('homepage')
         else:
             print(form.errors)
-            print('errors occureed durniv valiiiiidation')
+            print('Errors occurred during validation!')
 
     context ={'item': item,
             'form': form,

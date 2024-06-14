@@ -8,18 +8,13 @@ or something better than the homepage?
 
 
 **********************************
-Line 37 to 49 in the searchreturn.html need to have the styles actually put into a css..
+
 
 **********************************
-need to have quantity for sell... maybe you have 12 but you only sell 3.... 
-quantity is in form... should be updating properly when the form is filled out.. Going to continue working on this..
-Not sure if it is properly updating... causing errors.. also check the csrf token... and add try/except blocks to see what the issue is..
-Seems something is returning as ZERO afterwards.
-
-currently weight, weight_grams, weight_troy_oz are all going to ZERO after this form submits lol
+line 150 in tracker views.... profit output... something needs to be done here..
 
 **********************************
-add placeholders to form.... need to specifically say for weight that it is the TOTAL weight not weight per item..
+
  
 **********************************
 Simplify gold page and single gold page with the weight_per_unit now instead of the fancy formula if you wish..
@@ -42,3 +37,13 @@ Set Delete so that if you accidentally double click the button it ignores the se
 Having some issues with the database... accidentally deleted the tracker_sales table from the database thinking it would help
 django doesnt realize it happened and is giving me an error now... need to mess around with migrations first thing in the 
 morning and see if i cant figure this out..
+
+Above is sorted.... just having issues now with the wieght and everything... quantity is updating but the wieght troy ounce is not...
+Look hard... You will find it.
+
+
+
+
+*******************
+specify better on form for fields... might need to add some instructions
+*******************

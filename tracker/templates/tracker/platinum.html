@@ -35,16 +35,10 @@
               <a href="{% url 'singleMetal' metal_type='platinum' pk=object.pk %}" class="project">
                 <!-- Wrote Styles inline because CSS File not working?? -->
                 {% if object.featured_image.url != None %} 
-                <div class="project__thumbnail" style="width: 25rem; height: 25rem;
-                  background-image: url('{{ object.featured_image.url }}');
-                  background-size: cover; background-position: top center;
-                  border-radius: 50%; overflow: hidden; border: 2px solid #fff;">
+                <div class="project__thumbnail metal__thumbnail" style="background-image: url('{{ object.featured_image.url }}')">
                 </div>
                 {% else %}
-                <div class="project__thumbnail" style="width: 25rem; height: 25rem;
-                  background-image: url('{% static 'images/default.jpg' %}');
-                  background-size: cover; background-position: top center;
-                  border-radius: 50%; overflow: hidden; border: 2px solid #fff;">
+                <div class="project__thumbnail metal__thumbnail" style="background-image: url('{% static 'images/default.jpg' %}')">
                 </div>
                 {% endif %}
                 <div class="card__body">
@@ -85,16 +79,10 @@
               <a href="{% url 'singleMetal' metal_type='platinum' pk=object.pk %}" class="project">
                 <!-- Wrote Styles inline because CSS File not working?? -->
                 {% if object.featured_image.url != None %} 
-                <div class="project__thumbnail" style="width: 25rem; height: 25rem;
-                  background-image: url('{{ object.featured_image.url }}');
-                  background-size: cover; background-position: top center;
-                  border-radius: 50%; overflow: hidden; border: 2px solid #fff;">
+                <div class="project__thumbnail metal__thumbnail" style="background-image: url('{{ object.featured_image.url }}')">
                 </div>
                 {% else %}
-                <div class="project__thumbnail" style="width: 25rem; height: 25rem;
-                  background-image: url('{% static 'images/default.jpg' %}');
-                  background-size: cover; background-position: top center;
-                  border-radius: 50%; overflow: hidden; border: 2px solid #fff;">
+                <div class="project__thumbnail metal__thumbnail" style="background-image: url('{% static 'images/default.jpg' %}')">
                 </div>
                 {% endif %}
                 <div class="card__body">

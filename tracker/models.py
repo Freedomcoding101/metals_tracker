@@ -70,6 +70,16 @@ class Gold(models.Model):
         return profit
         
         return melt_value - self.cost_to_purchase
+        
+
+    def update_weight(self):
+        try:
+            if self.weight_grams is not None:
+                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
+            elif self.weight_troy_oz is not None:
+                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
+        except:
+            print('There has been an error calculating the troy_oz or the grams')
 
     def save(self, *args, **kwargs):
         try:
@@ -85,13 +95,6 @@ class Gold(models.Model):
         except:
             print('There has been an error calculating premium')
 
-        try:
-            if self.weight_grams is not None:
-                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
-            elif self.weight_troy_oz is not None:
-                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
-        except:
-            print('There has been an error calculating the troy_oz or the grams')
         super().save(*args, **kwargs)
 
 class Silver(models.Model):
@@ -157,6 +160,15 @@ class Silver(models.Model):
         
         return profit
 
+    def update_weight(self):
+        try:
+            if self.weight_grams is not None:
+                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
+            elif self.weight_troy_oz is not None:
+                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
+        except:
+            print('There has been an error calculating the troy_oz or the grams')
+
     def save(self, *args, **kwargs):
         try:
             if self.cost_to_purchase and self.quantity is not 0:
@@ -171,13 +183,6 @@ class Silver(models.Model):
         except:
             print('There has been an error calculating premium')
 
-        try:
-            if self.weight_grams is not None:
-                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
-            elif self.weight_troy_oz is not None:
-                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
-        except:
-            print('There has been an error calculating the troy_oz or the grams')
         super().save(*args, **kwargs)
 
 class Platinum(models.Model):
@@ -243,6 +248,15 @@ class Platinum(models.Model):
         
         return profit
 
+    def update_weight(self):
+        try:
+            if self.weight_grams is not None:
+                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
+            elif self.weight_troy_oz is not None:
+                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
+        except:
+            print('There has been an error calculating the troy_oz or the grams')
+
     def save(self, *args, **kwargs):
         try:
             if self.cost_to_purchase and self.quantity is not 0:
@@ -257,17 +271,9 @@ class Platinum(models.Model):
         except:
             print('There has been an error calculating premium')
 
-        try:
-            if self.weight_grams is not None:
-                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
-            elif self.weight_troy_oz is not None:
-                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
-        except:
-            print('There has been an error calculating the troy_oz or the grams')
         super().save(*args, **kwargs)
 
 class Sale(models.Model):
-    id = models.AutoField(primary_key=True)
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     sell_quantity = models.DecimalField(max_digits=30, decimal_places = 2)
@@ -277,6 +283,25 @@ class Sale(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.UUIDField(default=uuid.uuid4, editable=False)
     content_object = GenericForeignKey('content_type', 'object_id')
+
+    def save(self, *args, **kwargs):
+        item = self.content_object
+        
+        if self.sell_quantity > item.quantity:
+            raise ValidationError('You cannot sell more than you have!')
+        else:
+            item.quantity -= self.sell_quantity
+            print(item.weight_troy_oz)
+            print('weight troy ounce Above')
+            print(item.quantity)
+            print('item quantity above')
+            print(item.weight_per_unit)
+            print('item.weight_per_unit above')
+            item.weight_troy_oz = item.weight_per_unit * item.quantity
+            print(item.weight_troy_oz)
+            item.save()
+
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Sale {self.object_id} for {self.content_object}"
