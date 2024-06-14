@@ -81,20 +81,23 @@ class Gold(models.Model):
         except:
             print('There has been an error calculating the troy_oz or the grams')
 
-    def save(self, *args, **kwargs):
+    def cost_per_unit(self):
         try:
             if self.cost_to_purchase and self.quantity is not 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
-            self.cost_per_unit = 'N/A'
+            return 0.00
 
+    def calculate_premium(self):
         try:
             if self.spot_at_purchase is not None:
                 self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
         except:
             print('There has been an error calculating premium')
 
+    def save(self, *args, **kwargs):
+        
         super().save(*args, **kwargs)
 
 class Silver(models.Model):
@@ -289,16 +292,16 @@ class Sale(models.Model):
         
         if self.sell_quantity > item.quantity:
             raise ValidationError('You cannot sell more than you have!')
+        elif item.quantity == 0:
+            raise ValidationError('You cannot sell an item with a quantity of 0!')
         else:
             item.quantity -= self.sell_quantity
-            print(item.weight_troy_oz)
-            print('weight troy ounce Above')
-            print(item.quantity)
-            print('item quantity above')
-            print(item.weight_per_unit)
-            print('item.weight_per_unit above')
-            item.weight_troy_oz = item.weight_per_unit * item.quantity
-            print(item.weight_troy_oz)
+            if item.initial_weight_unit == 'GRAMS':
+                item.weight_grams = item.weight_per_unit * item.quantity
+                item.weight_troy_oz = item.weight_grams / Decimal(31.1035)
+            elif item.initial_weight_unit == 'TROY_OUNCES':
+                item.weight_troy_oz = item.weight_per_unit * item.quantity
+                item.weight_grams = item.weight_troy_oz * Decimal(31.1035)
             item.save()
 
             super().save(*args, **kwargs)
