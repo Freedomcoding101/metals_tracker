@@ -83,7 +83,7 @@ class Gold(models.Model):
 
     def calculate_cost_per_unit(self):
         try:
-            if self.cost_to_purchase and self.quantity is not 0:
+            if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
@@ -177,7 +177,7 @@ class Silver(models.Model):
 
     def calculate_cost_per_unit(self):
         try:
-            if self.cost_to_purchase and self.quantity is not 0:
+            if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
@@ -271,7 +271,7 @@ class Platinum(models.Model):
 
     def calculate_cost_per_unit(self):
         try:
-            if self.cost_to_purchase and self.quantity is not 0:
+            if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
         except:
             print('There has been an error calculating cost_per_unit')
@@ -311,9 +311,11 @@ class Sale(models.Model):
             if item.initial_weight_unit == 'GRAMS':
                 item.weight_grams = item.weight_per_unit * item.quantity
                 item.weight_troy_oz = item.weight_grams / Decimal(31.1035)
+                item.cost_to_purchase = item.quantity * item.cost_per_unit
             elif item.initial_weight_unit == 'TROY_OUNCES':
                 item.weight_troy_oz = item.weight_per_unit * item.quantity
                 item.weight_grams = item.weight_troy_oz * Decimal(31.1035)
+                item.cost_to_purchase = item.quantity * item.cost_per_unit
             item.save()
 
             super().save(*args, **kwargs)
