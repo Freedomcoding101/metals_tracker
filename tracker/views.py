@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
+from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from.utils import searchMetals, paginateMetals, profit_loss, get_live_gold, get_live_silver, get_live_platinum
@@ -145,9 +146,18 @@ def singleMetal(request, metal_type, pk):
 
     # GRAB THE PROFIT/LOSS IF THERE IS THE CORRECT INFORMATION AVAILABLE, OTHERWISE SET TO N/A
     try:
-        profit_output = profit_loss(metal_object.cost_to_purchase, metal_object.sell_price, metal_object.shipping_cost)
-    except:
+        metal_content_type = ContentType.objects.get_for_model(metal_object)
+        sales = Sale.objects.filter(content_type=metal_content_type, object_id=metal_object.id)
+        total_sell_price = sales.aggregate(total=Sum('sell_price'))['total']
+        print(total_sell_price)
+        print('above is total_sell_price')
+        profit_output = profit_loss(metal_object.cost_to_purchase, total_sell_price, metal_object.shipping_cost)
+        print (profit_output)
+        print('above is profit output')
+    except Exception as e:
         profit_output = 0.00
+        print(f"An exception occured: {e}")
+        print(profit_output)
 
     # SET SELL PRICE AND SOLD TO TO N/A IF THERE IS NONE PRESENTfile
     if metal_object.sell_price == None:
@@ -164,9 +174,9 @@ def singleMetal(request, metal_type, pk):
 
     cost_per_oz = round(((metal_object.cost_to_purchase + metal_object.shipping_cost) / metal_object.weight_troy_oz), 2)
     object_weight = metal_object.weight_troy_oz / metal_object.quantity
-    profit_loss = metal_object.calculate_profit(spot_price)
+    profit_loss_ur = metal_object.calculate_profit(spot_price)
 
-    context = { 'profit_loss': profit_loss,
+    context = { 'profit_loss_ur': profit_loss_ur,
                 'object_weight': object_weight,
                 'metal_object': metal_object,
                 'cost_per_oz': cost_per_oz,
@@ -277,7 +287,7 @@ def sellPage(request, metal_type, pk):
             sale.object_id = item.id
             sale.save()
             print('The form saved!!')
-            return redirect('homepage')
+            return redirect('singleMetal', metal_type=item.metal_type, pk=item.id)
         else:
             print(form.errors)
             print('Errors occurred during validation!')

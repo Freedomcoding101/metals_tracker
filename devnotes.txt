@@ -8,7 +8,7 @@ or something better than the homepage?
 
 
 **********************************
-Change the redirect after a sell to bring you back to the page of the item you were on
+
 
 **********************************
 line 150 in tracker views.... profit output... something needs to be done here..

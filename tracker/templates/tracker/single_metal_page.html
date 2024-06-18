@@ -23,12 +23,12 @@
               {% else %}
               <h3 class="project__title">{{object_weight|multiply:31.1035|floatformat:2}} Gram{{object_weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
               {% endif %}
-              {% if profit_loss > 0 %}
-                <h3 class="project__title profit_plus">Profit ${{profit_loss|floatformat:2}}</h3>
-              {% elif profit_loss == 0 %}
-                <h3 class="project__title profit_neutral">{{profit_loss|floatformat:2}}</h3>
+              {% if profit_loss_ur > 0 %}
+                <h3 class="project__title profit_plus">Profit ${{profit_loss_ur|floatformat:2}}</h3>
+              {% elif profit_loss_ur == 0 %}
+                <h3 class="project__title profit_neutral">{{profit_loss_ur|floatformat:2}}</h3>
               {% else %}
-                <h3 class="project__title profit_minus">Loss ${{profit_loss|absolute|floatformat:2}}</h3>
+                <h3 class="project__title profit_minus">Loss ${{profit_loss_ur|absolute|floatformat:2}}</h3>
               {% endif %}
               <p class="dev__title">Quantity: {{metal_object.quantity}}</p>
               <span style="font-weight: bold;">Purity-{{metal_object.purity}}%</span>
@@ -87,7 +87,7 @@
             </div>
             <br>
             <div class="dev__title purchase-price-container">
-              <span class="purchase-price-label">Profit/Loss:</span>
+              <span class="purchase-price-label">Profit/Loss (Realized):</span>
               <span class="purchase-price-value">${{ profit_output }}</span>
             </div>
           </div>
