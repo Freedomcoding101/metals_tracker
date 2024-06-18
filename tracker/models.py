@@ -291,9 +291,10 @@ class Platinum(models.Model):
 class Sale(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    sell_quantity = models.DecimalField(max_digits=30, decimal_places = 2)
+    sell_quantity = models.DecimalField(max_digits=30, decimal_places=2)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     date_sold = models.DateField(auto_now_add=True)
+    profit = models.DecimalField(max_digits=30, decimal_places=2)
     #Generic Relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -318,7 +319,9 @@ class Sale(models.Model):
                 item.cost_to_purchase = item.quantity * item.cost_per_unit
             item.save()
 
-            super().save(*args, **kwargs)
+        self.profit = (Decimal(self.sell_quantity) * Decimal(self.sell_price)) - (Decimal(item.cost_per_unit) * Decimal(self.sell_quantity))
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Sale {self.object_id} for {self.content_object}"

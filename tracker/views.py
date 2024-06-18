@@ -144,20 +144,15 @@ def singleMetal(request, metal_type, pk):
         metal_model = Platinum
         metal_object = metal_model.objects.get(pk=pk)
 
-    # GRAB THE PROFIT/LOSS IF THERE IS THE CORRECT INFORMATION AVAILABLE, OTHERWISE SET TO N/A
     try:
         metal_content_type = ContentType.objects.get_for_model(metal_object)
         sales = Sale.objects.filter(content_type=metal_content_type, object_id=metal_object.id)
         total_sell_price = sales.aggregate(total=Sum('sell_price'))['total']
-        print(total_sell_price)
-        print('above is total_sell_price')
-        profit_output = profit_loss(metal_object.cost_to_purchase, total_sell_price, metal_object.shipping_cost)
-        print (profit_output)
-        print('above is profit output')
-    except Exception as e:
-        profit_output = 0.00
+        total_sell_quantity = sales.aggregate(total=Sum('sell_quantity'))['total']
+        profit_output = profit_loss(metal_object.cost_per_unit, total_sell_price, total_sell_quantity, metal_object.shipping_cost)
+    except Eception as e:
         print(f"An exception occured: {e}")
-        print(profit_output)
+        
 
     # SET SELL PRICE AND SOLD TO TO N/A IF THERE IS NONE PRESENTfile
     if metal_object.sell_price == None:

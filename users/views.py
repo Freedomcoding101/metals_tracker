@@ -27,7 +27,7 @@ def profile(request, pk):
         gdca_str = 'N/A'
     try:
         sdca = (total_silver_cost / total_silver).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-        sdca_str = f"{gdca:.2f}"
+        sdca_str = f"{sdca:.2f}"
     except InvalidOperation:
         sdca = 'N/A'
         sdca_str = 'N/A'
@@ -161,7 +161,7 @@ def editAccount(request):
         if form.is_valid():
             form.save()
 
-            return redirect('homepage')
+            return redirect('profile', pk=profile.id)
 
     context = {'form': form, 'profile': profile}
     return render (request, 'users/profile_form.html', context)

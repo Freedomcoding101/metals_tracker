@@ -81,15 +81,29 @@
               <span class="purchase-price-label">Sold to:</span>
               <span class="purchase-price-value">{{ metal_object.sold_to }}</span>
             </div>
-            <div class="dev__title purchase-price-container">
-              <span class="purchase-price-label">Sell Price:</span>
-              <span class="purchase-price-value">${{ metal_object.sell_price }}</span>
-            </div>
             <br>
+            {% if profit_loss_ur == 0 %}
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Profit/Loss (Unrealized):</span>
+              <span class="purchase-price-value">$N/A</span>
+            </div>
+            {% else %}
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Profit/Loss (Unrealized):</span>
+              <span class="purchase-price-value">${{ profit_loss_ur|floatformat:2 }}</span>
+            </div>
+            {% endif %}
+            {% if profit_output == 0 %}
             <div class="dev__title purchase-price-container">
               <span class="purchase-price-label">Profit/Loss (Realized):</span>
-              <span class="purchase-price-value">${{ profit_output }}</span>
+              <span class="purchase-price-value">$N/A</span>
             </div>
+            {% else %}
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Profit/Loss (Realized):</span>
+              <span class="purchase-price-value">${{ profit_output|floatformat:2 }}</span>
+            </div>
+            {% endif %}
           </div>
 
         </div>
