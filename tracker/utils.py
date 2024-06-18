@@ -57,7 +57,7 @@ def multiply(a, b):
     return result_with_two_decimals
 
 def profit_loss(cost_per_unit, sell_price, quantity, shipping_cost):
-    profit_loss = Decimal(sell_price) - (Decimal(cost_per_unit) * quantity) + Decimal(shipping_cost)
+    profit_loss = Decimal(sell_price) - (Decimal(cost_per_unit) * quantity)
     return profit_loss
 
 def get_total_cost_to_purchase(profile):

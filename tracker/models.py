@@ -158,6 +158,8 @@ class Silver(models.Model):
         try:
             melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
             profit = melt_value - self.cost_to_purchase
+            print('HERE IS THE PROFIT')
+            print(profit)
         except:
             print('There has been an error calculating profit')
         
@@ -294,7 +296,7 @@ class Sale(models.Model):
     sell_quantity = models.DecimalField(max_digits=30, decimal_places=2)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     date_sold = models.DateField(auto_now_add=True)
-    profit = models.DecimalField(max_digits=30, decimal_places=2)
+    profit = models.DecimalField(max_digits=30, decimal_places=2, default=0.00)
     #Generic Relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.UUIDField(default=uuid.uuid4, editable=False)

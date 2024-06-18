@@ -6,21 +6,29 @@ forgot password name/page/url/ information.
 **********************************
 Fix issue with Zero Quantity, right now zero quantity is causing a crash.. need to prevent this.
 Part of this issues is in the sale model itself potentially... in the save method
+Once an item gets to zero it needs to bump over to a Sold Items page..
 
 **********************************
 Lines 157-  161 tracker views
  
 **********************************
-
-
-**********************************
-
-
-**********************************
-
+I am noticing a different price in the unrealized profit (green and red)  and the profit printing out to the box on the 
+single metals page.. I believe it is because the SPOT price that i am putting in is changing that fast. So we need to 
+regulate that.. maybe have one spot price in a table and then only update it when the user clicks..
 
 **********************************
+ cost_per_oz = round(((metal_object.cost_to_purchase + metal_object.shipping_cost) / metal_object.weight_troy_oz), 2) 
+ Issue with this in the singleMetal view.... cost_per_oz is wrong if one item sells.. It needs to be calculated and saved
+ potentially on the initial purchase.
 
+**********************************
+For Sold To on single metal page I want to print out a list of all the names, and have them potentially link to the sale
+that occured to that person on a seperate page.
+
+**********************************
+It would be good to get a good API set up so that my prices arent futures prices anymore... Thats kind of a pain in the
+ass and set up some kind of table with the spot prices that I can pull from because of loading times etc... Give them
+the option to update pricing but hold it steady for the moment if they dont and pull prices from it.
 
 ******************************************\
 Set Delete so that if you accidentally double click the button it ignores the second click...

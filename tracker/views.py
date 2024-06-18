@@ -150,8 +150,9 @@ def singleMetal(request, metal_type, pk):
         total_sell_price = sales.aggregate(total=Sum('sell_price'))['total']
         total_sell_quantity = sales.aggregate(total=Sum('sell_quantity'))['total']
         profit_output = profit_loss(metal_object.cost_per_unit, total_sell_price, total_sell_quantity, metal_object.shipping_cost)
-    except Eception as e:
+    except Exception as e:
         print(f"An exception occured: {e}")
+        profit_output = 'N/A'
         
 
     # SET SELL PRICE AND SOLD TO TO N/A IF THERE IS NONE PRESENTfile
