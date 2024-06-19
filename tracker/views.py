@@ -168,14 +168,14 @@ def singleMetal(request, metal_type, pk):
     except:
         melt_price = 'N/A'
 
-    cost_per_oz = round(((metal_object.cost_to_purchase + metal_object.shipping_cost) / metal_object.weight_troy_oz), 2)
-    object_weight = metal_object.weight_troy_oz / metal_object.quantity
+    total_cost_per_oz = metal.object.total_cost_per_unit
+    object_weight = metal_object.weight_per_unit
     profit_loss_ur = metal_object.calculate_profit(spot_price)
 
     context = { 'profit_loss_ur': profit_loss_ur,
                 'object_weight': object_weight,
                 'metal_object': metal_object,
-                'cost_per_oz': cost_per_oz,
+                'total_cost_per_oz': total_cost_per_oz,
                 'profit_output': profit_output,
                 'melt_price': melt_price}
 
@@ -204,6 +204,7 @@ def updatePage(request):
             newmetal.calculate_cost_per_unit()
             newmetal.calculate_premium()
             newmetal.save()
+            newmetal.calculate_total_cost_per_unit()
             return redirect('homepage')
 
     context = {'form': form}

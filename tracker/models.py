@@ -48,6 +48,7 @@ class Gold(models.Model):
     purchased_from = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    total_cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
@@ -61,44 +62,58 @@ class Gold(models.Model):
         return self.item_name
 
     def calculate_profit(self, spot_price):
-        try:
-            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
-            profit = melt_value - self.cost_to_purchase
-        except:
-            print('There has been an error calculating profit')
+        if self.quantity > 0:
+            try:
+                melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
+                profit = melt_value - self.cost_to_purchase
+            except Exception as e:
+                print(f'There has been an error {e}')
+            
+            return profit
         
-        return profit
-        
-        return melt_value - self.cost_to_purchase
-        
+        else:
+            profit = 0.00
+            return profit
 
     def update_weight(self):
-        try:
-            if self.weight_grams is not None:
-                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
-            elif self.weight_troy_oz is not None:
-                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
-        except:
-            print('There has been an error calculating the troy_oz or the grams')
+        if self.quantity > 0:
+            try:
+                if self.weight_grams is not None:
+                    self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
+                elif self.weight_troy_oz is not None:
+                    self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
+            except Exception as e:
+                print(f'There has been an error {e}')
+        
+        else: 
+            self.weight_troy_oz = 0
+            self.weight_grams = 0
 
     def calculate_cost_per_unit(self):
         try:
             if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
-        except:
-            print('There has been an error calculating cost_per_unit')
-            return 0.00
+        except Exception as e:
+            print(f'There has been an error {e}')
+            self.cost_per_unit = 0.00
+
+    def calculate_total_cost_per_unit(self):
+        if self.cost_to_purchase and self.weight_troy_oz and self.shiping_cost:
+            self.cost_per_oz = round(((self.cost_to_purchase + self.shipping_cost) / self.weight_troy_oz), 2)
+
+        else:
+            self.cost_per_oz = 0.00
 
     def calculate_premium(self):
-        try:
-            if self.spot_at_purchase is not None:
-                self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
-        except:
-            print('There has been an error calculating premium')
+        if self.cost_per_unit:
+            try:
+                if self.spot_at_purchase is not None:
+                    self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+            except Exception as e:
+                print(f'There has been an error {e}')
 
-    def save(self, *args, **kwargs):
-        
-        super().save(*args, **kwargs)
+        else:
+            self.cost_per_unit = 0.00
 
 class Silver(models.Model):
     METAL_TYPES = (
@@ -142,6 +157,7 @@ class Silver(models.Model):
     purchased_from = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    total_cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
@@ -155,46 +171,58 @@ class Silver(models.Model):
         return self.item_name
 
     def calculate_profit(self, spot_price):
-        try:
-            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
-            profit = melt_value - self.cost_to_purchase
-            print('HERE IS THE PROFIT')
-            print(profit)
-        except:
-            print('There has been an error calculating profit')
+        if self.quantity > 0:
+            try:
+                melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
+                profit = melt_value - self.cost_to_purchase
+            except Exception as e:
+                print(f'There has been an error {e}')
+            
+            return profit
         
-        return profit
-        
-        return melt_value - self.cost_to_purchase
-        
+        else:
+            profit = 0.00
+            return profit
 
     def update_weight(self):
-        try:
-            if self.weight_grams is not None:
-                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
-            elif self.weight_troy_oz is not None:
-                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
-        except:
-            print('There has been an error calculating the troy_oz or the grams')
+        if self.quantity > 0:
+            try:
+                if self.weight_grams is not None:
+                    self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
+                elif self.weight_troy_oz is not None:
+                    self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
+            except Exception as e:
+                print(f'There has been an error {e}')
+        
+        else: 
+            self.weight_troy_oz = 0
+            self.weight_grams = 0
 
     def calculate_cost_per_unit(self):
         try:
             if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
-        except:
-            print('There has been an error calculating cost_per_unit')
-            return 0.00
+        except Exception as e:
+            print(f'There has been an error {e}')
+            self.cost_per_unit = 0.00
+
+    def calculate_total_cost_per_unit(self):
+        if self.cost_to_purchase and self.weight_troy_oz and self.shiping_cost:
+            self.cost_per_oz = round(((self.cost_to_purchase + self.shipping_cost) / self.weight_troy_oz), 2)
+
+        else:
+            self.cost_per_oz = 0.00
 
     def calculate_premium(self):
-        try:
-            if self.spot_at_purchase is not None:
-                self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
-        except:
-            print('There has been an error calculating premium')
+        if self.cost_per_unit:
+            try:
+                if self.spot_at_purchase is not None:
+                    self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+            except Exception as e:
+                print(f'There has been an error {e}')
 
-    def save(self, *args, **kwargs):
-        
-        super().save(*args, **kwargs)
+        else:
+            self.cost_per_unit = 0.00
 
 class Platinum(models.Model):
     METAL_TYPES = (
@@ -238,6 +266,7 @@ class Platinum(models.Model):
     purchased_from = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    total_cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
@@ -251,44 +280,59 @@ class Platinum(models.Model):
         return self.item_name
 
     def calculate_profit(self, spot_price):
-        try:
-            melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
-            profit = melt_value - self.cost_to_purchase
-        except:
-            print('There has been an error calculating profit')
+        if self.quantity > 0:
+            try:
+                melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
+                profit = melt_value - self.cost_to_purchase
+            except Exception as e:
+                print(f'There has been an error {e}')
+            
+            return profit
         
-        return profit
-        
-        return melt_value - self.cost_to_purchase
-        
+        else:
+            profit = 0.00
+            return profit
 
     def update_weight(self):
-        try:
-            if self.weight_grams is not None:
-                self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
-            elif self.weight_troy_oz is not None:
-                self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
-        except:
-            print('There has been an error calculating the troy_oz or the grams')
+        if self.quantity > 0:
+            try:
+                if self.weight_grams is not None:
+                    self.weight_troy_oz = Decimal(self.weight_grams) / Decimal(31.1035)
+                elif self.weight_troy_oz is not None:
+                    self.weight_grams = Decimal(self.weight_troy_oz) * Decimal(31.1035)
+            except Exception as e:
+                print(f'There has been an error {e}')
+        
+        else: 
+            self.weight_troy_oz = 0
+            self.weight_grams = 0
 
     def calculate_cost_per_unit(self):
         try:
             if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
-        except:
-            print('There has been an error calculating cost_per_unit')
-            return 0.00
+        except Exception as e:
+            print(f'There has been an error {e}')
+            self.cost_per_unit = 0.00
+
+    def calculate_total_cost_per_unit(self):
+        if self.cost_to_purchase and self.weight_troy_oz and self.shiping_cost:
+            self.cost_per_oz = round(((self.cost_to_purchase + self.shipping_cost) / self.weight_troy_oz), 2)
+
+        else:
+            self.cost_per_oz = 0.00
 
     def calculate_premium(self):
-        try:
-            if self.spot_at_purchase is not None:
-                self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
-        except:
-            print('There has been an error calculating premium')
+        if self.cost_per_unit:
+            try:
+                if self.spot_at_purchase is not None:
+                    self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+            except Exception as e:
+                print(f'There has been an error {e}')
 
-    def save(self, *args, **kwargs):
-        
-        super().save(*args, **kwargs)
+        else:
+            self.cost_per_unit = 0.00
+
 
 class Sale(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
