@@ -4,9 +4,7 @@
 forgot password name/page/url/ information.
 
 **********************************
-Fix issue with Zero Quantity, right now zero quantity is causing a crash.. need to prevent this.
-Part of this issues is in the sale model itself potentially... in the save method
-Once an item gets to zero it needs to bump over to a Sold Items page..
+
 
 **********************************
 Lines 157-  161 tracker views

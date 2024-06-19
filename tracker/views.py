@@ -168,14 +168,14 @@ def singleMetal(request, metal_type, pk):
     except:
         melt_price = 'N/A'
 
-    total_cost_per_oz = metal.object.total_cost_per_unit
+    total_cost_per_unit = metal_object.total_cost_per_unit
     object_weight = metal_object.weight_per_unit
     profit_loss_ur = metal_object.calculate_profit(spot_price)
 
     context = { 'profit_loss_ur': profit_loss_ur,
                 'object_weight': object_weight,
                 'metal_object': metal_object,
-                'total_cost_per_oz': total_cost_per_oz,
+                'total_cost_per_unit': total_cost_per_unit,
                 'profit_output': profit_output,
                 'melt_price': melt_price}
 
@@ -283,7 +283,6 @@ def sellPage(request, metal_type, pk):
             sale.content_type = ContentType.objects.get_for_model(type(item))
             sale.object_id = item.id
             sale.save()
-            print('The form saved!!')
             return redirect('singleMetal', metal_type=item.metal_type, pk=item.id)
         else:
             print(form.errors)

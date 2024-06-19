@@ -98,11 +98,12 @@ class Gold(models.Model):
             self.cost_per_unit = 0.00
 
     def calculate_total_cost_per_unit(self):
-        if self.cost_to_purchase and self.weight_troy_oz and self.shiping_cost:
-            self.cost_per_oz = round(((self.cost_to_purchase + self.shipping_cost) / self.weight_troy_oz), 2)
-
+        if self.total_cost_per_unit == 0.00:
+            self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.weight_troy_oz)), 2)
+            self.save()
         else:
-            self.cost_per_oz = 0.00
+            self.total_cost_per_unit = 0.00
+            
 
     def calculate_premium(self):
         if self.cost_per_unit:
