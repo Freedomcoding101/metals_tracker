@@ -23,12 +23,16 @@
               {% else %}
               <h3 class="project__title">{{object_weight|multiply:31.1035|floatformat:2}} Gram{{object_weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
               {% endif %}
-              {% if profit_loss_ur > 0 %}
-                <h3 class="project__title profit_plus">Profit ${{profit_loss_ur|floatformat:2}}</h3>
-              {% elif profit_loss_ur == 0 %}
-                <h3 class="project__title profit_neutral">{{profit_loss_ur|floatformat:2}}</h3>
+              {% if metal_object.quantity > 0 %}
+                {% if profit_loss_ur > 0 %}
+                  <h3 class="project__title profit_plus">Profit ${{profit_loss_ur|floatformat:2}}</h3>
+                {% elif profit_loss_ur == 0 %}
+                  <h3 class="project__title profit_neutral">{{profit_loss_ur|floatformat:2}}</h3>
+                {% elif profit_loss_ur < 0 %}
+                  <h3 class="project__title profit_minus">Loss ${{profit_loss_ur|absolute|floatformat:2}}</h3>
+                {% endif %}
               {% else %}
-                <h3 class="project__title profit_minus">Loss ${{profit_loss_ur|absolute|floatformat:2}}</h3>
+                <h3 class="project__title profit_neutral">SOLD OUT</h3>
               {% endif %}
               <p class="dev__title">Quantity: {{metal_object.quantity}}</p>
               <span style="font-weight: bold;">Purity-{{metal_object.purity}}%</span>
@@ -65,12 +69,12 @@
               <span class="purchase-price-value">${{ melt_price }}</span>
             </div>
             <div class="dev__title purchase-price-container">
-              <span class="purchase-price-label">Shipping Price:</span>
-              <span class="purchase-price-value">${{ metal_object.shipping_cost }}</span>
-            </div>
-            <div class="dev__title purchase-price-container">
               <span class="purchase-price-label">Cost Per Ounce (Shipping Included):</span>
               <span class="purchase-price-value">${{ total_cost_per_unit }}</span>
+            </div>
+            <div class="dev__title purchase-price-container">
+              <span class="purchase-price-label">Shipping Price:</span>
+              <span class="purchase-price-value">${{ metal_object.shipping_cost }}</span>
             </div>
             <br>
             <div class="dev__title purchase-price-container">

@@ -220,11 +220,12 @@ def create_sell_form():
         
         class Meta:
             model = Sale
-            fields = ['sold_to', 'sell_price', 'sell_quantity']
+            fields = ['sold_to', 'sell_price', 'sell_quantity', 'shipping_cost']
 
             labels = {'sold_to': 'Sold To',
                     'sell_price': 'Sell Price',
                     'sell_quantity': 'Quantity Sold',
+                    'shipping_cost': 'Shipping Cost (Paid By Buyer)'
             }
 
         def __init__(self, *args, **kwargs):

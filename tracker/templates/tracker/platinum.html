@@ -49,15 +49,19 @@
                   {% else %}
                   <h3 class="project__title">{{object.weight|multiply:31.1035|floatformat:2}} Gram{{object.weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
                   {% endif %}
-                  {% if object.profit > 0 %}
-                  <h3 class="profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
+                  {% if object.quantity > 0 %}
+                    {% if object.profit > 0 %}
+                    <h3 class="project__title profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
 
-                  {% elif object.profit == 0 %}
-                  <h3 class="profit_neutral">{{object.profit|floatformat:2}}</h3>
+                    {% elif object.profit == 0 %}
+                    <h3 class="project__title profit_neutral">{{object.profit|floatformat:2}}</h3>
 
+                    {% else %}
+                    <h3 class="project__title profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
+
+                    {% endif %}
                   {% else %}
-                  <h3 class="profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
-
+                    <h3 class="project__title profit_neutral">SOLD OUT</h3>
                   {% endif %}
                   <p><a class="project__author" href="{% url 'singleMetal' metal_type='platinum' pk=object.pk %}">Quantity {{object.quantity}}</a></p>
                   <p class="project--rating">
@@ -93,15 +97,19 @@
                   {% else %}
                   <h3 class="project__title">{{object.weight|multiply:31.1035|floatformat:2}} Gram{{object.weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
                   {% endif %}
-                  {% if object.profit > 0 %}
-                  <h3 class="profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
+                  {% if object.quantity > 0 %}
+                    {% if object.profit > 0 %}
+                    <h3 class="project__title profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
 
-                  {% elif object.profit == 0 %}
-                  <h3 class="profit_neutral">{{object.profit|floatformat:2}}</h3>
+                    {% elif object.profit == 0 %}
+                    <h3 class="project__title profit_neutral">{{object.profit|floatformat:2}}</h3>
 
+                    {% else %}
+                    <h3 class="project__title profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
+
+                    {% endif %}
                   {% else %}
-                  <h3 class="profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
-
+                    <h3 class="project__title profit_neutral">SOLD OUT</h3>
                   {% endif %}
                   <p><a class="project__author" href="{% url 'singleMetal' metal_type='platinum' pk=object.pk %}">Quantity {{object.quantity}}</a></p>
                   <p class="project--rating">

@@ -65,7 +65,7 @@ class Gold(models.Model):
         if self.quantity > 0:
             try:
                 melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
-                profit = melt_value - self.cost_to_purchase
+                profit = melt_value - (self.total_cost_per_unit * self.quantity)
             except Exception as e:
                 print(f'There has been an error {e}')
             
@@ -175,7 +175,7 @@ class Silver(models.Model):
         if self.quantity > 0:
             try:
                 melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
-                profit = melt_value - self.cost_to_purchase
+                profit = melt_value - (self.total_cost_per_unit * self.quantity)
             except Exception as e:
                 print(f'There has been an error {e}')
             
@@ -308,20 +308,19 @@ class Platinum(models.Model):
             self.weight_troy_oz = 0
             self.weight_grams = 0
 
-    def calculate_cost_per_unit(self):
-        try:
-            if self.cost_to_purchase and self.quantity != 0:
-                self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
-        except Exception as e:
-            print(f'There has been an error {e}')
-            self.cost_per_unit = 0.00
-
-    def calculate_total_cost_per_unit(self):
-        if self.cost_to_purchase and self.weight_troy_oz and self.shiping_cost:
-            self.cost_per_oz = round(((self.cost_to_purchase + self.shipping_cost) / self.weight_troy_oz), 2)
-
+    def calculate_profit(self, spot_price):
+        if self.quantity > 0:
+            try:
+                melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
+                profit = melt_value - (self.total_cost_per_unit * self.quantity)
+            except Exception as e:
+                print(f'There has been an error {e}')
+            
+            return profit
+        
         else:
-            self.cost_per_oz = 0.00
+            profit = 0.00
+            return profit
 
     def calculate_premium(self):
         if self.cost_per_unit:
@@ -340,6 +339,7 @@ class Sale(models.Model):
     sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     sell_quantity = models.DecimalField(max_digits=30, decimal_places=2)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
+    shipping_cost = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
     date_sold = models.DateField(auto_now_add=True)
     profit = models.DecimalField(max_digits=30, decimal_places=2, default=0.00)
     #Generic Relation

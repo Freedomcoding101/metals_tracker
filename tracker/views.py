@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from.utils import searchMetals, paginateMetals, profit_loss, get_live_gold, get_live_silver, get_live_platinum
 from.models import Gold, Silver, Platinum, Sale
@@ -99,7 +100,7 @@ def metalPage(request, metal_type):
             object.profit = object.calculate_profit(spot_price)
 
         for object in metal_objects:
-            object.weight = Decimal(object.weight_troy_oz) / Decimal(object.quantity)
+            object.weight = object.weight_per_unit
 
         context = {
             'object.weight': object.weight,
@@ -147,19 +148,14 @@ def singleMetal(request, metal_type, pk):
     try:
         metal_content_type = ContentType.objects.get_for_model(metal_object)
         sales = Sale.objects.filter(content_type=metal_content_type, object_id=metal_object.id)
+        customer_shipping_cost = sales.aggregate(total=Sum('shipping_cost'))['total']
         total_sell_price = sales.aggregate(total=Sum('sell_price'))['total']
         total_sell_quantity = sales.aggregate(total=Sum('sell_quantity'))['total']
-        profit_output = profit_loss(metal_object.cost_per_unit, total_sell_price, total_sell_quantity, metal_object.shipping_cost)
+        profit_output = profit_loss(metal_object.total_cost_per_unit, total_sell_price, total_sell_quantity, customer_shipping_cost)
     except Exception as e:
         print(f"An exception occured: {e}")
         profit_output = 'N/A'
         
-
-    # SET SELL PRICE AND SOLD TO TO N/A IF THERE IS NONE PRESENTfile
-    if metal_object.sell_price == None:
-        metal_object.sell_price = 'N/A'
-    if metal_object.sold_to == None:
-        metal_object.sold_to = ''
 
     # GRAB THE CURRENT GOLD PRICE AND OUTPUT THE MELT VALUE TO TEMPLATE
     try:

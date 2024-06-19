@@ -4,10 +4,10 @@
 forgot password name/page/url/ information.
 
 **********************************
-
+Need to create seperate page for items that have sold out!
 
 **********************************
-Lines 157-  161 tracker views
+
  
 **********************************
 I am noticing a different price in the unrealized profit (green and red)  and the profit printing out to the box on the 
@@ -15,9 +15,8 @@ single metals page.. I believe it is because the SPOT price that i am putting in
 regulate that.. maybe have one spot price in a table and then only update it when the user clicks..
 
 **********************************
- cost_per_oz = round(((metal_object.cost_to_purchase + metal_object.shipping_cost) / metal_object.weight_troy_oz), 2) 
- Issue with this in the singleMetal view.... cost_per_oz is wrong if one item sells.. It needs to be calculated and saved
- potentially on the initial purchase.
+
+
 
 **********************************
 For Sold To on single metal page I want to print out a list of all the names, and have them potentially link to the sale
