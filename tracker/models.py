@@ -336,8 +336,8 @@ class Platinum(models.Model):
 
 class Sale(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    sell_quantity = models.DecimalField(max_digits=30, decimal_places=2)
+    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
+    sell_quantity = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     shipping_cost = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
     date_sold = models.DateField(auto_now_add=True)
@@ -372,3 +372,25 @@ class Sale(models.Model):
 
     def __str__(self):
         return f"Sale {self.object_id} for {self.content_object}"
+
+
+class MetalsData(models.Model):
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    timestamp = models.IntegerField()
+    rates = models.JSONField()
+    currency = models.CharField(max_length=30, null=False, blank=False)
+    current_gold_price = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
+    current_silver_price = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
+    current_platinum_price = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
+
+    def get_api_data(self):
+        response = requests.get('https://api.metalpriceapi.com/v1/latest?api_key=6178fa0527aabdb25fa2c141a7b07f62&base=CAD&currencies=XAU,%20XAG,%20XPT')
+        data = response.json()
+        
+        self.owner = user.profile
+        self.timestamp = data['timestamp']
+        self.rates = data['rates']
+        self.current_gold_price = data['rates']['CADXAU']
+        self.current_silver_price = data['rates']['CADXAG']
+        self.current_platinum_price = data['rates']['CADXPT']
+        self.save()

@@ -34,3 +34,10 @@ Set Delete so that if you accidentally double click the button it ignores the se
 
 
 *******************
+
+
+
+{'success': True, 'base': 'CAD', 'timestamp': 1718755199, 'rates': {'CADXAG': 40.4398826356, 'CADXAU': 3190.3057028284, 'CADXPT': 1341.8297857454, 'XAG': 0.0247280639, 'XAU': 0.0003134496, 'XPT': 0.000745251}}
+[20/Jun/2024 07:33:30] "GET /single_metal/gold/498bdb57-1512-46a9-b221-ed18710f46d5 HTTP/1.1" 200 7815
+
+Above is the format that the API sends the info in..

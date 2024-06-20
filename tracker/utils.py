@@ -1,4 +1,5 @@
 import warnings
+import requests
 warnings.filterwarnings('ignore', category=FutureWarning, module='yahoo_fin.stock_info')
 
 from .models import Gold, Silver, Platinum

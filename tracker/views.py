@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from.utils import searchMetals, paginateMetals, profit_loss, get_live_gold, get_live_silver, get_live_platinum
-from.models import Gold, Silver, Platinum, Sale
+from.models import Gold, Silver, Platinum, Sale, MetalsData
 from .forms import GoldForm, SilverForm, PlatinumForm, create_sell_form
 from django.http import HttpResponseNotFound
 from decimal import Decimal
