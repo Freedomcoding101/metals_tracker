@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 import uuid
 from users.models import Profile
 from decimal import Decimal
+import requests
 # Create your models here.
 
 class Gold(models.Model):
@@ -284,7 +285,7 @@ class Platinum(models.Model):
         if self.quantity > 0:
             try:
                 melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
-                profit = melt_value - self.cost_to_purchase
+                profit = melt_value - (self.total_cost_per_unit * self.quantity)
             except Exception as e:
                 print(f'There has been an error {e}')
             
@@ -308,19 +309,20 @@ class Platinum(models.Model):
             self.weight_troy_oz = 0
             self.weight_grams = 0
 
-    def calculate_profit(self, spot_price):
-        if self.quantity > 0:
-            try:
-                melt_value = Decimal(self.weight_troy_oz) * Decimal(spot_price) 
-                profit = melt_value - (self.total_cost_per_unit * self.quantity)
-            except Exception as e:
-                print(f'There has been an error {e}')
-            
-            return profit
-        
+    def calculate_cost_per_unit(self):
+        try:
+            if self.cost_to_purchase and self.quantity != 0:
+                self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+        except Exception as e:
+            print(f'There has been an error {e}')
+            self.cost_per_unit = 0.00
+
+    def calculate_total_cost_per_unit(self):
+        if self.cost_to_purchase and self.weight_troy_oz and self.shiping_cost:
+            self.cost_per_oz = round(((self.cost_to_purchase + self.shipping_cost) / self.weight_troy_oz), 2)
+
         else:
-            profit = 0.00
-            return profit
+            self.cost_per_oz = 0.00
 
     def calculate_premium(self):
         if self.cost_per_unit:
@@ -336,7 +338,7 @@ class Platinum(models.Model):
 
 class Sale(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
+    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, default=0.00)
     sell_quantity = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     shipping_cost = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
@@ -376,14 +378,20 @@ class Sale(models.Model):
 
 class MetalsData(models.Model):
     owner = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    timestamp = models.IntegerField()
-    rates = models.JSONField()
-    currency = models.CharField(max_length=30, null=False, blank=False)
-    current_gold_price = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
-    current_silver_price = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
-    current_platinum_price = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
+    timestamp = models.IntegerField(default=0)
+    rates = models.JSONField(default=dict)
+    currency = models.CharField(max_length=30)
+    current_gold_price = models.DecimalField(max_digits=30, decimal_places=2, default=0)
+    current_silver_price = models.DecimalField(max_digits=30, decimal_places=2, default=0)
+    current_platinum_price = models.DecimalField(max_digits=30, decimal_places=2, default=0)
 
-    def get_api_data(self):
+    class Meta:
+        verbose_name_plural = "Metals Data"
+
+    def __str__(self):
+        return f"Gold: {self.current_gold_price}, Platinum: {self.current_platinum_price}, Silver: {self.current_silver_price}"
+
+    def get_api_data(self, user):
         response = requests.get('https://api.metalpriceapi.com/v1/latest?api_key=6178fa0527aabdb25fa2c141a7b07f62&base=CAD&currencies=XAU,%20XAG,%20XPT')
         data = response.json()
         

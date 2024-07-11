@@ -1,12 +1,8 @@
-import warnings
 import requests
-warnings.filterwarnings('ignore', category=FutureWarning, module='yahoo_fin.stock_info')
-
 from .models import Gold, Silver, Platinum
 from django.db.models import Sum, Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import requests
-from yahoo_fin import stock_info as si
 from decimal import Decimal
 
 # DASHBOARD FUNCTIONS
@@ -24,34 +20,6 @@ def get_total_oz(user, metal_type):
     total = model.objects.filter(owner=user).aggregate(total_weight=Sum('weight_troy_oz'))['total_weight']
     return total if total else 0
 
-def get_cad_to_usd_exchange_rate():
-    cad_to_usd_rate = si.get_live_price('USDCAD=X')
-    return cad_to_usd_rate
-
-def get_live_gold():
-    gold_price = si.get_live_price('GC=F')
-    cad_to_usd_rate = get_cad_to_usd_exchange_rate()
-    gold_price_in_cad = gold_price * cad_to_usd_rate
-    gold_price_rounded = round(gold_price_in_cad, 2)
-    gold_price_formatted = "{:.2f}".format(gold_price_rounded)
-    return gold_price_formatted
-
-def get_live_silver():
-    silver_price = si.get_live_price('SI=F')
-    cad_to_usd_rate = get_cad_to_usd_exchange_rate()
-    silver_price_in_cad = silver_price * cad_to_usd_rate
-    silver_price_rounded = round(silver_price_in_cad, 2)
-    silver_price_formatted = "{:.2f}".format(silver_price_rounded)
-    return silver_price_formatted
-
-def get_live_platinum():
-    platinum_price = si.get_live_price('PL=F')
-    cad_to_usd_rate = get_cad_to_usd_exchange_rate()
-    platinum_price_in_cad = platinum_price * cad_to_usd_rate
-    platinum_price_rounded = round(platinum_price_in_cad, 2)
-    platinum_price_formatted = "{:.2f}".format(platinum_price_rounded)
-    return platinum_price_formatted
-
 def multiply(a, b):
     result = Decimal(a) * Decimal(b)
     result_with_two_decimals = "{:.2f}".format(result)
@@ -61,20 +29,15 @@ def profit_loss(total_cost_per_unit, sell_price, quantity, customer_shipping_cos
     profit_loss = (Decimal(sell_price) - (Decimal(total_cost_per_unit) * quantity)) + Decimal(customer_shipping_cost)
     return profit_loss
 
-def get_total_cost_to_purchase(profile):
+def get_total_invested(profile):
     gold_costs = Gold.objects.filter(owner=profile).aggregate(total_cost=Sum('cost_to_purchase'))['total_cost'] or 0
     silver_costs = Silver.objects.filter(owner=profile).aggregate(total_cost=Sum('cost_to_purchase'))['total_cost'] or 0
     platinum_costs = Platinum.objects.filter(owner=profile).aggregate(total_cost=Sum('cost_to_purchase'))['total_cost'] or 0
 
-    gold_shipping = Gold.objects.filter(owner=profile).aggregate(total_shipping_cost=Sum('shipping_cost'))['total_shipping_cost'] or 0
-    silver_shipping = Silver.objects.filter(owner=profile).aggregate(total_shipping_cost=Sum('shipping_cost'))['total_shipping_cost'] or 0
-    platinum_shipping = Platinum.objects.filter(owner=profile).aggregate(total_shipping_cost=Sum('shipping_cost'))['total_shipping_cost'] or 0
-
     # Convert all values to Decimal
-    total_gold_cost = Decimal(gold_costs) + Decimal(gold_shipping)
-    total_silver_cost = Decimal(silver_costs) + Decimal(silver_shipping)
-    total_platinum_cost = Decimal(platinum_costs) + Decimal(platinum_shipping)
-
+    total_gold_cost = Decimal(gold_costs)
+    total_silver_cost = Decimal(silver_costs)
+    total_platinum_cost = Decimal(platinum_costs)
     # Ensure all Decimal values are rounded to two decimal places
     total_gold_cost = total_gold_cost.quantize(Decimal('0.01'))
     total_silver_cost = total_silver_cost.quantize(Decimal('0.01'))

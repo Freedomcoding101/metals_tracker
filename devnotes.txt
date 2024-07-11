@@ -7,15 +7,15 @@ forgot password name/page/url/ information.
 Need to create seperate page for items that have sold out!
 
 **********************************
-
+total invested including shipping price is still including shipping from items that have sold out.... this is on the 
+dashboard
  
+need to subtract shipping from sales from the shipping cost somehow..
 **********************************
-I am noticing a different price in the unrealized profit (green and red)  and the profit printing out to the box on the 
-single metals page.. I believe it is because the SPOT price that i am putting in is changing that fast. So we need to 
-regulate that.. maybe have one spot price in a table and then only update it when the user clicks..
+dollar cost average is not including shipping price.. maybe this is better..
 
 **********************************
-
+sell_price and sold_to are still in my metal models....
 
 
 **********************************
@@ -23,21 +23,12 @@ For Sold To on single metal page I want to print out a list of all the names, an
 that occured to that person on a seperate page.
 
 **********************************
-It would be good to get a good API set up so that my prices arent futures prices anymore... Thats kind of a pain in the
-ass and set up some kind of table with the spot prices that I can pull from because of loading times etc... Give them
-the option to update pricing but hold it steady for the moment if they dont and pull prices from it.
+
 
 ******************************************\
-Set Delete so that if you accidentally double click the button it ignores the second click...
+move delete JS from delete_template.html in tracker to its own JS file
 
 *******************
-
+Think about adding the spot price to the form data when someone is putting in a new sale
 
 *******************
-
-
-
-{'success': True, 'base': 'CAD', 'timestamp': 1718755199, 'rates': {'CADXAG': 40.4398826356, 'CADXAU': 3190.3057028284, 'CADXPT': 1341.8297857454, 'XAG': 0.0247280639, 'XAU': 0.0003134496, 'XPT': 0.000745251}}
-[20/Jun/2024 07:33:30] "GET /single_metal/gold/498bdb57-1512-46a9-b221-ed18710f46d5 HTTP/1.1" 200 7815
-
-Above is the format that the API sends the info in..

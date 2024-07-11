@@ -4,12 +4,15 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from.utils import searchMetals, paginateMetals, profit_loss, get_live_gold, get_live_silver, get_live_platinum
+from.utils import searchMetals, paginateMetals, profit_loss
 from.models import Gold, Silver, Platinum, Sale, MetalsData
 from .forms import GoldForm, SilverForm, PlatinumForm, create_sell_form
 from django.http import HttpResponseNotFound
 from decimal import Decimal
 from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
+import requests
+import time
 
 # Create your views here.
 
@@ -24,17 +27,31 @@ def searchMetal(request):
     platinum_items = results['platinum_items']
     metal_objects = list(gold_items) + list(silver_items) + list(platinum_items)
     custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
+    metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
+    five_minutes_later = metals_data.timestamp + 300
+    unix_time_now = int(time.time())
+    if metals_data.current_gold_price == 0:
+        metals_data.get_api_data(request.user)
+    
+    elif (unix_time_now - five_minutes_later) > 300:
+        print('pancake')
+        # metals_data.get_api_data(request.user) 
+
+    gold_price = metals_data.current_gold_price
+    silver_price = metals_data.current_silver_price
+    platinum_price = metals_data.current_platinum_price
 
 
     if metal_objects:
         spot_price = None
+        
         for object in metal_objects:
             if object.metal_type == 'gold':
-                spot_price = get_live_gold()
+                spot_price = gold_price
             elif object.metal_type == 'silver':
-                spot_price = get_live_silver()
+                spot_price = silver_price
             elif object.metal_type == 'platinum':
-                spot_price = get_live_platinum()
+                spot_price = platinum_price
             else:
                 return HttpResponse("Somehow you managed to mess up something that shouldnt ever happen, congrats!")
 
@@ -65,26 +82,43 @@ def searchMetal(request):
 
 @login_required(login_url='login-user')
 def metalPage(request, metal_type):
+    metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
+    five_minutes_later = metals_data.timestamp + 300
+    unix_time_now = int(time.time())
+    if metals_data.current_gold_price == 0:
+        metals_data.get_api_data(request.user)
+    
+    elif (unix_time_now - five_minutes_later) > 300:
+        print('pancakes')
+        # metals_data.get_api_data(request.user) 
+
+    gold_price = metals_data.current_gold_price
+    silver_price = metals_data.current_silver_price
+    platinum_price = metals_data.current_platinum_price
+    print(f"Gold {gold_price}")
+    print(f"Silver {silver_price}")
+    print(f"Platinum {platinum_price}")
+
     metal_objects = None
     template_name = None
     results, search_query = searchMetals(request)
     
     if metal_type == 'gold':
-        spot_price = Decimal(get_live_gold())
+        spot_price = gold_price
         if search_query:
             metal_objects = results.get('gold_items')
         else:
             metal_objects = Gold.objects.filter(owner=request.user.profile)
         template_name = 'tracker/gold.html'
     elif metal_type == 'silver':
-        spot_price = Decimal(get_live_silver())
+        spot_price = silver_price
         if search_query:
             metal_objects = results.get('silver_items')
         else:
             metal_objects = Silver.objects.filter(owner=request.user.profile)
         template_name = 'tracker/silver.html'
     elif metal_type == 'platinum':
-        spot_price = Decimal(get_live_platinum())
+        spot_price = platinum_price
         if search_query:
             metal_objects = results.get('platinum_items')
         else:
@@ -130,18 +164,33 @@ def metalPage(request, metal_type):
 @login_required(login_url='login-user')
 def singleMetal(request, metal_type, pk):
     metal_model = None
+    metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
+    five_minutes_later = metals_data.timestamp + 300
+    unix_time_now = int(time.time())
+    if metals_data.current_gold_price == 0:
+        metals_data.get_api_data(request.user)
+    
+    elif (unix_time_now - five_minutes_later) > 300:
+        print('pancake')
+        print(unix_time_now)
+        print(five_minutes_later)
+        # metals_data.get_api_data(request.user) 
+
+    gold_price = metals_data.current_gold_price
+    silver_price = metals_data.current_silver_price
+    platinum_price = metals_data.current_platinum_price
 
     if metal_type == 'gold':
-        spot_price = get_live_gold()
+        spot_price = gold_price
         metal_model = Gold
         metal_object = metal_model.objects.get(pk=pk)
         
     elif metal_type == 'silver':
-        spot_price = get_live_silver()
+        spot_price = silver_price()
         metal_model = Silver
         metal_object = metal_model.objects.get(pk=pk)
     elif metal_type == 'platinum':
-        spot_price = get_live_platinum()
+        spot_price = platinum_price
         metal_model = Platinum
         metal_object = metal_model.objects.get(pk=pk)
 
@@ -159,18 +208,25 @@ def singleMetal(request, metal_type, pk):
 
     # GRAB THE CURRENT GOLD PRICE AND OUTPUT THE MELT VALUE TO TEMPLATE
     try:
-        melt_string = f"get_live_{metal_object.metal_type}()"
+        melt_string = f"{metal_object.metal_type}_price"
         melt_price = round((Decimal(eval(melt_string)) * Decimal(metal_object.weight_troy_oz)), 2)
     except:
         melt_price = 'N/A'
 
-    total_cost_per_unit = metal_object.total_cost_per_unit
+    if metal_object.quantity >= 1:
+        total_cost_per_unit = metal_object.total_cost_per_unit
+        shipping_cost = metal_object.shipping_cost
+    else:
+        total_cost_per_unit = round(Decimal(0.00), 2)
+        shipping_cost = round(Decimal(0.00), 2)
+
     object_weight = metal_object.weight_per_unit
     profit_loss_ur = metal_object.calculate_profit(spot_price)
 
     context = { 'profit_loss_ur': profit_loss_ur,
                 'object_weight': object_weight,
                 'metal_object': metal_object,
+                'shipping_cost': shipping_cost,
                 'total_cost_per_unit': total_cost_per_unit,
                 'profit_output': profit_output,
                 'melt_price': melt_price}

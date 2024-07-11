@@ -8,13 +8,29 @@
             <a class="backButton" href="#" onclick="goBack()"><span class="icon-park-outline--back-one"></span></a><p>Back</p>
             <br>
 
-            <form class="form" action="" method="POST" enctype="multipart/form-data">
+            <form id="delete-form" class="form" action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p>Are you sure you wante to delete "{{item}}"?</p>
                 <br>
-                <button class="btn btn--sub" type="submit">Delete</button>
+                <button class="btn btn--sub" id ='delete-button' onclick="handleDelete()" type="submit">Delete</button>
             </form>
         </div>
     </div>
 </main>
+<script>
+    function handleDelete() {
+        console.log("handleDelete function called");
+        var deleteButton = document.getElementById('delete-button');
+        deleteButton.disabled = true; // Disable the button to prevent double-clicks
+
+        // Optionally, you can change the button text to indicate the action is in progress
+        deleteButton.innerText = 'Deleting...';
+
+        // Submit the form or make an AJAX request to delete the item
+        // For example, if you are using a form:
+        document.getElementById('delete-form').submit();
+
+        // If you are using AJAX, make the request here and re-enable the button if the request fails
+    }
+</script>
 {% endblock %}
