@@ -33,7 +33,7 @@
             <span style="font-weight: bold;">Purity-{{metal_object.purity}}%</span>
             <br>
             <br>
-            <a class="tag tag--pill tag--main settings__btn" href="{% url 'editSale' metal_type=metal_object.metal_type pk=metal_object.pk %}"><i class="im im-edit"></i> Edit</a>
+            <a class="tag tag--pill tag--main settings__btn" href="{% url 'editSale' metal_type=metal_object.metal_type pk=sale.object_id name=sale.sold_to %}"><i class="im im-edit"></i> Edit</a>
             <a class="tag tag--pill tag--main settings__btn" href="{% url 'sellPage' metal_type=metal_object.metal_type pk=metal_object.pk %}"><i class="im im-edit"></i> Sell</a>
         </div>
         </div>

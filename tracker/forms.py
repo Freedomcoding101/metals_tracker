@@ -215,7 +215,7 @@ class PlatinumForm(forms.ModelForm):
             instance.save()
         return instance
 
-def create_sell_form():
+def create_sell_form(*args, **kwargs):
     class SellForm(forms.ModelForm):
         
         class Meta:
@@ -233,4 +233,4 @@ def create_sell_form():
             for name, field in self.fields.items():
                 field.widget.attrs.update({'class': 'input'})
 
-    return SellForm
+    return SellForm(*args, **kwargs)
