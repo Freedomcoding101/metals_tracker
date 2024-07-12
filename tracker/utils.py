@@ -26,8 +26,27 @@ def multiply(a, b):
     return result_with_two_decimals
 
 def profit_loss(total_cost_per_unit, sell_price, quantity, customer_shipping_cost):
-    profit_loss = (Decimal(sell_price) - (Decimal(total_cost_per_unit) * quantity)) + Decimal(customer_shipping_cost)
-    return profit_loss
+    try:
+        # Convert inputs to Decimal
+        total_cost_per_unit = Decimal(total_cost_per_unit)
+        sell_price = Decimal(sell_price)
+        quantity = Decimal(quantity)
+        customer_shipping_cost = Decimal(customer_shipping_cost)
+        
+        # Calculate profit/loss
+        profit_loss = (sell_price - (total_cost_per_unit * quantity)) + customer_shipping_cost
+        
+        # Debug statements
+        print(f"Total Cost Per Unit: {total_cost_per_unit}")
+        print(f"Sell Price: {sell_price}")
+        print(f"Quantity: {quantity}")
+        print(f"Customer Shipping Cost: {customer_shipping_cost}")
+        print(f"Profit/Loss: {profit_loss}")
+        
+        return profit_loss
+    except Exception as e:
+        print(f"An error occurred: {e}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        return None
 
 def get_total_invested(profile):
     gold_costs = Gold.objects.filter(owner=profile).aggregate(total_cost=Sum('cost_to_purchase'))['total_cost'] or 0

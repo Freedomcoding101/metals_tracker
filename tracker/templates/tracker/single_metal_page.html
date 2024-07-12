@@ -73,7 +73,7 @@
               <span class="purchase-price-value">${{ total_cost_per_unit }}</span>
             </div>
             <div class="dev__title purchase-price-container">
-              <span class="purchase-price-label">Shipping Price:</span>
+              <span class="purchase-price-label">Shipping Paid:</span>
               <span class="purchase-price-value">${{ shipping_cost }}</span>
             </div>
             <br>
@@ -83,7 +83,11 @@
             </div>
             <div class="dev__title purchase-price-container">
               <span class="purchase-price-label">Sold to:</span>
-              <span class="purchase-price-value">{{ metal_object.sold_to }}</span>
+              <span class="purchase-price-value">
+                {% for sale in sales %}
+                  <a href="{% url 'salesPage' metal_type=metal_object.metal_type pk=sale.object_id name=sale.sold_to %}">{{ sale.sold_to }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %} 
+              </span>
             </div>
             <br>
             {% if profit_loss_ur == 0  %}

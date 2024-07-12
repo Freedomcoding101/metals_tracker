@@ -53,8 +53,6 @@ class Gold(models.Model):
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    sell_price = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
-    sold_to = models.CharField(max_length=40, null=True, blank=True, default='')
 
     class Meta:
         verbose_name_plural = "Gold"
@@ -163,8 +161,6 @@ class Silver(models.Model):
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    sell_price = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
-    sold_to = models.CharField(max_length=40, null=True, blank=True, default='')
 
     class Meta:
         verbose_name_plural = "Silver"
@@ -209,11 +205,12 @@ class Silver(models.Model):
             self.cost_per_unit = 0.00
 
     def calculate_total_cost_per_unit(self):
-        if self.cost_to_purchase and self.weight_troy_oz and self.shiping_cost:
-            self.cost_per_oz = round(((self.cost_to_purchase + self.shipping_cost) / self.weight_troy_oz), 2)
-
+        if self.total_cost_per_unit == 0.00:
+            self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.weight_troy_oz)), 2)
+            self.save()
         else:
-            self.cost_per_oz = 0.00
+            self.total_cost_per_unit = 0.00
+            
 
     def calculate_premium(self):
         if self.cost_per_unit:
@@ -272,8 +269,6 @@ class Platinum(models.Model):
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    sell_price = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
-    sold_to = models.CharField(max_length=40, null=True, blank=True, default='')
 
     class Meta:
         verbose_name_plural = "Platinum"
@@ -318,11 +313,12 @@ class Platinum(models.Model):
             self.cost_per_unit = 0.00
 
     def calculate_total_cost_per_unit(self):
-        if self.cost_to_purchase and self.weight_troy_oz and self.shiping_cost:
-            self.cost_per_oz = round(((self.cost_to_purchase + self.shipping_cost) / self.weight_troy_oz), 2)
-
+        if self.total_cost_per_unit == 0.00:
+            self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.weight_troy_oz)), 2)
+            self.save()
         else:
-            self.cost_per_oz = 0.00
+            self.total_cost_per_unit = 0.00
+            
 
     def calculate_premium(self):
         if self.cost_per_unit:
@@ -367,8 +363,6 @@ class Sale(models.Model):
                 item.weight_grams = item.weight_troy_oz * Decimal(31.1035)
                 item.cost_to_purchase = item.quantity * item.cost_per_unit
             item.save()
-
-        self.profit = (Decimal(self.sell_quantity) * Decimal(self.sell_price)) - (Decimal(item.cost_per_unit) * Decimal(self.sell_quantity))
 
         super().save(*args, **kwargs)
 

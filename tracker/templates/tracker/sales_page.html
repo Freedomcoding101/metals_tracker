@@ -1,0 +1,100 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load multiply %}
+{% load custom_filters %}
+
+{% block content %}
+
+<main class="settingsPage profile my-md">
+<div class="container">
+    <div class="layout">
+    <div class="column column--1of3">
+        <div class="card text-center">
+        <div class="card__body dev">
+            {% if metal_object.featured_image %}
+            <img class="avatar avatar--xl dev__avatar" src="{{ metal_object.featured_image.url }}" />
+            {% else %}
+            <img class="avatar avatar--xl dev__avatar" src="{% static 'images/default.jpg' %}" />
+            {% endif %}
+            <p class="metal__year bold">{{metal_object.item_year}}</p>
+            <h2 class="metal__title">{{metal_object.item_name}}</h2>
+            {% if metal_object.quantity > 0 %}
+            {% if profit_loss_ur > 0 %}
+                <h3 class="project__title profit_plus">Profit ${{profit_loss_ur|floatformat:2}}</h3>
+            {% elif profit_loss_ur == 0 %}
+                <h3 class="project__title profit_neutral">{{profit_loss_ur|floatformat:2}}</h3>
+            {% elif profit_loss_ur < 0 %}
+                <h3 class="project__title profit_minus">Loss ${{profit_loss_ur|absolute|floatformat:2}}</h3>
+            {% endif %}
+            {% else %}
+            <h3 class="project__title profit_neutral">SOLD OUT</h3>
+            {% endif %}
+            <p class="dev__title">Quantity: {{sale.sell_quantity}}</p>
+            <span style="font-weight: bold;">Purity-{{metal_object.purity}}%</span>
+            <br>
+            <br>
+            <a class="tag tag--pill tag--main settings__btn" href="{% url 'editSale' metal_type=metal_object.metal_type pk=metal_object.pk %}"><i class="im im-edit"></i> Edit</a>
+            <a class="tag tag--pill tag--main settings__btn" href="{% url 'sellPage' metal_type=metal_object.metal_type pk=metal_object.pk %}"><i class="im im-edit"></i> Sell</a>
+        </div>
+        </div>
+    </div>
+    <div class="column column--2of3">
+        <div class="metal_single">
+        <div class="metal_settings">
+            <span class="underline"><h3 class="metal__title">Sale Information</h3></span>
+        </div>
+        <br>
+        <p class="dev__title">This sale for {% if metal_object.initial_weight_unit == 'TROY_OUNCES' %}
+            <span class="purchase-price-value">{{ sale.sell_quantity }} OZ{{ sale.sell_quantity|pluralize }}</span>
+        {% else %}
+            <span class="purchase-price-value">{{ sale.sell_quantity }} Gram{{ sale.sell_quantity|pluralize }}</span>
+        {% endif %} {{ metal_object.item_name}} was made on {{ sale.date_sold }} to {{ sale.sold_to }}.</p>
+        <br>
+        <p class="dev__title">Other sales for this item can be viewed by clicking the corresponding name below:</p>
+        <p class="dev__title">{% for sale in sales %}
+            <a href="{% url 'salesPage' metal_type=metal_object.metal_type pk=sale.object_id name=sale.sold_to %}">{{ sale.sold_to }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}</p>
+        </div>
+
+        <div class="metal_single" id="metal_single2">
+            <div class="metal_settings">
+                <span class="underline"><h3 class="metal__title">Sale Information</h3></span>
+                <!-- <a class="tag tag--pill tag--sub settings__btn tag--lg" id="metal_tag2" href="#"><i class="im im-plus"></i>Sell</a> -->
+            </div>
+            <br>
+            <div class="dev__title purchase-price-container">
+                <span class="purchase-price-label">Purchased By:</span>
+                <span class="purchase-price-value">{{ sale.sold_to }}</span>
+            </div>
+        <div class="dev__title purchase-price-container">
+            <span class="purchase-price-label">Quantity Sold:</span>
+            {% if metal_object.initial_weight_unit == 'TROY_OUNCES' %}
+                <span class="purchase-price-value">{{ sale.sell_quantity }} OZ</span>
+            {% else %}
+                <span class="purchase-price-value">{{ sale.sell_quantity }} Gram{{ sale.sell_quantity|pluralize }}</span>
+            {% endif %}
+        </div>
+        <br>
+        <div class="dev__title purchase-price-container">
+            <span class="purchase-price-label">Sale Price:</span>
+            <span class="purchase-price-value">${{ sale.sell_price }}</span>
+        </div>
+        <div class="dev__title purchase-price-container">
+            <span class="purchase-price-label">Shipping Collected:</span>
+            <span class="purchase-price-value">${{ sale.shipping_cost }}</span>
+        </div>
+        <br>
+        <div class="dev__title purchase-price-container">
+            <span class="purchase-price-label">Cost to Purchase (Including Shipping):</span>
+            <span class="purchase-price-value">${{ cost_to_purchase|floatformat:2 }}</span>
+        </div>
+        <div class="dev__title purchase-price-container">
+            <span class="purchase-price-label">Realized Profit/Loss (This Sale):</span>
+            <span class="purchase-price-value">${{ profit_output|floatformat:2 }}</span>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</main>
+{% endblock %}

@@ -186,7 +186,7 @@ def singleMetal(request, metal_type, pk):
         metal_object = metal_model.objects.get(pk=pk)
         
     elif metal_type == 'silver':
-        spot_price = silver_price()
+        spot_price = silver_price
         metal_model = Silver
         metal_object = metal_model.objects.get(pk=pk)
     elif metal_type == 'platinum':
@@ -197,14 +197,14 @@ def singleMetal(request, metal_type, pk):
     try:
         metal_content_type = ContentType.objects.get_for_model(metal_object)
         sales = Sale.objects.filter(content_type=metal_content_type, object_id=metal_object.id)
-        customer_shipping_cost = sales.aggregate(total=Sum('shipping_cost'))['total']
+        shipping_profit = sales.aggregate(total=Sum('shipping_cost'))['total']
         total_sell_price = sales.aggregate(total=Sum('sell_price'))['total']
         total_sell_quantity = sales.aggregate(total=Sum('sell_quantity'))['total']
-        profit_output = profit_loss(metal_object.total_cost_per_unit, total_sell_price, total_sell_quantity, customer_shipping_cost)
+        profit_output = profit_loss(metal_object.total_cost_per_unit, total_sell_price, total_sell_quantity, shipping_profit)
     except Exception as e:
         print(f"An exception occured: {e}")
         profit_output = 'N/A'
-        
+        sales = Sale.objects.none()
 
     # GRAB THE CURRENT GOLD PRICE AND OUTPUT THE MELT VALUE TO TEMPLATE
     try:
@@ -229,7 +229,8 @@ def singleMetal(request, metal_type, pk):
                 'shipping_cost': shipping_cost,
                 'total_cost_per_unit': total_cost_per_unit,
                 'profit_output': profit_output,
-                'melt_price': melt_price}
+                'melt_price': melt_price,
+                'sales': sales}
 
     return render(request, 'tracker/single_metal_page.html', context)
 
@@ -371,3 +372,70 @@ def deletePage(request, metal_type, pk):
 
     context = {'item': item}
     return render(request, 'tracker/delete_template.html', context)
+
+
+def salesPage(request, metal_type, pk, name):
+    metal_model = None
+    metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
+    user = request.user.profile
+    sale = get_object_or_404(Sale, object_id=pk, sold_to=name)
+    gold_price = metals_data.current_gold_price
+    silver_price = metals_data.current_silver_price
+    platinum_price = metals_data.current_platinum_price
+
+    if metal_type == 'gold':
+        spot_price = gold_price
+        metal_model = Gold
+        metal_object = metal_model.objects.get(pk=pk)
+        
+    elif metal_type == 'silver':
+        spot_price = silver_price
+        metal_model = Silver
+        metal_object = metal_model.objects.get(pk=pk)
+    elif metal_type == 'platinum':
+        spot_price = platinum_price
+        metal_model = Platinum
+        metal_object = metal_model.objects.get(pk=pk)
+
+    try:
+        profit_output = profit_loss(metal_object.total_cost_per_unit, sale.sell_price, sale.sell_quantity, sale.shipping_cost)
+        cost_to_purchase = metal_object.total_cost_per_unit * sale.sell_quantity
+
+    except Exception as e:
+        print(f"An exception occured: {e}")
+        profit_output = 'N/A'
+        cost_to_purchase = 'N/A'
+
+    try:
+        metal_content_type = ContentType.objects.get_for_model(metal_object)
+        sales = Sale.objects.filter(content_type=metal_content_type, object_id=metal_object.id)
+
+    except Exception as e:
+        print(f"An exception occured: {e}")
+        sales = Sale.objects.none()
+
+    context = {'sale': sale,
+            'sales': sales,
+            'profit_output': profit_output,
+            'metal_object': metal_object,
+            'spot_price': spot_price,
+            'cost_to_purchase': cost_to_purchase
+            }
+    return render(request, 'tracker/sales_page.html', context)
+
+
+def editSale(request, metal_type, pk, name):
+    sale = get_object_or_404(Sale, object_id=pk, sold_to=name)
+    form = create_sell_form(instance=sale)
+
+    if request.method == 'POST':
+        form = create_sell_form(request.POST, instance=sale)
+        if form.is_valid():
+            form.save()
+            return redirect('salesPage', metal_type=metal_type, pk=pk, name=name)
+        else:
+            print(form.errors)
+            print('Errors occurred during validation!')
+
+    context = {'form': form, 'sale': sale}
+    return render(request, 'tracker/sell_form.html', context)
