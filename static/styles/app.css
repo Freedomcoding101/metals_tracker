@@ -1101,3 +1101,53 @@ img {
   background-size: cover; background-position: top center;
   border-radius: 50%; overflow: hidden; border: 2px solid #fff;
 }
+
+
+/* Custom Subheader CSS */
+
+.subheader {
+  position: sticky;
+  z-index: 111;
+  background-color: var(--color-sub);
+  padding-bottom: .8rem;
+}
+
+.subheader > .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.subheader__nav > ul {
+  display: inline-flex;
+  align-items: center;
+  list-style: none;
+  gap: 6rem;
+}
+
+.subheader__menuItem > a {
+  font-weight: 300;
+}
+#goldspot {
+  color: rgba(255, 215, 0, 0.5);
+  padding: 3px;
+}
+
+#silverspot {
+  color: rgba(192, 192, 192, 0.8);
+  padding: 3px;
+}
+
+#platinumspot {
+  color: rgba(229, 228, 226, 0.8);
+  padding: 3px;
+}
+
+@media screen and (max-width: 550px) {
+  .subheader__nav > ul {
+    display: inline-flex;
+    align-items: center;
+    list-style: none;
+    gap: 1rem;
+  }
+}

@@ -36,16 +36,10 @@ def profit_loss(total_cost_per_unit, sell_price, quantity, customer_shipping_cos
         # Calculate profit/loss
         profit_loss = (sell_price - (total_cost_per_unit * quantity)) + customer_shipping_cost
         
-        # Debug statements
-        print(f"Total Cost Per Unit: {total_cost_per_unit}")
-        print(f"Sell Price: {sell_price}")
-        print(f"Quantity: {quantity}")
-        print(f"Customer Shipping Cost: {customer_shipping_cost}")
-        print(f"Profit/Loss: {profit_loss}")
-        
         return profit_loss
+
     except Exception as e:
-        print(f"An error occurred: {e}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print(f"An error occurred: {e}")
         return None
 
 def get_total_invested(profile):

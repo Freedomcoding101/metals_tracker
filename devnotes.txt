@@ -7,25 +7,20 @@ forgot password name/page/url/ information.
 Need to create seperate page for items that have sold out!
 
 **********************************
-Track shipping Costs but remove it from the profit and loss EVERYWHERE as it will be recovered?? 
-Or leave it in... not sure the best approach..
-Maybe take the shipping price that is paid by customer... and subtract it from the shipping price paid
-and then start to add it to profits after the shipping price paid is at 0.00
+make the subheader slide down the page as you scroll staying stuck to the top
+also need to add the information dynamically (maybe create a context processor..)
 
 **********************************
-Need to change the edit button for the sale information page to edit the sale...
-
-**********************************
-calculate_profit is in the model and needs to be adjusted to either include the shipping or not.... Need to decide..
-
-profit_loss is in the utils.py and needs to be adjusted as well.. Need to come up with some kind of plan.
-
-**********************************
-For Sold To on single metal page I want to print out a list of all the names, and have them potentially link to the sale
-that occured to that person on a seperate page.
+need to work on the flex for the spot prices....
 
 **********************************
 
+
+**********************************
+
+
+**********************************
+maybe include ROI as a metric..... (profit divided by initial investment) x 100
 
 ******************************************\
 move delete JS from delete_template.html in tracker to its own JS file

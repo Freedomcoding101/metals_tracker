@@ -12,9 +12,9 @@
         <div class="card text-center">
         <div class="card__body dev">
             {% if metal_object.featured_image %}
-            <img class="avatar avatar--xl dev__avatar" src="{{ metal_object.featured_image.url }}" />
+            <a href="{% url 'singleMetal' metal_type=metal_object.metal_type pk=metal_object.id %}"><img class="avatar avatar--xl dev__avatar" src="{{ metal_object.featured_image.url }}" /></a>
             {% else %}
-            <img class="avatar avatar--xl dev__avatar" src="{% static 'images/default.jpg' %}" />
+            <a href="{% url 'singleMetal' metal_type=metal_object.metal_type pk=metal_object.id %}"><img class="avatar avatar--xl dev__avatar" src="{% static 'images/default.jpg' %}" /></a>
             {% endif %}
             <p class="metal__year bold">{{metal_object.item_year}}</p>
             <h2 class="metal__title">{{metal_object.item_name}}</h2>
@@ -54,6 +54,8 @@
         <p class="dev__title">{% for sale in sales %}
             <a href="{% url 'salesPage' metal_type=metal_object.metal_type pk=sale.object_id name=sale.sold_to %}">{{ sale.sold_to }}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}</p>
+        <br>
+        <p class="dev__title">Click on the items image to go back to the main page.</p>
         </div>
 
         <div class="metal_single" id="metal_single2">
