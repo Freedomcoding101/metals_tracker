@@ -22,11 +22,11 @@ tried to change the name in the sale edit page and it created an error...
 maybe include ROI as a metric..... (profit divided by initial investment) x 100
 
 ******************************************\
-move delete JS from delete_template.html in tracker to its own JS file
+
 
 *******************
 Think about adding the spot price to the form data when someone is putting in a new sale
 maybe have spot price readily available for them somewhere???
 
 *******************
-gap on header pain in the ass
+gap on header pain in the ass need to figure this out later too tired tonight..

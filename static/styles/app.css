@@ -1128,18 +1128,12 @@ img {
   padding-bottom: .8rem;
 }
 
-.subheader > .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .subheader__nav > ul {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   list-style: none;
-  gap: 26rem;
-  margin-top: 1rem;
+  justify-content: space-between;
+  padding-top: 1rem;
 }
 
 .subheader__menuItem > a {
