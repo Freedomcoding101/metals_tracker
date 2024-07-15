@@ -35,7 +35,7 @@ img {
 }
 
 .header {
-  position: sticky;
+  position: relative; /* changed from fixed when working on stickybar */
   z-index: 111;
   background-color: var(--color-sub);
   padding: 1.5rem 0;
@@ -1104,6 +1104,22 @@ img {
 
 
 /* Custom Subheader CSS */
+#sticky-bar {
+  position: relative; /* Initially relative */
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+  transition: top 0.3s;
+  z-index: 110; /* Ensure it stays on top */
+}
+
+#sticky-bar.sticky {
+  position: fixed; /* Change to fixed when sticky */
+  top: 0;
+  width: 100%;
+  z-index: 111;
+} 
 
 .subheader {
   position: sticky;
@@ -1122,7 +1138,8 @@ img {
   display: inline-flex;
   align-items: center;
   list-style: none;
-  gap: 6rem;
+  gap: 26rem;
+  margin-top: 1rem;
 }
 
 .subheader__menuItem > a {

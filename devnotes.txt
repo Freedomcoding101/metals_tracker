@@ -7,11 +7,10 @@ forgot password name/page/url/ information.
 Need to create seperate page for items that have sold out!
 
 **********************************
-make the subheader slide down the page as you scroll staying stuck to the top
-also need to add the information dynamically (maybe create a context processor..)
+
 
 **********************************
-need to work on the flex for the spot prices....
+tried to change the name in the sale edit page and it created an error...
 
 **********************************
 
@@ -30,3 +29,4 @@ Think about adding the spot price to the form data when someone is putting in a 
 maybe have spot price readily available for them somewhere???
 
 *******************
+gap on header pain in the ass

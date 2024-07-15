@@ -48,17 +48,22 @@ def searchMetal(request):
         for object in metal_objects:
             if object.metal_type == 'gold':
                 spot_price = gold_price
+                object.profit = object.calculate_profit(spot_price)
             elif object.metal_type == 'silver':
                 spot_price = silver_price
+                object.profit = object.calculate_profit(spot_price)
             elif object.metal_type == 'platinum':
                 spot_price = platinum_price
+                object.profit = object.calculate_profit(spot_price)
             else:
                 return HttpResponse("Somehow you managed to mess up something that shouldnt ever happen, congrats!")
 
-        object.profit = object.calculate_profit(spot_price)
 
-        for object in metal_objects:
+    for object in metal_objects:
+        if object.quantity != 0:
             object.weight = object.weight_troy_oz / object.quantity
+        else:
+            object.weight = None  # or handle the zero quantity case appropriately
 
         context = {'metal_objects': metal_objects,
                 'search_query': search_query,
