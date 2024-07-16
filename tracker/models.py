@@ -367,7 +367,7 @@ class Sale(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Sale {self.object_id} for {self.content_object}"
+        return f"{self.sell_quantity} sold to {self.sold_to} for {self.content_object}"
 
 
 class MetalsData(models.Model):

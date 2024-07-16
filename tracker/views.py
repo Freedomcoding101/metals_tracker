@@ -13,6 +13,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 import requests
 import time
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -429,18 +432,35 @@ def salesPage(request, metal_type, pk, name):
     return render(request, 'tracker/sales_page.html', context)
 
 
-def editSale(request, metal_type, pk, name):
+def deleteSale(request, metal_type, pk, name):
     sale = get_object_or_404(Sale, object_id=pk, sold_to=name)
-    form = create_sell_form(instance=sale)
+    sale.delete()
+    return redirect('salesPage', metal_type=metal_type, pk=pk, name=name)
 
-    if request.method == 'POST':
-        form = create_sell_form(request.POST, instance=sale)
-        if form.is_valid():
-            form.save()
-            return redirect('salesPage', metal_type=metal_type, pk=pk, name=name)
-        else:
-            print(form.errors)
-            print('Errors occurred during validation!')
+# @require_POST
+# def reloadPrices(request):
+#     metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
+#     metals_data.get_api_data(request.user)
 
-    context = {'form': form, 'sale': sale}
-    return render(request, 'tracker/sell_form.html', context)
+#     if request.method == 'POST':  # Corrected from request_method to request.method
+#         # data = {
+#         #     'timestamp': metals_data.timestamp,
+#         #     'rates': metals_data.rates,
+#         #     'gold_price': str(metals_data.current_gold_price),
+#         #     'silver_price': str(metals_data.current_silver_price),
+#         #     'platinum_price': str(metals_data.current_platinum_price)      
+#         # }
+#         data = {}
+#         print('THIS STEP HAS BEEN COMPLETED AND YOU NOW HAVE THE DATA')
+#         print(data)
+#         return JsonResponse({'message': 'Prices reloaded successfully'})
+#     else:
+#         print('THIS STEP HAS FAILED AND YOU HAVE NO DATA')
+#         return JsonResponse({'error': 'Invalid request method'}, status=400)  # Added response
+
+# @csrf_exempt
+# def reloadPrices(request):
+#     if request.method == 'POST':
+#         # Your logic here
+#         return JsonResponse({'message': 'Prices reloaded successfully'})
+#     return JsonResponse({'error': 'Invalid request'}, status=400)

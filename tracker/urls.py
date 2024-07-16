@@ -11,7 +11,7 @@ path('edit/<str:metal_type>/<uuid:pk>/', views.editPage, name='editPage'),
 path('sell/<str:metal_type>/<uuid:pk>/', views.sellPage, name='sellPage'),
 path('delete/<str:metal_type>/<uuid:pk>/', views.deletePage, name='deletePage'),
 path('sales/<str:metal_type>/<uuid:pk>/<str:name>', views.salesPage, name='salesPage'),
-path('edit-sale/<str:metal_type>/<uuid:pk>/<str:name>', views.editSale, name='editSale'),
+path('delete-sale/<str:metal_type>/<uuid:pk>/<str:name>', views.deleteSale, name='deleteSale'),
 
 
 ]
