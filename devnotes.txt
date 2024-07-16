@@ -7,10 +7,10 @@ forgot password name/page/url/ information.
 Need to create seperate page for items that have sold out!
 
 **********************************
-need to write some code so that two sales with the same name can exist.. ie look it up with the date as well..
+need to write some code so that two sales with the same name can exist.. ie look it up with the price as well..
 
 **********************************
-
+issues with finding the sales now that i went to include the sell price in case two people had the same name... FUCK
 
 **********************************
 

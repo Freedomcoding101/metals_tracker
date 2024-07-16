@@ -233,4 +233,4 @@ def create_sell_form(*args, **kwargs):
             for name, field in self.fields.items():
                 field.widget.attrs.update({'class': 'input'})
 
-    return SellForm(*args, **kwargs)
+    return SellForm
