@@ -289,26 +289,54 @@ def editPage(request, metal_type, pk):
         # Handle the error gracefully
         return HttpResponseServerError("Invalid metal type provided.")
 
-    item = metal_model.objects.get(pk=pk)
-    initial_weight_unit = None
-    initial_weight = None
+    item = get_object_or_404(metal_model, pk=pk)
+    initial_weight_unit = initial_weight_unit = item.initial_weight_unit if item.initial_weight_unit else None
+    initial_weight = item.weight_grams if initial_weight_unit == 'GRAMS' else item.weight_troy_oz
     
-    if item.initial_weight_unit:
-        initial_weight_unit = item.initial_weight_unit
-        
-        if initial_weight_unit == 'GRAMS':
-            initial_weight = item.weight_grams
-
-
-        elif initial_weight_unit == "TROY_OUNCES":
-            initial_weight = item.weight_troy_oz
-
     if request.method == 'POST':
-        # If the form is submitted, validate and save it
         form = form_class(request.POST, request.FILES, instance=item)
         if form.is_valid():
-            form.save()
-            return redirect('singleMetal', metal_type=metal_type, pk=item.pk)
+            new_metal_type = form.cleaned_data['metal_type']
+            if new_metal_type != metal_type:
+                new_model = None
+                if new_metal_type == 'gold':
+                    new_model = Gold
+                elif new_metal_type == 'silver':
+                    new_model = Silver
+                elif new_metal_type == 'platinum':
+                    new_model = Platinum
+                
+                if new_model:
+                    new_item = new_model.objects.create(
+                        owner=item.owner,
+                        metal_type=new_metal_type,
+                        item_type=item.item_type,
+                        coa_present=item.coa_present,
+                        item_year=item.item_year,
+                        item_name=item.item_name,
+                        item_about=item.item_about,
+                        featured_image=item.featured_image,
+                        purity=item.purity,
+                        quantity=item.quantity,
+                        weight_troy_oz=item.weight_troy_oz,
+                        weight_grams=item.weight_grams,
+                        cost_to_purchase=item.cost_to_purchase,
+                        spot_at_purchase=item.spot_at_purchase,
+                        premium=item.premium,
+                        shipping_cost=item.shipping_cost,
+                        purchased_from=item.purchased_from,
+                        created=item.created,
+                        cost_per_unit=item.cost_per_unit,
+                        total_cost_per_unit=item.total_cost_per_unit,
+                        weight_per_unit=item.weight_per_unit,
+                        initial_weight_unit=item.initial_weight_unit,
+                    )
+                    item.delete()
+                    return redirect('singleMetal', metal_type=new_metal_type, pk=new_item.pk)
+                
+            else:
+                form.save() 
+                return redirect('singleMetal', metal_type=metal_type, pk=item.pk)
         else:
             print(form.errors)
     else:
@@ -382,11 +410,11 @@ def deletePage(request, metal_type, pk):
     return render(request, 'tracker/delete_template.html', context)
 
 
-def salesPage(request, metal_type, pk, name):
+def salesPage(request, sell_id, metal_type, pk, name):
     metal_model = None
     metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
     user = request.user.profile
-    sale = get_object_or_404(Sale, object_id=pk, sold_to=name)
+    sale = get_object_or_404(Sale, object_id=pk, sold_to=name, sell_id=sell_id)
     gold_price = metals_data.current_gold_price
     silver_price = metals_data.current_silver_price
     platinum_price = metals_data.current_platinum_price

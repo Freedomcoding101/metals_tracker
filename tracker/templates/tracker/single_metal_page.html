@@ -85,7 +85,7 @@
               <span class="purchase-price-label">Sold to:</span>
               <span class="purchase-price-value">
                 {% for sale in sales %}
-                  <a href="{% url 'salesPage' metal_type=metal_object.metal_type pk=sale.object_id name=sale.sold_to %}">{{ sale.sold_to }}</a>{% if not forloop.last %}, {% endif %}
+                  <a href="{% url 'salesPage' sell_id=sale.sell_id metal_type=metal_object.metal_type pk=sale.object_id name=sale.sold_to %}">{{ sale.sold_to }}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %} 
               </span>
             </div>

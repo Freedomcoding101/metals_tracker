@@ -52,7 +52,7 @@
         <br>
         <p class="dev__title">Other sales for this item can be viewed by clicking the corresponding name below:</p>
         <p class="dev__title">{% for sale in sales %}
-            <a href="{% url 'salesPage' metal_type=metal_object.metal_type pk=sale.object_id name=sale.sold_to %}">{{ sale.sold_to }}</a>{% if not forloop.last %}, {% endif %}
+            <a href="{% url 'salesPage' sell_id=sale.sell_id metal_type=metal_object.metal_type pk=sale.object_id name=sale.sold_to %}">{{ sale.sold_to }}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}</p>
         <br>
         <p class="dev__title">Click on the items image to go back to the main page, if you need to make changes to a sale

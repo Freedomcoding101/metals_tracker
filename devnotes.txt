@@ -1,4 +1,4 @@
-
+WORKING ON DOUBLE SALES CURRENTLY, JUST ADDED THE sell_id from the model to single_metal_page and sales_page.html having issues still.
 
 **********************************
 forgot password name/page/url/ information.
@@ -7,13 +7,14 @@ forgot password name/page/url/ information.
 Need to create seperate page for items that have sold out!
 
 **********************************
-need to write some code so that two sales with the same name can exist.. ie look it up with the price as well..
+Tried to change a bar from silver to gold, bar stayed on silver page but became invisible when going in to edit 
+probably changed to gold in the admin panel but stayed in silver for some reason for search... look into it.
 
 **********************************
 need to add purity to the equation when calculating total weight of silver.....
 
 **********************************
-sale items are overwriting the previous sale item... Not sure why it all happened after i put the created in..
+
 
 **********************************
 
