@@ -5,6 +5,7 @@ import uuid
 from users.models import Profile
 from decimal import Decimal
 import requests
+from django.utils import timezone
 # Create your models here.
 
 class Gold(models.Model):
@@ -334,11 +335,13 @@ class Platinum(models.Model):
 
 class Sale(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, default=0.00)
+    sell_id = models.IntegerField(primary_key=True, editable=False)
+    sell_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
     sell_quantity = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
     sold_to = models.CharField(max_length=100, null=True, blank=True, default='')
     shipping_cost = models.DecimalField(max_digits=30, decimal_places=2, null=False, blank=False)
-    date_sold = models.DateField(auto_now_add=True)
+    date_sold = models.DateField(default=None, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
     profit = models.DecimalField(max_digits=30, decimal_places=2, default=0.00)
     #Generic Relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -347,6 +350,9 @@ class Sale(models.Model):
 
     def save(self, *args, **kwargs):
         item = self.content_object
+
+        if not self.created:
+            self.created = timezone.now()
         
         if self.sell_quantity > item.quantity:
             raise ValidationError('You cannot sell more than you have!')
@@ -367,7 +373,7 @@ class Sale(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.sell_quantity} sold to {self.sold_to} for {self.content_object}"
+        return f"{self.sell_quantity} of {self.content_object} sold to {self.sold_to}"
 
 
 class MetalsData(models.Model):

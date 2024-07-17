@@ -68,8 +68,9 @@
                     <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
                   </p>
                   <p class="project--rating">
-                    <a href="{% url 'editPage' metal_type='platinum' pk=object.pk %}"><span style="font-weight: bold;">Edit</span></a><br>
-                    <a href="{% url 'deletePage' metal_type='platinum' pk=object.pk %}"><span style="font-weight: bold;">Delete</span></a>
+                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'editPage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Edit</a>
+                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'deletePage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Delete</a>
+                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'sellPage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Sell</a>
                   </p>
                 </div>
               </a>
@@ -116,8 +117,9 @@
                     <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
                   </p>
                   <p class="project--rating">
-                    <a href="{% url 'editPage' metal_type='platinum' pk=object.pk %}"><span style="font-weight: bold;">Edit</span></a><br>
-                    <a href="{% url 'deletePage' metal_type='platinum' pk=object.pk %}"><span style="font-weight: bold;">Delete</span></a>
+                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'editPage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Edit</a>
+                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'deletePage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Delete</a>
+                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'sellPage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Sell</a>
                   </p>
                 </div>
               </a>
