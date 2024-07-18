@@ -1,24 +1,26 @@
-WORKING ON DOUBLE SALES CURRENTLY, JUST ADDED THE sell_id from the model to single_metal_page and sales_page.html having issues still.
+Need to create seperate page for items that have sold out!
 
 **********************************
 forgot password name/page/url/ information.
 
 **********************************
-Need to create seperate page for items that have sold out!
-
-**********************************
-Tried to change a bar from silver to gold, bar stayed on silver page but became invisible when going in to edit 
-probably changed to gold in the admin panel but stayed in silver for some reason for search... look into it.
-
-**********************************
-need to add purity to the equation when calculating total weight of silver.....
-
-**********************************
 
 
 **********************************
+need to add purity to the equation when calculating total weight of silver..... if silver is not .999 or .9999
 
+**********************************
+weight not being added to the form when generating....
 
+**********************************
+cost per ounce, and profit_loss not updating if edits are done to weight....
+
+**********************************
+fix this error in the editPage to redirect to 404 Error Handling:
+
+The function returns HttpResponseServerError for an invalid metal_type,
+ which might not be the best user experience. Consider redirecting to an error page or displaying a user-friendly
+  message.
 **********************************
 maybe include ROI as a metric..... (profit divided by initial investment) x 100
 
@@ -31,3 +33,4 @@ Think about adding the spot price to the form data when someone is putting in a 
 maybe have spot price readily available for them somewhere???
 
 *******************
+premium WRONG and not updating.......

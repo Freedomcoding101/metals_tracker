@@ -91,25 +91,32 @@ class Gold(models.Model):
 
     def calculate_cost_per_unit(self):
         try:
+            print('Calculating cost per unit')
             if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+                print(f'Cost per unit: {self.cost_per_unit}')
+            self.save()
         except Exception as e:
             print(f'There has been an error {e}')
             self.cost_per_unit = 0.00
 
     def calculate_total_cost_per_unit(self):
-        if self.total_cost_per_unit == 0.00:
-            self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.weight_troy_oz)), 2)
-            self.save()
-        else:
-            self.total_cost_per_unit = 0.00
-            
+        try:
+            if self.cost_to_purchase is not None and self.shipping_cost is not None and self.weight_troy_oz is not None:
+                self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.quantity)), 2)
+            else:
+                return "One or more required fields are None"
+        except Exception as e:
+            print(f'An error occurred in the model/cacluclate_total_cost_per_unit: {e}')
+        self.save()
 
     def calculate_premium(self):
         if self.cost_per_unit:
+            print('calculating premium')
             try:
                 if self.spot_at_purchase is not None:
-                    self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+                    self.premium = Decimal(self.cost_per_unit) - (Decimal(self.spot_at_purchase * Decimal(self.quantity)))
+                self.save()
             except Exception as e:
                 print(f'There has been an error {e}')
 
@@ -201,23 +208,27 @@ class Silver(models.Model):
         try:
             if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+            self.save()
         except Exception as e:
             print(f'There has been an error {e}')
             self.cost_per_unit = 0.00
 
     def calculate_total_cost_per_unit(self):
-        if self.total_cost_per_unit == 0.00:
-            self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.weight_troy_oz)), 2)
-            self.save()
-        else:
-            self.total_cost_per_unit = 0.00
-            
+        try:
+            if self.cost_to_purchase is not None and self.shipping_cost is not None and self.weight_troy_oz is not None:
+                self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.quantity)), 2)
+            else:
+                return "One or more required fields are None"
+        except Exception as e:
+            print(f'An error occurred in the model/cacluclate_total_cost_per_unit: {e}')
+        self.save()
 
     def calculate_premium(self):
         if self.cost_per_unit:
             try:
                 if self.spot_at_purchase is not None:
                     self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+                self.save()
             except Exception as e:
                 print(f'There has been an error {e}')
 
@@ -265,8 +276,8 @@ class Platinum(models.Model):
     shipping_cost = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
     purchased_from = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
-    cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
-    total_cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
+    cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
+    total_cost_per_unit = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     weight_per_unit = models.DecimalField(max_digits=20, decimal_places=4, default=0.00)
     initial_weight_unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default='TROY_OUNCES')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
@@ -309,23 +320,27 @@ class Platinum(models.Model):
         try:
             if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
+            self.save()
         except Exception as e:
             print(f'There has been an error {e}')
             self.cost_per_unit = 0.00
 
     def calculate_total_cost_per_unit(self):
-        if self.total_cost_per_unit == 0.00:
-            self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.weight_troy_oz)), 2)
-            self.save()
-        else:
-            self.total_cost_per_unit = 0.00
-            
+        try:
+            if self.cost_to_purchase is not None and self.shipping_cost is not None and self.weight_troy_oz is not None:
+                self.total_cost_per_unit = round(((Decimal(self.cost_to_purchase) + Decimal(self.shipping_cost)) / Decimal(self.quantity)), 2)
+            else:
+                return "One or more required fields are None"
+        except Exception as e:
+            print(f'An error occurred in the model/cacluclate_total_cost_per_unit: {e}')
+        self.save()
 
     def calculate_premium(self):
         if self.cost_per_unit:
             try:
                 if self.spot_at_purchase is not None:
                     self.premium = Decimal(self.cost_per_unit) - Decimal(self.spot_at_purchase)
+                self.save()
             except Exception as e:
                 print(f'There has been an error {e}')
 

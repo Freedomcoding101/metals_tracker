@@ -25,8 +25,14 @@ def multiply(a, b):
     result_with_two_decimals = "{:.2f}".format(result)
     return result_with_two_decimals
 
+from decimal import Decimal
+
 def profit_loss(total_cost_per_unit, sell_price, quantity, customer_shipping_cost):
     try:
+        # Check if any input is None
+        if None in (total_cost_per_unit, sell_price, quantity, customer_shipping_cost):
+            return None
+        
         # Convert inputs to Decimal
         total_cost_per_unit = Decimal(total_cost_per_unit)
         sell_price = Decimal(sell_price)
@@ -39,9 +45,9 @@ def profit_loss(total_cost_per_unit, sell_price, quantity, customer_shipping_cos
         return profit_loss
 
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred in profit_loss() (tracker/utils.py): {e}")
         return None
-
+        
 def get_total_invested(profile):
     gold_costs = Gold.objects.filter(owner=profile).aggregate(total_cost=Sum('cost_to_purchase'))['total_cost'] or 0
     silver_costs = Silver.objects.filter(owner=profile).aggregate(total_cost=Sum('cost_to_purchase'))['total_cost'] or 0

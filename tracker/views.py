@@ -180,8 +180,6 @@ def singleMetal(request, metal_type, pk):
     
     elif (unix_time_now - five_minutes_later) > 300:
         print('pancake')
-        print(unix_time_now)
-        print(five_minutes_later)
         # metals_data.get_api_data(request.user) 
 
     gold_price = metals_data.current_gold_price
@@ -277,6 +275,11 @@ def editPage(request, metal_type, pk):
 
     # Determine the model class and form class based on the metal_type
     if metal_type == 'gold':
+        metal_model = None
+    form_class = None
+
+    # Determine the model class and form class based on the metal_type
+    if metal_type == 'gold':
         metal_model = Gold
         form_class = GoldForm
     elif metal_type == 'silver':
@@ -290,13 +293,15 @@ def editPage(request, metal_type, pk):
         return HttpResponseServerError("Invalid metal type provided.")
 
     item = get_object_or_404(metal_model, pk=pk)
-    initial_weight_unit = initial_weight_unit = item.initial_weight_unit if item.initial_weight_unit else None
-    initial_weight = item.weight_grams if initial_weight_unit == 'GRAMS' else item.weight_troy_oz
+    initial_weight_unit = item.initial_weight_unit if item.initial_weight_unit else None
+    item_weight = item.weight_grams if item.initial_weight_unit == 'GRAMS' else item.weight_troy_oz
     
     if request.method == 'POST':
         form = form_class(request.POST, request.FILES, instance=item)
         if form.is_valid():
+            updated_item = form.save(commit=False)
             new_metal_type = form.cleaned_data['metal_type']
+            
             if new_metal_type != metal_type:
                 new_model = None
                 if new_metal_type == 'gold':
@@ -315,7 +320,7 @@ def editPage(request, metal_type, pk):
                         item_year=item.item_year,
                         item_name=item.item_name,
                         item_about=item.item_about,
-                        featured_image=item.featured_image,
+                        featured_image=item.featured_image if item.featured_image else new_model._meta.get_field('featured_image').default,
                         purity=item.purity,
                         quantity=item.quantity,
                         weight_troy_oz=item.weight_troy_oz,
@@ -332,16 +337,26 @@ def editPage(request, metal_type, pk):
                         initial_weight_unit=item.initial_weight_unit,
                     )
                     item.delete()
-                    return redirect('singleMetal', metal_type=new_metal_type, pk=new_item.pk)
-                
-            else:
-                form.save() 
-                return redirect('singleMetal', metal_type=metal_type, pk=item.pk)
-        else:
-            print(form.errors)
+                    updated_item = new_item
+            
+            # Save the updated item
+            updated_item.save()
+            
+            # Perform calculations
+            updated_item.update_weight()
+            updated_item.calculate_cost_per_unit()
+            updated_item.calculate_premium()
+            updated_item.calculate_total_cost_per_unit()
+            
+            # Save again to persist all changes
+            updated_item.save()
+            return redirect('singleMetal', metal_type=new_metal_type, pk=updated_item.pk)
     else:
-        # For GET requests, render the form with the item data
-        form = form_class(instance=item, initial={'weight_unit': initial_weight_unit, 'weight': initial_weight})
+        initial_data = {
+            'weight': item_weight,
+            'weight_unit': initial_weight_unit,
+        }
+        form = form_class(instance=item, initial=initial_data)
 
     context = {'form': form}
     return render(request, 'tracker/metals_form.html', context)
