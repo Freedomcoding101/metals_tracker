@@ -111,14 +111,16 @@ class Gold(models.Model):
         self.save()
 
     def calculate_premium(self):
-        if self.cost_per_unit:
+        if self.cost_to_purchase and self.spot_at_purchase and self.quantity > 0:
             print('calculating premium')
             try:
+                print(f"cost_per_unit {self.cost_per_unit}")
+                print(f"spot_at_purchase {self.spot_at_purchase}")
+                print(f'quantity {self.quantity}')
                 if self.spot_at_purchase is not None:
-                    self.premium = Decimal(self.cost_per_unit) - (Decimal(self.spot_at_purchase * Decimal(self.quantity)))
-                self.save()
+                    self.premium = Decimal(self.cost_per_unit) - (Decimal(self.spot_at_purchase) * (Decimal(self.weight_troy_oz) / Decimal(self.quantity)))
             except Exception as e:
-                print(f'There has been an error {e}')
+                print(f'There has been an error calculating premium in the model file... {e}')
 
         else:
             self.cost_per_unit = 0.00
