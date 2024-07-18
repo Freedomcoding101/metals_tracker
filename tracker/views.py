@@ -301,7 +301,8 @@ def editPage(request, metal_type, pk):
         if form.is_valid():
             updated_item = form.save(commit=False)
             new_metal_type = form.cleaned_data['metal_type']
-            
+            new_weight_unit = form.cleaned_data['weight_unit']
+
             if new_metal_type != metal_type:
                 new_model = None
                 if new_metal_type == 'gold':
@@ -339,6 +340,12 @@ def editPage(request, metal_type, pk):
                     item.delete()
                     updated_item = new_item
             
+            elif new_weight_unit != initial_weight_unit:
+                if new_weight_unit == 'GRAMS':
+                    updated_item.initial_weight_unit = new_weight_unit
+                elif new_weight_unit == 'TROY_OUNCES':
+                    updated_item.initial_weight_unit = new_weight_unit
+
             # Save the updated item
             updated_item.save()
             

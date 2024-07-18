@@ -21,7 +21,7 @@
               {% if metal_object.initial_weight_unit == 'TROY_OUNCES' %}
               <h3 class="project__title">{{object_weight|floatformat:2}} OZ</h3>
               {% else %}
-              <h3 class="project__title">{{object_weight|multiply:31.1035|floatformat:2}} Gram{{object_weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
+              <h3 class="project__title">{{object_weight|floatformat:2}} Gram{{object_weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
               {% endif %}
               {% if metal_object.quantity > 0 %}
                 {% if profit_loss_ur > 0 %}

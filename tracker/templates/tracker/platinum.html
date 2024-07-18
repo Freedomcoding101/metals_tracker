@@ -47,7 +47,7 @@
                   {% if object.initial_weight_unit == 'TROY_OUNCES' %}
                   <h3 class="project__title">{{object.weight|floatformat:2}} OZ</h3>
                   {% else %}
-                  <h3 class="project__title">{{object.weight|multiply:31.1035|floatformat:2}} Gram{{object.weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
+                  <h3 class="project__title">{{object.weight|floatformat:2}} Gram{{object.weight|floatformat:2|pluralize}}</h3>
                   {% endif %}
                   {% if object.quantity > 0 %}
                     {% if object.profit > 0 %}
@@ -96,7 +96,7 @@
                   {% if object.initial_weight_unit == 'TROY_OUNCES' %}
                   <h3 class="project__title">{{object.weight|floatformat:2}} OZ</h3>
                   {% else %}
-                  <h3 class="project__title">{{object.weight|multiply:31.1035|floatformat:2}} Gram{{object.weight|multiply:31.1035|floatformat:2|pluralize}}</h3>
+                  <h3 class="project__title">{{object.weight|floatformat:2}} Gram{{object.weight|floatformat:2|pluralize}}</h3>
                   {% endif %}
                   {% if object.quantity > 0 %}
                     {% if object.profit > 0 %}

@@ -10,7 +10,7 @@ forgot password name/page/url/ information.
 need to add purity to the equation when calculating total weight of silver..... if silver is not .999 or .9999
 
 **********************************
-
+maybe include ROI as a metric..... (profit divided by initial investment) x 100
 
 **********************************
 
@@ -22,7 +22,7 @@ The function returns HttpResponseServerError for an invalid metal_type,
  which might not be the best user experience. Consider redirecting to an error page or displaying a user-friendly
   message.
 **********************************
-maybe include ROI as a metric..... (profit divided by initial investment) x 100
+
 
 ******************************************\
 Need to fix the AJAX request, currently its set up in the root views/url file... with the html file in the
