@@ -27,7 +27,6 @@ def homepage(request):
 
 @login_required(login_url='login-user')
 def searchMetal(request):
-    try:
         results, search_query = searchMetals(request)
         gold_items = results['gold_items']
         silver_items = results['silver_items']
@@ -89,9 +88,6 @@ def searchMetal(request):
             }
 
         return render(request, 'tracker/searchreturn.html', context)
-    
-    except Exception as e:
-        raise Http404("Page not found")
 
 @login_required(login_url='login-user')
 def metalPage(request, metal_type):

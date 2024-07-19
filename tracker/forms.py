@@ -220,10 +220,11 @@ def create_sell_form(*args, **kwargs):
         
         class Meta:
             model = Sale
-            fields = ['sold_to', 'sell_price', 'sell_quantity', 'shipping_cost']
+            fields = ['sold_to', 'sell_price','spot_price', 'sell_quantity', 'shipping_cost']
 
             labels = {'sold_to': 'Sold To',
                     'sell_price': 'Sell Price',
+                    'spot_price': 'Current Spot Price',
                     'sell_quantity': 'Quantity Sold',
                     'shipping_cost': 'Shipping Cost (Paid By Buyer)'
             }
