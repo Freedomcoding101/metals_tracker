@@ -20,73 +20,78 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def homepage(request):
-    return render(request, 'tracker/index.html')
+    try:
+        return render(request, 'tracker/index.html')
+    except Exception as e:
+        raise Http404("Page not found")
 
 @login_required(login_url='login-user')
 def searchMetal(request):
-    results, search_query = searchMetals(request)
-    gold_items = results['gold_items']
-    silver_items = results['silver_items']
-    platinum_items = results['platinum_items']
-    metal_objects = list(gold_items) + list(silver_items) + list(platinum_items)
-    custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
-    metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
-    five_minutes_later = metals_data.timestamp + 300
-    unix_time_now = int(time.time())
-    if metals_data.current_gold_price == 0:
-        metals_data.get_api_data(request.user)
-    
-    elif (unix_time_now - five_minutes_later) > 300:
-        print('pancake')
-        # metals_data.get_api_data(request.user) 
-
-    gold_price = metals_data.current_gold_price
-    silver_price = metals_data.current_silver_price
-    platinum_price = metals_data.current_platinum_price
-
-
-    if metal_objects:
-        spot_price = None
+    try:
+        results, search_query = searchMetals(request)
+        gold_items = results['gold_items']
+        silver_items = results['silver_items']
+        platinum_items = results['platinum_items']
+        metal_objects = list(gold_items) + list(silver_items) + list(platinum_items)
+        custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
+        metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
+        five_minutes_later = metals_data.timestamp + 300
+        unix_time_now = int(time.time())
+        if metals_data.current_gold_price == 0:
+            metals_data.get_api_data(request.user)
         
-        for object in metal_objects:
-            if object.metal_type == 'gold':
-                spot_price = gold_price
-                object.profit = object.calculate_profit(spot_price)
-            elif object.metal_type == 'silver':
-                spot_price = silver_price
-                object.profit = object.calculate_profit(spot_price)
-            elif object.metal_type == 'platinum':
-                spot_price = platinum_price
-                object.profit = object.calculate_profit(spot_price)
-            else:
-                return HttpResponse("Somehow you managed to mess up something that shouldnt ever happen, congrats!")
+        elif (unix_time_now - five_minutes_later) > 300:
+            print('pancake')
+            # metals_data.get_api_data(request.user) 
 
+        gold_price = metals_data.current_gold_price
+        silver_price = metals_data.current_silver_price
+        platinum_price = metals_data.current_platinum_price
 
-    for object in metal_objects:
-        if object.quantity != 0:
-            object.weight = object.weight_troy_oz / object.quantity
+        if metal_objects:
+            spot_price = None
+            
+            for object in metal_objects:
+                if object.metal_type == 'gold':
+                    spot_price = gold_price
+                    object.profit = object.calculate_profit(spot_price)
+                elif object.metal_type == 'silver':
+                    spot_price = silver_price
+                    object.profit = object.calculate_profit(spot_price)
+                elif object.metal_type == 'platinum':
+                    spot_price = platinum_price
+                    object.profit = object.calculate_profit(spot_price)
+                else:
+                    raise Http404("Somehow you managed to mess up something that shouldn't ever happen, congrats!")
+
+            for object in metal_objects:
+                if object.quantity != 0:
+                    object.weight = object.weight_troy_oz / object.quantity
+                else:
+                    object.weight = None  # or handle the zero quantity case appropriately
+
+            context = {'metal_objects': metal_objects,
+                    'search_query': search_query,
+                    'custom_range': custom_range,
+                    'object.profit': object.profit,
+                    'object.weight': object.weight,
+                    'spot_price': spot_price
+                    }
+
+        # If there is any errors it will set the context to this to prevent errors when the next page loads
         else:
-            object.weight = None  # or handle the zero quantity case appropriately
+            context = {'metal_objects': [],
+                    'search_query': search_query,
+                    'custom_range': [],
+                    'object.profit': 0,
+                    'object.weight': 0,
+                    'spot_price':  0
+            }
 
-        context = {'metal_objects': metal_objects,
-                'search_query': search_query,
-                'custom_range': custom_range,
-                'object.profit': object.profit,
-                'object.weight': object.weight,
-                'spot_price': spot_price
-                }
-
-    # If there is any errors it will set the context to this to prevent errors when the next page loads
-    else:
-        context = {'metal_objects': [],
-                'search_query': search_query,
-                'custom_range': [],
-                'object.profit': 0,
-                'object.weight': 0,
-                'spot_price':  0
-    }
-
-    return render(request, 'tracker/searchreturn.html', context)
+        return render(request, 'tracker/searchreturn.html', context)
+    
+    except Exception as e:
+        raise Http404("Page not found")
 
 @login_required(login_url='login-user')
 def metalPage(request, metal_type):
