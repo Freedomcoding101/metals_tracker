@@ -360,7 +360,7 @@ class Sale(models.Model):
     date_sold = models.DateField(default=None, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     spot_price = models.DecimalField(max_digits=20, decimal_places=2)
-    profit = models.DecimalField(max_digits=30, decimal_places=2)
+    profit = models.DecimalField(max_digits=30, decimal_places=2, null=True, blank=True)
     #Generic Relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.UUIDField(default=uuid.uuid4, editable=False)

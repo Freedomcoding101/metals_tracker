@@ -25,7 +25,9 @@ def multiply(a, b):
     result_with_two_decimals = "{:.2f}".format(result)
     return result_with_two_decimals
 
-from decimal import Decimal
+def calculate_roi(profit, total_invested):
+    return_on_income = profit / total_invested * 100
+    return return_on_income
 
 def profit_loss(total_cost_per_unit, sell_price, quantity, customer_shipping_cost):
     try:

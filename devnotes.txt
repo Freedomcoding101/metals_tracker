@@ -26,7 +26,6 @@ Need to fix the AJAX request, currently its set up in the root views/url file...
 root templates. This is a fucking mess and so annoying I hate it... Maybe there is another way.
 
 *******************
-Think about adding the spot price to the form data when someone is putting in a new sale
-maybe have spot price readily available for them somewhere???
+
 
 *******************

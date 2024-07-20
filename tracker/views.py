@@ -4,7 +4,7 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from.utils import searchMetals, paginateMetals, profit_loss
+from.utils import searchMetals, paginateMetals, profit_loss, calculate_roi
 from.models import Gold, Silver, Platinum, Sale, MetalsData
 from .forms import GoldForm, SilverForm, PlatinumForm, create_sell_form
 from django.http import HttpResponseNotFound
@@ -473,7 +473,15 @@ def salesPage(request, sell_id, metal_type, pk, name):
         print(f"An exception occured: {e}")
         sales = Sale.objects.none()
 
+    try:
+        roi = calculate_roi(profit_output, metal_object.total_cost_per_unit)
+        print(roi)
+
+    except Exception as e:
+        print(f'An exception has occurred calculating roi {e}')
+
     context = {'sale': sale,
+            'roi': roi,
             'sales': sales,
             'profit_output': profit_output,
             'metal_object': metal_object,
@@ -508,10 +516,3 @@ def deleteSale(request, metal_type, pk, name):
 #     else:
 #         print('THIS STEP HAS FAILED AND YOU HAVE NO DATA')
 #         return JsonResponse({'error': 'Invalid request method'}, status=400)  # Added response
-
-# @csrf_exempt
-# def reloadPrices(request):
-#     if request.method == 'POST':
-#         # Your logic here
-#         return JsonResponse({'message': 'Prices reloaded successfully'})
-#     return JsonResponse({'error': 'Invalid request'}, status=400)
