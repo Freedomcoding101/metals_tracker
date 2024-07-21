@@ -394,7 +394,17 @@ class Sale(models.Model):
                 item.weight_grams = item.weight_troy_oz * Decimal(31.1035)
                 item.cost_to_purchase = item.quantity * item.cost_per_unit
             item.save()
+        
+        if item.initial_weight_unit == "TROY_OUNCES":
+            item.weight_troy_oz = item.weight_per_unit * item.quantity
+            item.weight_grams = item.weight_troy_oz * Decimal(31.1035)
 
+        elif item.initial_weight_unit == "GRAMS":
+            item.weight_grams = item.weight_per_unit * item.quantity
+            item.weight_troy_oz = item.weight_grams / Decimal(31.1035)
+
+        item.cost_to_purchase = item.quantity * item.cost_per_unit
+        item.save()
         super().save(*args, **kwargs)
 
     def __str__(self):

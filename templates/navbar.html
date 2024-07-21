@@ -13,10 +13,10 @@
         </label>
         <ul class="header__menu">
           {% if request.user.is_authenticated %}
-          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='gold' %}">My Gold</a></li>
-          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='silver' %}">My Silver</a></li>
-          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='platinum' %}">My Platinum</a></li>
-          <li class="header__menuItem"><a href="{% url 'updatePage' %}">Add Metal</a></li>
+          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='gold' %}">Gold</a></li>
+          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='silver' %}">Silver</a></li>
+          <li class="header__menuItem"><a href="{% url 'metal_page' metal_type='platinum' %}">Platinum</a></li>
+          <li class="header__menuItem"><a href="{% url 'updatePage' %}">Add</a></li>
           <li class="header__menuItem"><a href="{% url 'soldItems' %}">Sales</a></li>
           <li class="header__menuItem"><a href="{% url 'profile' user.profile.id %}">Dashboard</a></li>
           <li class="header__menuItem"><a href="{% url 'logout-user' %}" class="btn btn--sub">Logout</a></li>

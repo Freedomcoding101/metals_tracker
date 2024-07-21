@@ -21,23 +21,16 @@ Add to the dashboard a TOTAL UNREALIZED and TOTAL REALIZED PROFITS/LOSSES, note 
 What would be a good way around this? Enter current shipping prices somewhere that automatically calculate??? Say have a shipping table that updates
 to reflect the profit or money that will be recovered from a sale? (question for the community)
 
-**********************************
-Working on the update quantity in signals, got it working! need to update weight, calculate_cost_per_unit 
-and total cost again to make sure EVERYTHING is updating.
-on Sell
-quantity goes down by quantity
-weight troy ounce goes up???? ************* something wrong here
-weight_grams also going up ******** fucked should be down
-cost_to_purchase is going UP by cost_per_unit *****8 FUCKED should be down
-cost_per_unit and total_cost_per_unit staying the same.. this is okay
-weight_per_unit staying the same. this is okay
+********************************
+
 
 
 **********************************
-
+issues with deleting a sale from database when the item itself has been deleted... OMG lol
+updated sale model to have content_type set to null on_delete... used to be cascade (just to know for troubleshooting)
 
 **********************************
-
+cost to purchase including shipping on the individual sales page needs some work.
 
 **********************************
 Would be interesting to have a collections section.... You would have to be able to set up a "collection" with a certain amount of items/placeholders,
