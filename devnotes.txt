@@ -22,7 +22,8 @@ What would be a good way around this? Enter current shipping prices somewhere th
 to reflect the profit or money that will be recovered from a sale? (question for the community)
 
 ********************************
-
+shipping cost is currently not being affected by anything, deep dive into this and see if it will affected
+things and if it needs to be manipulated.
 
 
 **********************************
