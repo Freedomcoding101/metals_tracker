@@ -7,25 +7,71 @@ forgot password name/page/url/ information.
 need to add purity to the equation when calculating total weight of silver..... if silver is not .999 or .9999
 actually need to change to have asw agw apw or else calculate troy ounces x purity or something, further thought required
 **********************************
-
-
-**********************************
-maybe include ROI as a metric..... (profit divided by initial investment) x 100
-
-**********************************
-
-
-**********************************
-
-
-**********************************
 Make sure to handle 404 errors at the end so you still get feedback not just a 404 response.
 
-******************************************\
+**********************************
 Need to fix the AJAX request, currently its set up in the root views/url file... with the html file in the
 root templates. This is a fucking mess and so annoying I hate it... Maybe there is another way.
 
-*******************
+**********************************
+go through and add login_required where needed
+
+**********************************
+Add to the dashboard a TOTAL UNREALIZED and TOTAL REALIZED PROFITS/LOSSES, note that some things may show a loss unless the shipping price is entered.
+What would be a good way around this? Enter current shipping prices somewhere that automatically calculate??? Say have a shipping table that updates
+to reflect the profit or money that will be recovered from a sale? (question for the community)
+
+**********************************
+Working on the update quantity in signals, got it working! need to update weight, calculate_cost_per_unit 
+and total cost again to make sure EVERYTHING is updating.
+on Sell
+quantity goes down by quantity
+weight troy ounce goes up???? ************* something wrong here
+weight_grams also going up ******** fucked should be down
+cost_to_purchase is going UP by cost_per_unit *****8 FUCKED should be down
+cost_per_unit and total_cost_per_unit staying the same.. this is okay
+weight_per_unit staying the same. this is okay
 
 
-*******************
+**********************************
+
+
+**********************************
+
+
+**********************************
+Would be interesting to have a collections section.... You would have to be able to set up a "collection" with a certain amount of items/placeholders,
+similair to what we have here but with no actual data entered yet and no pictures (or picures) uploaded and position holders for coins that were not 
+in the collection... Need to DEFINITLEY track premiums paid on these pieces because they are so far above spot price generally and this is something 
+that someone would need to know... How much premium was paid over spot.. Also it would be good to have some information filled in about each item... 
+maybe the mintage number, rarity of the piece on a 1-100 scale.... condition of the coin, potentially option for more than one photo?? maybe also a 
+link to the most recent EBAY sales on this item (research if this is possible)  
+
+
+
+
+For the basics for the site, and to put it bluntly, people need to be able to add and remove metals, track the current prices of the metals and the 
+prices that were paid. They need to know what the premium they paid over spot was and what they need to pay to break even on their purchase. 
+purchase cost plus shipping.....The big problem that I am trying to solve here is this...
+
+People need to know what they have, and log all the possible information about it so that if they have any kind of mishap or issue, others will know 
+the true value of their collections. Giving them the freedom to continue collecting their favorite pieces and not have to liquidate collections as 
+they get older to trade for generic metals...
+
+
+to have a forum where people could trade would also be an awesome future project, for example, if collections were a thing. and users could see 
+eachothers wishlists. then it would be possible to make offers to users based on their wish list... interesting concept to have a wishlist as well.
+
+messaging platform for trading between users would be interesting
+adding 2 factor identification with a google log in would be a great idea.
+another feature to build out would be the csv export, or an excel export...
+it would be nice to know the total sales in a given time period....
+it would be nice to know total value of metals in possession vs total spent
+it would be nice to know the value of collections once that gets integrated....
+at the end of the day the most important is money in, money available, and money out....
+would be nice to know the ROI for a given time period... Monthly , yearly, custom, weekly etc...
+look into charting all of the data, how is this possible
+ 
+filters to track items would be good when you have all of the metals, a sort by (higest unrealized profit), (purchase date), (hightest cost),
+(lowest cost), (lowest unrealized profit)
+

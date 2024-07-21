@@ -4,8 +4,8 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from.utils import searchMetals, paginateMetals, profit_loss, calculate_roi
-from.models import Gold, Silver, Platinum, Sale, MetalsData
+from .utils import searchMetals, paginateMetals, profit_loss, calculate_roi
+from .models import Gold, Silver, Platinum, Sale, MetalsData
 from .forms import GoldForm, SilverForm, PlatinumForm, create_sell_form
 from django.http import HttpResponseNotFound
 from decimal import Decimal
@@ -16,6 +16,7 @@ import time
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from .signals import update_quantity
 
 # Create your views here.
 
@@ -475,7 +476,6 @@ def salesPage(request, sell_id, metal_type, pk, name):
 
     try:
         roi = calculate_roi(profit_output, metal_object.total_cost_per_unit)
-        print(roi)
 
     except Exception as e:
         print(f'An exception has occurred calculating roi {e}')
@@ -494,7 +494,19 @@ def salesPage(request, sell_id, metal_type, pk, name):
 def deleteSale(request, metal_type, pk, name):
     sale = get_object_or_404(Sale, object_id=pk, sold_to=name)
     sale.delete()
-    return redirect('salesPage', metal_type=metal_type, pk=pk, name=name)
+    return redirect('singleMetal', metal_type=metal_type, pk=pk)
+
+
+def soldItemsPage(request):
+    context = {}
+    return render(request, 'tracker/sold_items.html', context)
+
+
+
+
+
+
+
 
 # @require_POST
 # def reloadPrices(request):

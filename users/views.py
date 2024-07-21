@@ -57,7 +57,7 @@ def profile(request, pk):
         silver_price = Decimal(metals_data.current_silver_price)
         platinum_price = Decimal(metals_data.current_platinum_price)
     except Exception as e:
-        print(e)
+        print(f'There has been an error in the profile view: {e}')
         gold_price = 'N/A'
         silver_price = 'N/A'
         platinum_price = 'N/A'

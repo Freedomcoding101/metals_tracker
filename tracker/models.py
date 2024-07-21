@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
 import uuid
 from users.models import Profile
 from decimal import Decimal
 import requests
 from django.utils import timezone
+from django.db.models.signals import post_save, post_delete
 # Create your models here.
 
 class Gold(models.Model):
@@ -61,6 +63,9 @@ class Gold(models.Model):
     def __str__(self):
         return self.item_name
 
+    def reverse_sale(self, sale, metal_object):
+        pass
+
     def calculate_profit(self, spot_price):
         if self.quantity > 0:
             try:
@@ -91,10 +96,8 @@ class Gold(models.Model):
 
     def calculate_cost_per_unit(self):
         try:
-            print('Calculating cost per unit')
             if self.cost_to_purchase and self.quantity != 0:
                 self.cost_per_unit = Decimal(self.cost_to_purchase) / Decimal(self.quantity)
-                print(f'Cost per unit: {self.cost_per_unit}')
             self.save()
         except Exception as e:
             print(f'There has been an error {e}')
@@ -112,11 +115,7 @@ class Gold(models.Model):
 
     def calculate_premium(self):
         if self.cost_to_purchase and self.spot_at_purchase and self.quantity > 0:
-            print('calculating premium')
             try:
-                print(f"cost_per_unit {self.cost_per_unit}")
-                print(f"spot_at_purchase {self.spot_at_purchase}")
-                print(f'quantity {self.quantity}')
                 if self.spot_at_purchase is not None:
                     self.premium = Decimal(self.cost_per_unit) - (Decimal(self.spot_at_purchase) * (Decimal(self.weight_troy_oz) / Decimal(self.quantity)))
             except Exception as e:
@@ -177,6 +176,14 @@ class Silver(models.Model):
 
     def __str__(self):
         return self.item_name
+
+    def reverse_sale(self, sale, metal_object):
+        sell_quantity = sale.sell_quantity
+        metal_object.quantity += sell_quantity
+        metal_object.save()
+        metal_object.update_weight()
+        metal_object.calculate_cost_per_unit()
+        pass
 
     def calculate_profit(self, spot_price):
         if self.quantity > 0:
@@ -362,7 +369,7 @@ class Sale(models.Model):
     spot_price = models.DecimalField(max_digits=20, decimal_places=2)
     profit = models.DecimalField(max_digits=30, decimal_places=2, null=True, blank=True)
     #Generic Relation
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True)
     object_id = models.UUIDField(default=uuid.uuid4, editable=False)
     content_object = GenericForeignKey('content_type', 'object_id')
 
