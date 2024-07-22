@@ -220,13 +220,22 @@ def create_sell_form(*args, **kwargs):
         
         class Meta:
             model = Sale
-            fields = ['sold_to', 'sell_price','spot_price', 'sell_quantity', 'shipping_cost']
+            fields = [ 'date_sold', 'sold_to', 'sell_price', 'spot_price', 'sell_quantity', 'shipping_cost']
 
             labels = {'sold_to': 'Sold To',
+                    'date_sold': 'Date Sold',
                     'sell_price': 'Sell Price',
-                    'spot_price': 'Current Spot Price',
+                    'spot_price': 'Spot Price at Sale (Per Ounce)',
                     'sell_quantity': 'Quantity Sold',
                     'shipping_cost': 'Shipping Cost (Paid By Buyer)'
+            }
+
+            widgets = {
+                'date_sold': forms.DateInput(attrs={'type': 'date'}),
+                'spot_price': forms.NumberInput(attrs={'step': 'any'}),
+                'sell_price': forms.NumberInput(attrs={'step': 'any'}),
+                'sell_quantity': forms.NumberInput(attrs={'step': 'any'}),
+                'shipping_cost': forms.NumberInput(attrs={'step': 'any'}),
             }
 
         def __init__(self, *args, **kwargs):

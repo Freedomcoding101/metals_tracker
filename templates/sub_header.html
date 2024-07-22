@@ -1,5 +1,4 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'styles/app.css' %}" />
 
 <div id="sticky-bar">
   <header class="subheader">
@@ -9,7 +8,7 @@
           <li class="subheader__menuItem" id="goldspot">Gold&nbsp;<span>${{gold_price}}</span></li>
           <li class="subheader__menuItem" id="silverspot">Silver&nbsp;<span>${{silver_price}}</span></li>
           <li class="subheader__menuItem" id="platinumspot">Platinum&nbsp;<span>${{platinum_price}}</span></li>
-          <li class="subheader__menuItem"><a href="#" id="trigger-view"><span class="solar--refresh-square-broken" id="trigger-view-button"></span></a></li>
+          <li class="subheader__menuItem"><a href="#"><span class="solar--refresh-square-broken" id="trigger-view-button1"></span></a></li>
         </ul>
       </nav>
     </div>
@@ -22,21 +21,44 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
   $(document).ready(function() {
-      $('#trigger-view, #trigger-view-button').on('click', function(event) {
+      $('#trigger-view-button1').on('click', function(event) {
           event.preventDefault(); // Prevent the default action
+          event.stopPropagation(); // Stop the event from propagating
           console.log('Anchor clicked');
           console.log('AJAX request is about to be made');
 
           $.ajax({
-              type: 'POST',
-              url: '{% url "reloadPrices" %}', // Ensure this is correctly rendered
+              type: 'GET',
+              url: 'https://api.metalpriceapi.com/v1/latest?api_key=6178fa0527aabdb25fa2c141a7b07f62&base=CAD&currencies=XAU,%20XAG,%20XPT', // Ensure this is correctly rendered
               data: {
                   csrfmiddlewaretoken: '{{ csrf_token }}' // Include CSRF token
               },
               success: function(response) {
                   console.log('AJAX request succeeded');
-                  console.log('Response:', response);
-                  alert(response.message); // Handle the response
+                  console.log('Response:', response); // Log the entire response
+
+                  // Check if the response contains the expected properties
+                  if (response.rates) {
+                      if (response.rates.CADXAU) {
+                          $('#goldspot span').text('$' + response.rates.CADXAU.toFixed(2));
+                      } else {
+                          console.error('CADXAU is undefined in the response');
+                      }
+
+                      if (response.rates.CADXAG) {
+                          $('#silverspot span').text('$' + response.rates.CADXAG.toFixed(2));
+                      } else {
+                          console.error('CADXAG is undefined in the response');
+                      }
+
+                      if (response.rates.CADXPT) {
+                          $('#platinumspot span').text('$' + response.rates.CADXPT.toFixed(2));
+                      } else {
+                          console.error('CADXPT is undefined in the response');
+                      }
+                  } else {
+                      console.error('Unexpected response structure:', response);
+                  }
               },
               error: function(xhr, status, error) {
                   console.error('AJAX request failed:', status, error);

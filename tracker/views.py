@@ -502,29 +502,3 @@ def soldItemsPage(request):
     return render(request, 'tracker/sold_items.html', context)
 
 
-
-
-
-
-
-
-# @require_POST
-# def reloadPrices(request):
-#     metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
-#     metals_data.get_api_data(request.user)
-
-#     if request.method == 'POST':  # Corrected from request_method to request.method
-#         # data = {
-#         #     'timestamp': metals_data.timestamp,
-#         #     'rates': metals_data.rates,
-#         #     'gold_price': str(metals_data.current_gold_price),
-#         #     'silver_price': str(metals_data.current_silver_price),
-#         #     'platinum_price': str(metals_data.current_platinum_price)      
-#         # }
-#         data = {}
-#         print('THIS STEP HAS BEEN COMPLETED AND YOU NOW HAVE THE DATA')
-#         print(data)
-#         return JsonResponse({'message': 'Prices reloaded successfully'})
-#     else:
-#         print('THIS STEP HAS FAILED AND YOU HAVE NO DATA')
-#         return JsonResponse({'error': 'Invalid request method'}, status=400)  # Added response

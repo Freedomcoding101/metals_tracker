@@ -25,7 +25,6 @@ to reflect the profit or money that will be recovered from a sale? (question for
 shipping cost is currently not being affected by anything, deep dive into this and see if it will affected
 things and if it needs to be manipulated.
 
-
 **********************************
 issues with deleting a sale from database when the item itself has been deleted... OMG lol
 updated sale model to have content_type set to null on_delete... used to be cascade (just to know for troubleshooting)
@@ -34,6 +33,35 @@ updated sale model to have content_type set to null on_delete... used to be casc
 cost to purchase including shipping on the individual sales page needs some work.
 
 **********************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Would be interesting to have a collections section.... You would have to be able to set up a "collection" with a certain amount of items/placeholders,
 similair to what we have here but with no actual data entered yet and no pictures (or picures) uploaded and position holders for coins that were not 
 in the collection... Need to DEFINITLEY track premiums paid on these pieces because they are so far above spot price generally and this is something 
