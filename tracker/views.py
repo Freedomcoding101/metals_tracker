@@ -501,4 +501,11 @@ def soldItemsPage(request):
     context = {}
     return render(request, 'tracker/sold_items.html', context)
 
-
+@login_required(login_url='login-user')
+def update_metals_data(request):
+    if request.method == 'GET':
+        user = request.user
+        metals_data = MetalsData.objects.get(owner=user.profile)
+        metals_data.get_api_data(user)
+        return JsonResponse({'status': 'success!'})
+    return JsonResponse({'status': 'failed!'})
