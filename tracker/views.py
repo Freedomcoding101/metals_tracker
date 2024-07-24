@@ -41,7 +41,7 @@ def searchMetal(request):
             metals_data.get_api_data(request.user)
         
         elif (unix_time_now - five_minutes_later) > 300:
-            print('pancake')
+            print('chocolate pancake')
             # metals_data.get_api_data(request.user) 
 
         gold_price = metals_data.current_gold_price
@@ -99,8 +99,8 @@ def metalPage(request, metal_type):
         metals_data.get_api_data(request.user)
     
     elif (unix_time_now - five_minutes_later) > 300:
-        print('pancakes')
-        # metals_data.get_api_data(request.user) 
+        print('strawberry pancakes')
+        # metals_data.get_api_data(request.user)
 
     gold_price = metals_data.current_gold_price
     silver_price = metals_data.current_silver_price
@@ -181,7 +181,7 @@ def singleMetal(request, metal_type, pk):
         metals_data.get_api_data(request.user)
     
     elif (unix_time_now - five_minutes_later) > 300:
-        print('pancake')
+        print('blueberry pancake')
         # metals_data.get_api_data(request.user) 
 
     gold_price = metals_data.current_gold_price
@@ -501,11 +501,8 @@ def soldItemsPage(request):
     context = {}
     return render(request, 'tracker/sold_items.html', context)
 
-@login_required(login_url='login-user')
+
 def update_metals_data(request):
-    if request.method == 'GET':
-        user = request.user
-        metals_data = MetalsData.objects.get(owner=user.profile)
-        metals_data.get_api_data(user)
-        return JsonResponse({'status': 'success!'})
-    return JsonResponse({'status': 'failed!'})
+    metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
+    metals_data.get_api_data(request.user) 
+    return JsonResponse({'metals_data': 'success'})
