@@ -10,11 +10,10 @@ actually need to change to have asw agw apw or else calculate troy ounces x puri
 Make sure to handle 404 errors at the end so you still get feedback not just a 404 response.
 
 **********************************
-Need to fix the AJAX request, currently its set up in the root views/url file... with the html file in the
-root templates. This is a fucking mess and so annoying I hate it... Maybe there is another way.
+
 
 **********************************
-go through and add login_required where needed
+
 
 **********************************
 Add to the dashboard a TOTAL UNREALIZED and TOTAL REALIZED PROFITS/LOSSES, note that some things may show a loss unless the shipping price is entered.

@@ -18,13 +18,13 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from .signals import update_quantity
 
-# Create your views here.
 
 def homepage(request):
     try:
         return render(request, 'tracker/index.html')
     except Exception as e:
         raise Http404("Page not found")
+
 
 @login_required(login_url='login-user')
 def searchMetal(request):
@@ -89,6 +89,7 @@ def searchMetal(request):
             }
 
         return render(request, 'tracker/searchreturn.html', context)
+
 
 @login_required(login_url='login-user')
 def metalPage(request, metal_type):
@@ -171,6 +172,7 @@ def metalPage(request, metal_type):
 
     return render(request, template_name, context)
 
+
 @login_required(login_url='login-user')
 def singleMetal(request, metal_type, pk):
     metal_model = None
@@ -242,6 +244,8 @@ def singleMetal(request, metal_type, pk):
 
     return render(request, 'tracker/single_metal_page.html', context)
 
+
+@login_required(login_url='login-user')
 def updatePage(request):
     form = GoldForm()
     profile = request.user.profile
@@ -271,6 +275,8 @@ def updatePage(request):
     context = {'form': form}
     return render(request, 'tracker/metals_form.html', context)
 
+
+@login_required(login_url='login-user')
 def editPage(request, metal_type, pk):
     metal_model = None
     form_class = None
@@ -370,6 +376,8 @@ def editPage(request, metal_type, pk):
     context = {'form': form}
     return render(request, 'tracker/metals_form.html', context)
 
+
+@login_required(login_url='login-user')
 def sellPage(request, metal_type, pk):
     metal_model = None
 
@@ -406,6 +414,8 @@ def sellPage(request, metal_type, pk):
     }
     return render(request, 'tracker/sell_form.html', context)
 
+
+@login_required(login_url='login-user')
 def deletePage(request, metal_type, pk):
     metal_model = None
     form_class = None
@@ -434,6 +444,7 @@ def deletePage(request, metal_type, pk):
     return render(request, 'tracker/delete_template.html', context)
 
 
+@login_required(login_url='login-user')
 def salesPage(request, sell_id, metal_type, pk, name):
     metal_model = None
     metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
@@ -491,12 +502,14 @@ def salesPage(request, sell_id, metal_type, pk, name):
     return render(request, 'tracker/sales_page.html', context)
 
 
+@login_required(login_url='login-user')
 def deleteSale(request, metal_type, pk, name):
     sale = get_object_or_404(Sale, object_id=pk, sold_to=name)
     sale.delete()
     return redirect('singleMetal', metal_type=metal_type, pk=pk)
 
 
+@login_required(login_url='login-user')
 def soldItemsPage(request):
     context = {}
     return render(request, 'tracker/sold_items.html', context)
