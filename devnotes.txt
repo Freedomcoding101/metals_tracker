@@ -10,17 +10,15 @@ actually need to change to have asw agw apw or else calculate troy ounces x puri
 Make sure to handle 404 errors at the end so you still get feedback not just a 404 response.
 
 **********************************
-
-
-**********************************
-
+need to prevent double click when signing up for an account..
 
 **********************************
-Add to the dashboard a TOTAL UNREALIZED and TOTAL REALIZED PROFITS/LOSSES, note that some things may show a loss unless the shipping price is entered.
-What would be a good way around this? Enter current shipping prices somewhere that automatically calculate??? Say have a shipping table that updates
-to reflect the profit or money that will be recovered from a sale? (question for the community)
+location of user logged out message in poor spot...
 
-********************************
+**********************************
+work on the formatting of the email...
+
+**********************************
 shipping cost is currently not being affected by anything, deep dive into this and see if it will affected
 things and if it needs to be manipulated.
 
@@ -32,8 +30,10 @@ updated sale model to have content_type set to null on_delete... used to be casc
 cost to purchase including shipping on the individual sales page needs some work.
 
 **********************************
-
-
+changed update_quantity to update_sale in the signals.py file... (just in case any errors happen its logged here for a minute.
+maybe test the sales.)
+**********************************
+check to see if my ajax needs a csrf..
 
 
 

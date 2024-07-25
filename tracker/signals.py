@@ -1,11 +1,13 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from .models import Gold, Silver, Platinum, Sale
+from users.models import Profile
 from decimal import Decimal
+from django.contrib.contenttypes.models import ContentType
 
-def update_quantity(sender, instance, **kwargs):
+def update_sale(sender, instance, **kwargs):
     sale = instance
-    update_quantity = sale.sell_quantity
+    update_sale = sale.sell_quantity
     pk = sale.object_id
     content_type = sale.content_type
 
@@ -21,7 +23,7 @@ def update_quantity(sender, instance, **kwargs):
             return
 
         metal_object = metal_model.objects.get(pk=pk)
-        metal_object.quantity += update_quantity
+        metal_object.quantity += update_sale
         metal_object.save()
 
         if metal_object.initial_weight_unit == 'GRAMS':
@@ -39,4 +41,6 @@ def update_quantity(sender, instance, **kwargs):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-post_delete.connect(update_quantity, sender=Sale)
+post_delete.connect(update_sale, sender=Sale)
+
+

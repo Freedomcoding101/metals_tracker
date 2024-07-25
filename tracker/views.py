@@ -16,7 +16,7 @@ import time
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from .signals import update_quantity
+from .signals import update_sale
 
 
 def homepage(request):
