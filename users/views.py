@@ -139,11 +139,11 @@ def loginUser(request):
     if request.method =="POST":
         username = request.POST['username'].lower()
         password = request.POST['password']
-
+        
         try:
             User.objects.get(username=username)
             
-        except:
+        except User.DoesNotExist:
             messages.error(request, 'Username does not exist.')
 
         user = authenticate(request, username=username, password=password)
