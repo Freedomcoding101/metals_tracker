@@ -19,8 +19,9 @@
 
 <body>
   {% include 'navbar.html' %}
+  {% if user.is_authenticated %}
   {% include 'sub_header.html' %}
-
+  {% endif %}
   {% if messages %}
   {% for message in messages %}
   {% if message.tags == 'info' %}

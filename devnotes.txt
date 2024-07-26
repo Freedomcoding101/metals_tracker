@@ -1,7 +1,7 @@
 Need to create seperate page for items that have sold out!
 
 **********************************
-forgot password name/page/url/ information.
+
 
 **********************************
 need to add purity to the equation when calculating total weight of silver..... if silver is not .999 or .9999
@@ -34,6 +34,9 @@ changed update_quantity to update_sale in the signals.py file... (just in case a
 maybe test the sales.)
 **********************************
 check to see if my ajax needs a csrf..
+
+**********************************
+modify password_reset_page CSS to make it look better...
 
 
 
