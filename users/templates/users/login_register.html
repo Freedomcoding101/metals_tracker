@@ -38,7 +38,24 @@
     </div>
     </div>
 </div>
+<script>
+  function handleFormSubmit(event) {
+      console.log("handleFormSubmit function called");
+      var registerButton = document.getElementById('register_button');
+      registerButton.disabled = true; // Disable the button to prevent double-clicks
 
+      // Optionally, you can change the button text to indicate the action is in progress
+      registerButton.value = 'Registering...';
+  }
+
+  // Bind the handleFormSubmit function to the form submit event
+  document.addEventListener("DOMContentLoaded", function() {
+      var registerForm = document.querySelector('form.auth__form');
+      if (registerForm) {
+          registerForm.addEventListener('submit', handleFormSubmit);
+      }
+  });
+</script>
 {% else %}
 <div class="auth">
     <div class="card">
