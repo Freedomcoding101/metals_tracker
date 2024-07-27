@@ -1,7 +1,8 @@
 Need to create seperate page for items that have sold out!
 
 **********************************
-
+there seems to be a problem with this django projects reset password... If somehow the email was guessed to the admin
+you could technically reset their password with the link that resets password lol!
 
 **********************************
 need to add purity to the equation when calculating total weight of silver..... if silver is not .999 or .9999
