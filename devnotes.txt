@@ -11,10 +11,10 @@ actually need to change to have asw agw apw or else calculate troy ounces x puri
 Make sure to handle 404 errors at the end so you still get feedback not just a 404 response.
 
 **********************************
-need to prevent double click when signing up for an account..
+
 
 **********************************
-location of user logged out message in poor spot...
+
 
 **********************************
 work on the formatting of the email...

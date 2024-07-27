@@ -20,8 +20,10 @@ from .signals import update_sale
 
 
 def homepage(request):
+    is_index = True
+    context = {'is_index': is_index}
     try:
-        return render(request, 'tracker/index.html')
+        return render(request, 'tracker/index.html', context)
     except Exception as e:
         raise Http404("Page not found")
 

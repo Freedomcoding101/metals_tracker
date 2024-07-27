@@ -25,6 +25,20 @@
       {% endif %}
     </div>
   </section>
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.tags == 'info' %}
+  <div class="card">
+    <h2>{{message}}</h2>
+  </div>
+  {% else %}
+    <div class="alert alert--{{message.tags}}">  
+        <p class="alert__message">{{message}}</p>
+        <button class="alert__close">x</button>
+    </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
   <!-- Search Result: DevList -->
   <section class="devlist">
     <div class="container">
