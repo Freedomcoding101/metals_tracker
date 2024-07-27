@@ -5,6 +5,7 @@ from .models import Profile
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
+from textwrap import dedent
 
 
 def createUserProfile(sender, instance, created, **kwargs):
@@ -19,7 +20,7 @@ def createUserProfile(sender, instance, created, **kwargs):
         )
 
         subject = 'Welcome to Track Stacker'
-        message = f'''Dear {user.first_name},
+        message = dedent(f'''Dear {user.first_name},
 
 Welcome to Trackstacker! We're thrilled to have you on board and thank you for signing up.
 
@@ -27,19 +28,16 @@ At Trackstacker, we're dedicated to helping you track all your precious metals i
 
 Our software is designed to streamline your management process, providing you with the tools you need to stay on top of your investments effortlessly.
 
-The indexing option will also allow you to label and track your investments for family, ensuring your collection is 
+The indexing option will also allow you to label and track your investments for family, ensuring your collection is well doccumented and prices and premiums are tracked. Nothing is more important than knowing the value of your investments.
 
-well doccumented and prices and premiums are tracked. Nothing is more important than knowing the value of your investments.
+We look forward to supporting you on your journey towards better financial tracking and management, if you have any questions or need assistance as you get started, please don't hesitate to reach out. Our team is here to help!
 
-We look forward to supporting you on your journey towards better financial tracking and management.
-
-If you have any questions or need assistance as you get started, please don't hesitate to reach out. Our team is here to help!
 
 Best regards,
 
 Owen Dillabough
 Chief Technical Officer,
-Trackstacker'''
+Trackstacker''')
 
 
         send_mail(
