@@ -9,7 +9,7 @@
     <section class="hero-section text-center">
       <div class="container container--narrow">
         <div class="hero-section__box">
-          <h2>Search your <span>Sold Items</span></h2>
+          <h2>Search your <span>Sales</span></h2>
         </div>
 
         <div class="hero-section__search">
@@ -46,32 +46,15 @@
                   <h3 class="project__title">{{object.item_year}}</h3>
                   <h3 class="project__title">{{object.item_name}}</h3>
                   {% if object.initial_weight_unit == 'TROY_OUNCES' %}
-                  <h3 class="project__title">{{object.weight|floatformat:2}} OZ</h3>
+                  <h3 class="project__title">Sold {{ object.sale_weight|floatformat:2  }} OZ</h3>
                   {% else %}
-                  <h3 class="project__title">{{object.weight|floatformat:2}} Gram{{object.weight|floatformat:2|pluralize}}</h3>
+                  <h3 class="project__title">Sold {{ object.sale_weight|floatformat:2  }} Gram{{ object.sale_weight|floatformat:2|pluralize  }}</h3>
                   {% endif %}
-                  {% if object.quantity > 0 %}
-                    {% if object.profit > 0 %}
-                    <h3 class="project__title profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
-
-                    {% elif object.profit == 0 %}
-                    <h3 class="project__title profit_neutral">{{object.profit|floatformat:2}}</h3>
-
-                    {% else %}
-                    <h3 class="project__title profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
-
-                    {% endif %}
-                  {% else %}
-                    <h3 class="project__title profit_neutral">SOLD OUT</h3>
-                  {% endif %}
-                  <p><a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Quantity {{object.quantity}}</a></p>
-                  <p class="project--rating">
-                    <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
+                  <p>
+                    <a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Buyer-{{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold: {{  object.date_sold  }}</span>
                   </p>
-                  <p class="project--rating">
-                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'editPage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Edit</a>
-                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'deletePage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Delete</a>
-                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'sellPage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Sell</a>
+                  <p>
+                    <span style="font-weight: bold;">Profit- {{  object.profit  }}</span>
                   </p>
                 </div>
               </a>
@@ -82,7 +65,7 @@
           {% for object in metal_objects %}
           <div class="column">
             <div class="card project">
-              <a href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}" class="project">
+              <a href="{% url 'singleMetal' metal_type=object.metal_type pk=object.pk %}" class="project">
                 <!-- Wrote Styles inline because CSS File not working?? -->
                 {% if object.featured_image.url != None %} 
                 <div class="project__thumbnail metal__thumbnail" style="background-image: url('{{ object.featured_image.url }}')">
@@ -95,30 +78,15 @@
                   <h3 class="project__title">{{object.item_year}}</h3>
                   <h3 class="project__title">{{object.item_name}}</h3>
                   {% if object.initial_weight_unit == 'TROY_OUNCES' %}
-                  <h3 class="project__title">{{object.weight|floatformat:2}} OZ</h3>
+                  <h3 class="project__title">Sold {{ object.sale_weight|floatformat:2  }} OZ</h3>
                   {% else %}
-                  <h3 class="project__title">{{object.weight|floatformat:2}} Gram{{object.weight|floatformat:2|pluralize}}</h3>
+                  <h3 class="project__title">Sold {{ object.sale_weight|floatformat:2  }} Gram{{ object.sale_weight|floatformat:2|pluralize  }}</h3>
                   {% endif %}
-                  {% if object.quantity > 0 %}
-                    {% if object.profit > 0 %}
-                    <h3 class="project__title profit_plus">Profit ${{object.profit|floatformat:2}}</h3>
-
-                    {% elif object.profit == 0 %}
-                    <h3 class="project__title profit_neutral">{{object.profit|floatformat:2}}</h3>
-
-                    {% else %}
-                    <h3 class="project__title profit_minus">Loss ${{object.profit|absolute|floatformat:2}}</h3>
-
-                    {% endif %}
-                  {% else %}
-                    <h3 class="project__title profit_neutral">SOLD OUT</h3>
-                  {% endif %}
-                  <p><a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Quantity {{object.quantity}}</a></p>                    <span style="font-weight: bold;">Purity-{{object.purity}}%</span>
+                  <p>
+                    <a class="project__author" href="{% url 'singleMetal' metal_type=object.metal_type pk=object.pk %}">Buyer-{{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold- {{  object.date_sold  }}</span>
                   </p>
-                  <p class="project--rating">
-                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'editPage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Edit</a>
-                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'deletePage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Delete</a>
-                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'sellPage' metal_type=object.metal_type pk=object.pk %}"><i class="im im-edit"></i> Sell</a>
+                  <p>
+                    <span style="font-weight: bold;">Profit- {{  object.profit  }}</span>
                   </p>
                 </div>
               </a>

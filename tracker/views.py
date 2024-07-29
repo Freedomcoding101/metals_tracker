@@ -403,6 +403,7 @@ def sellPage(request, metal_type, pk):
         if form.is_valid():
             sale = form.save(commit=False)
             sale.owner = user
+            sale.profit = profit_loss(item.total_cost_per_unit, sale.sell_price, sale.sell_quantity, sale.shipping_cost)
             sale.content_type = ContentType.objects.get_for_model(type(item))
             sale.object_id = item.id
             sale.save()
@@ -513,7 +514,26 @@ def deleteSale(request, metal_type, pk, name):
 
 @login_required(login_url='login-user')
 def soldItemsPage(request):
-    context = {}
+    sales = Sale.objects.filter(owner=request.user.profile)
+    metal_objects = []
+    for sale in sales:
+        content_type = ContentType.objects.get_for_id(sale.content_type_id)
+        object = content_type.get_object_for_this_type(id=sale.object_id)
+        sale_weight = object.weight_per_unit * sale.sell_quantity
+        object.sale_weight = sale_weight
+        sold_to = sale.sold_to
+        object.sold_to = sold_to
+        date_sold = sale.date_sold
+        object.date_sold = date_sold
+        profit = sale.profit
+        object.profit = profit
+        metal_objects.append(object)
+
+    context = {
+        'metal_objects': metal_objects,
+        'sales': sales,
+        }
+
     return render(request, 'tracker/sold_items.html', context)
 
 

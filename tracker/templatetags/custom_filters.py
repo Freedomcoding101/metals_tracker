@@ -14,3 +14,7 @@ def absolute(value):
 @register.filter
 def divide(value, arg):
     return Decimal(value) / Decimal(arg)
+
+@register.filter
+def multiply(value, arg):
+    return Decimal(value) * Decimal(arg)
