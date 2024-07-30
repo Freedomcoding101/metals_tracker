@@ -61,7 +61,7 @@ class Gold(models.Model):
         verbose_name_plural = "Gold"
 
     def __str__(self):
-        return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type}")
+        return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type} {self.id}")
 
     def reverse_sale(self, sale, metal_object):
         pass
@@ -175,7 +175,7 @@ class Silver(models.Model):
         verbose_name_plural = "Silver"
 
     def __str__(self):
-        return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type}")
+        return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type} {self.id}")
 
     def reverse_sale(self, sale, metal_object):
         sell_quantity = sale.sell_quantity
@@ -295,7 +295,7 @@ class Platinum(models.Model):
         verbose_name_plural = "Platinum"
 
     def __str__(self):
-        return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type}")
+        return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type} {self.id}")
 
     def calculate_profit(self, spot_price):
         if self.quantity > 0:

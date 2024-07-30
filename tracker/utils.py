@@ -1,5 +1,5 @@
 import requests
-from .models import Gold, Silver, Platinum
+from .models import Gold, Silver, Platinum, Sale
 from django.db.models import Sum, Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import requests
@@ -74,6 +74,12 @@ def searchMetals(request):
     if request.GET.get('search_query'):
         search_query = request.GET.get('search_query')
 
+    sale_items = Sale.objects.distinct().filter(
+        Q(sell_id__icontains=search_query) |
+        Q(sold_to__icontains=search_query) |
+        Q(date_sold__icontains=search_query)
+    )
+
     gold_items = Gold.objects.distinct().filter(
         Q(item_name__icontains=search_query) |
         Q(metal_type__icontains=search_query) |
@@ -101,7 +107,8 @@ def searchMetals(request):
     return {
     'gold_items': gold_items,
     'silver_items': silver_items,
-    'platinum_items': platinum_items
+    'platinum_items': platinum_items,
+    'sale_items': sale_items
     }, search_query
 
 

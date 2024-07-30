@@ -17,7 +17,7 @@
             <div class="form__field">
               <label for="formInput#search">Search By Projects </label>
               <input class="input input--text" id="formInput#search" type="text" name="search_query"
-                placeholder="Search Sold Items" />
+                placeholder="Search Sales" />
             </div>
 
             <input class="btn btn--sub btn--lg" type="submit" value="Search" placeholder="{{search_query}}"/>
@@ -51,10 +51,10 @@
                   <h3 class="project__title">Sold {{ object.sale_weight|floatformat:2  }} Gram{{ object.sale_weight|floatformat:2|pluralize  }}</h3>
                   {% endif %}
                   <p>
-                    <a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Buyer-{{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold: {{  object.date_sold  }}</span>
+                    <a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Buyer-{{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold- {{  object.date_sold  }}</span>
                   </p>
                   <p>
-                    <span style="font-weight: bold;">Profit- {{  object.profit  }}</span>
+                    <span style="font-weight: bold;">Profit- ${{  object.profit  }}</span>
                   </p>
                 </div>
               </a>
@@ -83,10 +83,10 @@
                   <h3 class="project__title">Sold {{ object.sale_weight|floatformat:2  }} Gram{{ object.sale_weight|floatformat:2|pluralize  }}</h3>
                   {% endif %}
                   <p>
-                    <a class="project__author" href="{% url 'singleMetal' metal_type=object.metal_type pk=object.pk %}">Buyer-{{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold- {{  object.date_sold  }}</span>
+                    <a class="project__author" href="{% url 'singleMetal' metal_type=object.metal_type pk=object.pk %}">Buyer- {{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold- {{  object.date_sold  }}</span>
                   </p>
                   <p>
-                    <span style="font-weight: bold;">Profit- {{  object.profit  }}</span>
+                    <span style="font-weight: bold;">Profit- ${{  object.profit  }}</span>
                   </p>
                 </div>
               </a>

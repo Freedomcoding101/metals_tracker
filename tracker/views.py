@@ -516,18 +516,50 @@ def deleteSale(request, metal_type, pk, name):
 def soldItemsPage(request):
     sales = Sale.objects.filter(owner=request.user.profile)
     metal_objects = []
-    for sale in sales:
-        content_type = ContentType.objects.get_for_id(sale.content_type_id)
-        object = content_type.get_object_for_this_type(id=sale.object_id)
-        sale_weight = object.weight_per_unit * sale.sell_quantity
-        object.sale_weight = sale_weight
-        sold_to = sale.sold_to
-        object.sold_to = sold_to
-        date_sold = sale.date_sold
-        object.date_sold = date_sold
-        profit = sale.profit
-        object.profit = profit
-        metal_objects.append(object)
+
+    if request.method == 'GET' and 'search_query' in request.GET:
+        results, search_query = searchMetals(request)
+        gold_items = results['gold_items']
+        silver_items = results['silver_items']
+        platinum_items = results['platinum_items']
+        all_sale_items = results['sale_items']
+        sale_sold_to = all_sale_items.values_list('sold_to', flat=True)
+        gold_item_ids = gold_items.values_list('id', flat=True)
+        silver_item_ids = silver_items.values_list('id', flat=True)
+        platinum_item_ids = platinum_items.values_list('id', flat=True)
+        sales = Sale.objects.filter(owner=request.user.profile)
+        metal_objects = []
+        
+        for sale in sales:
+            if sale.object_id in gold_item_ids or sale.object_id in silver_item_ids or sale.object_id in platinum_item_ids or sale.sold_to in sale_sold_to:
+                content_type = ContentType.objects.get_for_id(sale.content_type_id)
+                object = content_type.get_object_for_this_type(id=sale.object_id)
+                sale_weight = object.weight_per_unit * sale.sell_quantity
+                object.sale_weight = sale_weight
+                sold_to = sale.sold_to
+                object.sold_to = sold_to
+                date_sold = sale.date_sold
+                object.date_sold = date_sold
+                profit = sale.profit
+                object.profit = profit
+                metal_objects.append(object)
+            else:
+                pass
+        custom_range, metal_objects = paginateMetals(request, metal_objects, 6)
+    
+    else:
+        for sale in sales:
+            content_type = ContentType.objects.get_for_id(sale.content_type_id)
+            object = content_type.get_object_for_this_type(id=sale.object_id)
+            sale_weight = object.weight_per_unit * sale.sell_quantity
+            object.sale_weight = sale_weight
+            sold_to = sale.sold_to
+            object.sold_to = sold_to
+            date_sold = sale.date_sold
+            object.date_sold = date_sold
+            profit = sale.profit
+            object.profit = profit
+            metal_objects.append(object)
 
     context = {
         'metal_objects': metal_objects,
