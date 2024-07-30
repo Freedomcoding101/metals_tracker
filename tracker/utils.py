@@ -85,7 +85,8 @@ def searchMetals(request):
         Q(metal_type__icontains=search_query) |
         Q(item_type__icontains=search_query) |
         Q(owner__name__icontains=search_query)|
-        Q(item_year__icontains=search_query)
+        Q(item_year__icontains=search_query)|
+        Q(purchased_from__icontains=search_query)
     )
 
     silver_items = Silver.objects.distinct().filter(
@@ -93,7 +94,8 @@ def searchMetals(request):
         Q(metal_type__icontains=search_query) |
         Q(item_type__icontains=search_query) |
         Q(owner__name__icontains=search_query)|
-        Q(item_year__icontains=search_query)
+        Q(item_year__icontains=search_query)|
+        Q(purchased_from__icontains=search_query)
     )
 
     platinum_items = Platinum.objects.distinct().filter(
@@ -101,7 +103,8 @@ def searchMetals(request):
         Q(metal_type__icontains=search_query) |
         Q(item_type__icontains=search_query) |
         Q(owner__name__icontains=search_query)|
-        Q(item_year__icontains=search_query)
+        Q(item_year__icontains=search_query)|
+        Q(purchased_from__icontains=search_query)
     )
 
     return {
