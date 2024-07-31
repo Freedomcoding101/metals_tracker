@@ -4,8 +4,34 @@
 {% load multiply %}
 {% load custom_filters %}
 <!-- Main Section -->
-
 <main class="projects">
+  <section class="zero-section text-center">
+      <div class="container container--narrow">
+        <div class="zero-section__date-options">
+          <div class="form__field">
+            <a href="#" class="btn btn--sub btn--lg" id="specDate">Specific Date</a>
+          </div>
+          <div id="dateModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form id="dateForm">
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" name="startDate" required>
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" name="endDate" required>
+                <button type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+          <div class="form__field">
+            <a href="#" class="btn btn--sub btn--lg" id="lastMonth">Last Month</a>
+          </div>
+          <div class="form__field">
+            <a href="#" class="btn btn--sub btn--lg" id="thisMonth">This Month</a>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="hero-section text-center">
       <div class="container container--narrow">
         <div class="hero-section__box">
@@ -25,6 +51,8 @@
         </div>
       </div>
     </section>
+
+    
     <!-- Start of grid -->
     <section class="projectsList">
       <div class="container">
@@ -33,7 +61,7 @@
           {% for object in metal_objects %}
           <div class="column">
             <div class="card project">
-              <a href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}" class="project">
+              <a href="{% url 'salesPage' sell_id=object.sell_id metal_type=object.metal_type pk=object.id name=object.sold_to %}" class="project">
                 <!-- Wrote Styles inline because CSS File not working?? -->
                 {% if object.featured_image.url != None %} 
                 <div class="project__thumbnail metal__thumbnail" style="background-image: url('{{ object.featured_image.url }}')">
@@ -51,7 +79,7 @@
                   <h3 class="project__title">Sold {{ object.sale_weight|floatformat:2  }} Gram{{ object.sale_weight|floatformat:2|pluralize  }}</h3>
                   {% endif %}
                   <p>
-                    <a class="project__author" href="{% url 'singleMetal' metal_type='gold' pk=object.pk %}">Buyer-{{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold- {{  object.date_sold  }}</span>
+                    <a class="project__author" href="{% url 'salesPage' sell_id=object.sell_id metal_type=object.metal_type pk=object.id name=object.sold_to %}">Buyer-{{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold- {{  object.date_sold  }}</span>
                   </p>
                   <p>
                     <span style="font-weight: bold;">Profit- ${{  object.profit  }}</span>
@@ -65,7 +93,7 @@
           {% for object in metal_objects %}
           <div class="column">
             <div class="card project">
-              <a href="{% url 'singleMetal' metal_type=object.metal_type pk=object.pk %}" class="project">
+              <a href="{% url 'salesPage' sell_id=object.sell_id metal_type=object.metal_type pk=object.id name=object.sold_to %}" class="project">
                 <!-- Wrote Styles inline because CSS File not working?? -->
                 {% if object.featured_image.url != None %} 
                 <div class="project__thumbnail metal__thumbnail" style="background-image: url('{{ object.featured_image.url }}')">
@@ -83,7 +111,7 @@
                   <h3 class="project__title">Sold {{ object.sale_weight|floatformat:2  }} Gram{{ object.sale_weight|floatformat:2|pluralize  }}</h3>
                   {% endif %}
                   <p>
-                    <a class="project__author" href="{% url 'singleMetal' metal_type=object.metal_type pk=object.pk %}">Buyer- {{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold- {{  object.date_sold  }}</span>
+                    <a class="project__author" href="{% url 'salesPage' sell_id=object.sell_id metal_type=object.metal_type pk=object.id name=object.sold_to %}">Buyer- {{  object.sold_to  }}</a></p>                    <span style="font-weight: bold;">Sold- {{  object.date_sold  }}</span>
                   </p>
                   <p>
                     <span style="font-weight: bold;">Profit- ${{  object.profit  }}</span>
@@ -99,5 +127,29 @@
     </section>
     {% include 'pagination.html' with queryset=metal_objects custom_range=custom_range %}
   </main>
+  <script>
+    document.getElementById('specDate').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('dateModal').style.display = 'block';
+    });
+    
+    document.getElementsByClassName('close')[0].addEventListener('click', function() {
+        document.getElementById('dateModal').style.display = 'none';
+    });
+    
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('dateModal')) {
+            document.getElementById('dateModal').style.display = 'none';
+        }
+    }
+    
+    document.getElementById('dateForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const searchUrl = `/search?start_date=${startDate}&end_date=${endDate}`;
+        window.location.href = searchUrl;
+    });
+    </script>
 
 {% endblock content %}

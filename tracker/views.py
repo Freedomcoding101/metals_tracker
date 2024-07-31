@@ -553,6 +553,7 @@ def soldItemsPage(request):
             object = content_type.get_object_for_this_type(id=sale.object_id)
             sale_weight = object.weight_per_unit * sale.sell_quantity
             object.sale_weight = sale_weight
+            object.sell_id = sale.sell_id
             sold_to = sale.sold_to
             object.sold_to = sold_to
             date_sold = sale.date_sold
