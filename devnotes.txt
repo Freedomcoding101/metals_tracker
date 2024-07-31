@@ -1,7 +1,11 @@
 **********************************
 working on search in sales page.... just added the modal for date... added some CSS for that
 CSS could be modified a bit, other than that needs to be hooked up to a search function.
-
+broke something in the search... possibly adding the modal, possibly the buttons but shouldnt be.. look into
+this later. 
+163b6e67370d51e3d3f2ec95de82f862bb52b40b This commit is working but doesnt have any of the buttons or CSS that
+I worked on so would prefer to save the further branches if I can figure out the issue.
+Note I added the WHOLE new section at the top of sold_items in the newest model with the modal and the buttons..
 **********************************
 there seems to be a problem with this django projects reset password... If somehow the email was guessed to the admin
 you could technically reset their password with the link that resets password lol!
