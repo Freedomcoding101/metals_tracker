@@ -1,8 +1,8 @@
 **********************************
-Currently working on a signal for the Sales, if the item is deleted from the database i want to trigger a signal that deletes all of the sales.
+Need to change the gold/silver/platinum to auto update from the ajax request... not using the context processor
+because this requires the page to refresh.
 **********************************
-there seems to be a problem with this django projects reset password... If somehow the email was guessed to the admin
-you could technically reset their password with the link that resets password lol!
+Create a way to export ALL of the information in the database to CSV or Excel files..
 
 **********************************
 need to add purity to the equation when calculating total weight of silver..... if silver is not .999 or .9999
@@ -16,14 +16,13 @@ to use this uuid and thats why I added it to the __str__ name.. But not exactly 
 you take this out.
 
 **********************************
-need to set up a signal to delete all the sales associated with a sale if the original item is deleted.
+absolutly need to add serial number to the models..
 
 **********************************
 
 
 **********************************
-issues with deleting a sale from database when the item itself has been deleted... OMG lol
-updated sale model to have content_type set to null on_delete... used to be cascade (just to know for troubleshooting)
+
 
 **********************************
 cost to purchase including shipping on the individual sales page needs some work.
@@ -48,7 +47,7 @@ but the page still needs to be reset..
 also update the home page view with the code for the prices to update automatically if they are zero...
 
 **********************************
-
+currently if you go into the SingleMetals page on a single gram of gold it says grams still not gram... easy fixs
 
 **********************************
 
