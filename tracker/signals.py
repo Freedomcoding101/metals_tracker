@@ -5,6 +5,18 @@ from users.models import Profile
 from decimal import Decimal
 from django.contrib.contenttypes.models import ContentType
 
+def delete_sales(sender, instance, **kwargs):
+    metal_type = instance.metal_type
+    pk = instance.pk
+    # Need to grab the sales as well so that I can trigger the delete... Probably using the content type and id
+    sales = Sale.objects.filter(content_type=ContentType.objects.get_for_model(instance), object_id=pk)
+    for sale in sales:
+        sale.delete()
+
+post_delete.connect(delete_sales, sender=Gold)
+post_delete.connect(delete_sales, sender=Silver)
+post_delete.connect(delete_sales, sender=Platinum)
+
 def update_sale(sender, instance, **kwargs):
     sale = instance
     update_sale = sale.sell_quantity

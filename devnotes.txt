@@ -1,11 +1,5 @@
 **********************************
-working on search in sales page.... just added the modal for date... added some CSS for that
-CSS could be modified a bit, other than that needs to be hooked up to a search function.
-broke something in the search... possibly adding the modal, possibly the buttons but shouldnt be.. look into
-this later. 
-163b6e67370d51e3d3f2ec95de82f862bb52b40b This commit is working but doesnt have any of the buttons or CSS that
-I worked on so would prefer to save the further branches if I can figure out the issue.
-Note I added the WHOLE new section at the top of sold_items in the newest model with the modal and the buttons..
+Currently working on a signal for the Sales, if the item is deleted from the database i want to trigger a signal that deletes all of the sales.
 **********************************
 there seems to be a problem with this django projects reset password... If somehow the email was guessed to the admin
 you could technically reset their password with the link that resets password lol!
@@ -17,17 +11,15 @@ actually need to change to have asw agw apw or else calculate troy ounces x puri
 Make sure to handle 404 errors at the end so you still get feedback not just a 404 response.
 
 **********************************
+currently when you go to delete something it is saying the uuid of the item... Im pretty sure i set up something
+to use this uuid and thats why I added it to the __str__ name.. But not exactly sure.. Check to see if it breks if 
+you take this out.
 
+**********************************
+need to set up a signal to delete all the sales associated with a sale if the original item is deleted.
 
 **********************************
 
-
-**********************************
-
-
-**********************************
-shipping cost is currently not being affected by anything, deep dive into this and see if it will affected
-things and if it needs to be manipulated.
 
 **********************************
 issues with deleting a sale from database when the item itself has been deleted... OMG lol
