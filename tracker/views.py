@@ -574,4 +574,8 @@ def soldItemsPage(request):
 def update_metals_data(request):
     metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
     metals_data.get_api_data(request.user) 
-    return JsonResponse({'metals_data': 'success'})
+    return JsonResponse({
+        'gold_price': metals_data.current_gold_price,
+        'silver_price': metals_data.current_silver_price,
+        'platinum_price': metals_data.current_platinum_price
+    })

@@ -1,6 +1,6 @@
 **********************************
-Need to change the gold/silver/platinum to auto update from the ajax request... not using the context processor
-because this requires the page to refresh.
+
+
 **********************************
 Create a way to export ALL of the information in the database to CSV or Excel files..
 

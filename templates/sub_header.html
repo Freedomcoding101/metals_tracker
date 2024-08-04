@@ -8,7 +8,7 @@
           <li class="subheader__menuItem" id="goldspot">Gold&nbsp;<span>${{gold_price}}</span></li>
           <li class="subheader__menuItem" id="silverspot">Silver&nbsp;<span>${{silver_price}}</span></li>
           <li class="subheader__menuItem" id="platinumspot">Platinum&nbsp;<span>${{platinum_price}}</span></li>
-          <li class="subheader__menuItem"><a><span class="solar--refresh-square-broken" id="update-metals-data-button"></span></a></li>
+          <a><li class="subheader__menuItem"><span class="solar--refresh-square-broken" id="update-metals-data-button"></span></li></a>
         </ul>
       </nav>
     </div>
@@ -25,7 +25,9 @@
                 type: "GET",
                 success: function(response){
                     console.log(response);
-                    alert('Data updated successfully.');
+                    $('#goldspot').html(`Gold&nbsp;<span>$${parseFloat(response.gold_price).toFixed(2)}</span>`);
+                    $('#silverspot').html(`Silver&nbsp;<span>$${parseFloat(response.silver_price).toFixed(2)}</span>`);
+                    $('#platinumspot').html(`Platinum&nbsp;<span>$${parseFloat(response.platinum_price).toFixed(2)}</span>`);
                 },
                 error: function() {
                     alert('An error occurred.');
