@@ -578,4 +578,5 @@ def update_metals_data(request):
         'gold_price': metals_data.current_gold_price,
         'silver_price': metals_data.current_silver_price,
         'platinum_price': metals_data.current_platinum_price
+
     })

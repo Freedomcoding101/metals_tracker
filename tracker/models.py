@@ -37,7 +37,8 @@ class Gold(models.Model):
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='round')
     coa_present = models.CharField(max_length=100, choices=COA_PRESENT, default='no')
-    item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
+    item_year = models.PositiveIntegerField(null=True, blank=True, default=None)
+    serial_number = models.CharField(max_length=100, null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")
     featured_image = models.ImageField(default='images/gold_avatar.jpg', null=True, blank=True)
@@ -45,6 +46,7 @@ class Gold(models.Model):
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=4)
     weight_grams = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
+    agw = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -62,6 +64,15 @@ class Gold(models.Model):
 
     def __str__(self):
         return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type}")
+
+    def save(self, *args, **kwargs):
+        if Decimal(self.purity) == Decimal('0.9990') or Decimal(self.purity) == Decimal('0.9999'):
+            self.agw = self.weight_troy_oz
+
+        else:
+            self.agw = self.weight_troy_oz * self.purity
+
+        super().save(*args, **kwargs)
 
     def reverse_sale(self, sale, metal_object):
         pass
@@ -151,7 +162,8 @@ class Silver(models.Model):
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='round')
     coa_present = models.CharField(max_length=100, choices=COA_PRESENT, default='no')
-    item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
+    item_year = models.PositiveIntegerField(null=True, blank=True, default=None)
+    serial_number = models.CharField(max_length=100, null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")
     featured_image = models.ImageField(default='images/silver_avatar.jpg', null=True, blank=True)
@@ -159,6 +171,7 @@ class Silver(models.Model):
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=4)
     weight_grams = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
+    asw = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -176,6 +189,15 @@ class Silver(models.Model):
 
     def __str__(self):
         return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type}")
+
+    def save(self, *args, **kwargs):
+        if Decimal(self.purity) == Decimal('0.9990') or Decimal(self.purity) == Decimal('0.9999'):
+            self.asw = self.weight_troy_oz
+
+        else:
+            self.asw = self.weight_troy_oz * self.purity
+
+        super().save(*args, **kwargs)
 
     def reverse_sale(self, sale, metal_object):
         sell_quantity = sale.sell_quantity
@@ -271,7 +293,8 @@ class Platinum(models.Model):
     metal_type = models.CharField(max_length=100, choices=METAL_TYPES, default='')
     item_type = models.CharField(max_length=100, choices=BAR_ROUND_MISC, default='round')
     coa_present = models.CharField(max_length=100, choices=COA_PRESENT, default='no')
-    item_year =models.PositiveIntegerField(null=True, blank=True, default=None)
+    item_year = models.PositiveIntegerField(null=True, blank=True, default=None)
+    serial_number = models.CharField(max_length=100, null=True, blank=True, default=None)
     item_name = models.CharField(max_length=100)
     item_about = models.TextField(max_length=500, null=True, blank=True, default="")
     featured_image = models.ImageField(default='images/platinum_avatar.jpg', null=True, blank=True)
@@ -279,6 +302,7 @@ class Platinum(models.Model):
     quantity = models.IntegerField()
     weight_troy_oz = models.DecimalField(max_digits=30, decimal_places=4)
     weight_grams = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
+    apw = models.DecimalField(max_digits=30, decimal_places=4, default=0.00)
     cost_to_purchase = models.DecimalField(max_digits=20, decimal_places=2)
     spot_at_purchase = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=None)
     premium = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True, default=0.00)
@@ -296,6 +320,15 @@ class Platinum(models.Model):
 
     def __str__(self):
         return (f"{self.item_year} {self.metal_type} {self.item_name} {self.item_type}")
+
+    def save(self, *args, **kwargs):
+        if Decimal(self.purity) == Decimal('0.9990') or Decimal(self.purity) == Decimal('0.9999'):
+            self.apw = self.weight_troy_oz
+
+        else:
+            self.apw = self.weight_troy_oz * self.purity
+
+        super().save(*args, **kwargs)
 
     def calculate_profit(self, spot_price):
         if self.quantity > 0:

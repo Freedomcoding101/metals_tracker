@@ -17,12 +17,13 @@ class GoldForm(forms.ModelForm):
     class Meta:
         model = Gold
         fields = [
-            'metal_type', 'weight_unit', 'coa_present',  'item_type', 'item_name', 'item_year',
+            'metal_type', 'weight_unit', 'coa_present',  'item_type', 'item_name', 'item_year', 'serial_number',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
             'purchased_from', 'featured_image', 'item_about'
         ]
 
         labels = {
+            'serial_number': 'Serial Number',
             'sell_price': 'Sell Price',
             'sold_to': 'Sold To',
             'featured_image': 'Featured Image',
@@ -60,6 +61,7 @@ class GoldForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
 
         instance.initial_weight_unit = cleaned_data.get('weight_unit')
+        instance.purity = cleaned_data.get('purity')
 
         if cleaned_data.get('weight'):
             if cleaned_data['weight_unit'] == 'GRAMS':
@@ -85,12 +87,13 @@ class SilverForm(forms.ModelForm):
     class Meta:
         model = Silver
         fields = [
-            'metal_type', 'weight_unit', 'coa_present', 'item_type', 'item_name', 'item_year',
+            'metal_type', 'weight_unit', 'coa_present', 'item_type', 'item_name', 'item_year', 'serial_number',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
             'purchased_from', 'featured_image', 'item_about'
         ]
 
         labels = {
+            'serial_number': 'Serial Number',
             'sell_price': 'Sell Price',
             'sold_to': 'Sold To',
             'featured_image': 'Featured Image',
@@ -120,9 +123,6 @@ class SilverForm(forms.ModelForm):
             elif weight_unit == 'TROY_OUNCES':
                 cleaned_data['weight_troy_oz'] = weight
                 cleaned_data['weight_grams'] = weight * Decimal(31.1035)
-
-        print(cleaned_data['weight_troy_oz'])
-        print(cleaned_data['weight_grams'])
 
         return cleaned_data
 
@@ -154,12 +154,13 @@ class PlatinumForm(forms.ModelForm):
     class Meta:
         model = Platinum
         fields = [
-            'metal_type', 'weight_unit', 'coa_present', 'item_type', 'item_name', 'item_year',
+            'metal_type', 'weight_unit', 'coa_present', 'item_type', 'item_name', 'item_year', 'serial_number',
             'weight', 'quantity', 'purity', 'cost_to_purchase', 'spot_at_purchase', 'shipping_cost',
             'purchased_from', 'featured_image', 'item_about'
         ]
 
         labels = {
+            'serial_number': 'Serial Number',
             'sell_price': 'Sell Price',
             'sold_to': 'Sold To',
             'featured_image': 'Featured Image',
@@ -189,9 +190,6 @@ class PlatinumForm(forms.ModelForm):
             elif weight_unit == 'TROY_OUNCES':
                 cleaned_data['weight_troy_oz'] = weight
                 cleaned_data['weight_grams'] = weight * Decimal(31.1035)
-
-        print(cleaned_data['weight_troy_oz'])
-        print(cleaned_data['weight_grams'])
         
         return cleaned_data
 
