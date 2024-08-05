@@ -21,6 +21,17 @@ from .signals import update_sale
 
 def homepage(request):
     is_index = True
+    if request.user.is_authenticated:
+        metals_data, created = MetalsData.objects.get_or_create(owner=request.user.profile)
+        five_minutes_later = metals_data.timestamp + 300
+        unix_time_now = int(time.time())
+
+        if metals_data.current_gold_price == 0:
+                metals_data.get_api_data(request.user)
+            
+        elif (unix_time_now - five_minutes_later) > 300:
+            print('peanutbutter pancake')
+
     context = {'is_index': is_index}
     try:
         return render(request, 'tracker/index.html', context)

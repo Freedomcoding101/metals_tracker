@@ -8,43 +8,42 @@ Have an issue with the premium... somehow is calculating wrong when i added silv
 need to add purity to the equation when calculating total weight of silver..... if silver is not .999 or .9999
 actually need to change to have asw agw apw or else calculate troy ounces x purity or something, further thought required
 **********************************
-Make sure to handle 404 errors at the end so you still get feedback not just a 404 response.
+modify password_reset_page CSS to make it look better...
 
-**********************************
-currently when you go to delete something it is saying the uuid of the item... Im pretty sure i set up something
-to use this uuid and thats why I added it to the __str__ name.. But not exactly sure.. Check to see if it breks if 
-you take this out.
-
-**********************************
-absolutly need to add serial number to the models..
-
-**********************************
-
-
-**********************************
-
-
-**********************************
-cost to purchase including shipping on the individual sales page needs some work.
-
-**********************************
-changed update_quantity to update_sale in the signals.py file... (just in case any errors happen its logged here for a minute.
-maybe test the sales.)
 **********************************
 check to see if my ajax needs a csrf..
 
 **********************************
-modify password_reset_page CSS to make it look better...
+tried to set the gold/silver/platinum prices on the homepage... running into an issue the way it is grabbing metals_data
+there is an issue because it is trying to grab based on the profile but when no one is logged in this is an issue..
+commented out code for now until there is a fix.
 
 **********************************
-need to set code for the scrolling gold/silver/platinum bar.. if it isnt on the page or is null we need to account for that..
+
 
 **********************************
-need to set up the ajax request so that it also refreshes the page or something. it will update the info
-but the page still needs to be reset..
+
 
 **********************************
-also update the home page view with the code for the prices to update automatically if they are zero...
+
+
+**********************************
+
+
+**********************************
+
+
+**********************************
+
+
+**********************************
+
+
+**********************************
+
+
+**********************************
+
 
 **********************************
 currently if you go into the SingleMetals page on a single gram of gold it says grams still not gram... easy fixs
@@ -65,7 +64,7 @@ currently if you go into the SingleMetals page on a single gram of gold it says 
 
 
 **********************************
-
+Make sure to handle 404 errors at the end so you still get feedback not just a 404 response.
 
 **********************************
 

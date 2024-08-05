@@ -23,16 +23,26 @@ if(searchForm){
 
 // Rolling Sticky Bar
 document.addEventListener("DOMContentLoaded", function() {
-    
     window.onscroll = function() {
         var stickyBar = document.getElementById("sticky-bar");
-        var headerHeight = document.querySelector(".header").offsetHeight;
+        var header = document.querySelector(".header");
 
-        
-        if (window.pageYOffset > headerHeight) {
-            stickyBar.classList.add("sticky");
+        if (stickyBar && header) {
+            var headerHeight = header.offsetHeight;
+
+            if (window.pageYOffset > headerHeight) {
+                if (!stickyBar.classList.contains("sticky")) {
+                    console.log("Adding sticky class to stickyBar");
+                }
+                stickyBar.classList.add("sticky");
+            } else {
+                if (stickyBar.classList.contains("sticky")) {
+                    console.log("Removing sticky class from stickyBar");
+                }
+                stickyBar.classList.remove("sticky");
+            }
         } else {
-            stickyBar.classList.remove("sticky");
+            console.log("stickyBar or header not found");
         }
     };
 });

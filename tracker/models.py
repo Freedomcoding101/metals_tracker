@@ -462,7 +462,6 @@ class MetalsData(models.Model):
     def get_api_data(self, user):
         response = requests.get('https://api.metalpriceapi.com/v1/latest?api_key=6178fa0527aabdb25fa2c141a7b07f62&base=CAD&currencies=XAU,%20XAG,%20XPT')
         data = response.json()
-        print(data)
         self.owner = user.profile
         self.timestamp = data['timestamp']
         self.rates = data['rates']
