@@ -14,9 +14,7 @@ modify password_reset_page CSS to make it look better...
 check to see if my ajax needs a csrf..
 
 **********************************
-tried to set the gold/silver/platinum prices on the homepage... running into an issue the way it is grabbing metals_data
-there is an issue because it is trying to grab based on the profile but when no one is logged in this is an issue..
-commented out code for now until there is a fix.
+
 
 **********************************
 

@@ -1,23 +1,22 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
-from django.db.models import Sum
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib import messages
-from .utils import searchMetals, paginateMetals, profit_loss, calculate_roi
-from .models import Gold, Silver, Platinum, Sale, MetalsData
-from .forms import GoldForm, SilverForm, PlatinumForm, create_sell_form
-from django.http import HttpResponseNotFound
 from decimal import Decimal
-from django.contrib.contenttypes.models import ContentType
-from django.utils import timezone
 import requests
 import time
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
-from .signals import update_sale
 
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Sum
+from django.http import Http404, HttpResponseNotFound, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+from .forms import GoldForm, SilverForm, PlatinumForm, create_sell_form
+from .models import Gold, Silver, Platinum, Sale, MetalsData
+from .signals import update_sale
+from .utils import searchMetals, paginateMetals, profit_loss, calculate_roi
 
 def homepage(request):
     is_index = True
