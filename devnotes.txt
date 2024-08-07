@@ -14,7 +14,19 @@ modify password_reset_page CSS to make it look better...
 check to see if my ajax needs a csrf..
 
 **********************************
+Just fixed the issue where on the singlemetal page the gram was saying grams if there was only one.. changed this 
+from object_weight (which was coming from the view... to metal_object.weight_troy_oz or grams... look to see if
+my code was redundant or if there was a reason i had it this way..)
 
+**********************************
+Also noticed that cost per ounce is calculating but here for instance the weight is in grams.... not ounces..
+so this is actually cost per gram the way that i have it put in.. so grams and ounces need to change dynamically
+on the single metal page (maybe others too) in the bottom right box.
+
+**********************************
+Need to think more about AGW ASW APW... when adding junk metal the actual weights are not really available.. 
+so these would probably be added based off of the ASW (because only coins had silver. but could still be an issue
+with not pure gold coins as well. or platinum if they are made this way)
 
 **********************************
 
@@ -39,12 +51,6 @@ check to see if my ajax needs a csrf..
 
 **********************************
 
-
-**********************************
-
-
-**********************************
-currently if you go into the SingleMetals page on a single gram of gold it says grams still not gram... easy fixs
 
 **********************************
 
